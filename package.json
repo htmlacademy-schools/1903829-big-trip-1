@@ -26,5 +26,9 @@
   },
   "engines": {
     "node": "16"
+  },
+  "dependencies": {
+    "dayjs": "^1.10.8",
+    "flatpickr": "^4.6.10"
   }
 }

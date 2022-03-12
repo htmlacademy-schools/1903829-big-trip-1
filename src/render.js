@@ -6,5 +6,4 @@ export const RenderPosition = {
 };
 export const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
-// eslint-disable-next-line eol-last
 };
