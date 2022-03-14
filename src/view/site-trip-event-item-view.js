@@ -1,13 +1,13 @@
-import dayjs from 'dayjs';
+import { dateRend } from '../utils/functionsWithDayjs';
 
 export const createTripEventsItemTemplate = (point) => {
   const {waypointType, destination, startD, endD, cost, duration, offers, favor} = point;
-  const startDayMonth = dayjs(startD).format('MMM D');
-  const startDate = dayjs(startD).format('YYYY-MM-D');
-  const startDatetime = dayjs(startD).format('YYYY-MM-DDTHH:mm');
-  const startTime = dayjs(startD).format('HH:mm');
-  const endDatetime = dayjs(endD).format('YYYY-MM-DDTHH:mm');
-  const endTime = dayjs(endD).format('HH:mm');
+  const startDayMonth = dateRend(startD, 'MMM D');
+  const startDate = dateRend(startD, 'YYYY-MM-D');
+  const startDatetime = dateRend(startD, 'YYYY-MM-DDTHH:mm');
+  const startTime = dateRend(startD, 'HH:mm');
+  const endDatetime = dateRend(endD, 'YYYY-MM-DDTHH:mm');
+  const endTime = dateRend(endD, 'HH:mm');
 
   const getDuration = (dur) => {
     const result = [];

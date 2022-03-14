@@ -1,11 +1,11 @@
-import dayjs from 'dayjs';
-import { destinations } from '../mock/destinations';
-import { wayPointTypes } from '../mock/waypointTypes';
+import { destinations } from '../utils/destinations';
+import { wayPointTypes } from '../utils/waypointTypes';
+import { dateRend } from '../utils/functionsWithDayjs';
 
 export const createEditNewPoint = (point) => {
   const  { waypointType, startDate, endDate, cost, offers, description } = point;
-  const startDateRend  = dayjs(startDate).format('D MMMM YYYY');
-  const endDateRend  = dayjs(endDate).format('D MMMM YYYY');
+  const startDateRend  = dateRend(startDate, 'D MMMM YYYY');
+  const endDateRend  = dateRend(endDate, 'D MMMM YYYY');
 
   const createListEventTypeItem = (types = wayPointTypes(), type) => {
     const createType = (currentType) => {

@@ -1,14 +1,14 @@
-import dayjs from 'dayjs';
-import { destinations } from '../mock/destinations.js';
-import { wayPointTypes } from '../mock/waypointTypes.js';
+import { destinations } from '../utils/destinations.js';
+import { wayPointTypes } from '../utils/waypointTypes.js';
 import { generateDescription } from '../mock/point.js';
-import { generateImages } from '../mock/point';
+import { generateImages } from '../utils/functions';
+import { dateRend } from '../utils/functionsWithDayjs.js';
 
 export const createAddNewPoint = (point) => {
   const  { startDate, endDate, cost, offers } = point;
   const waypointType = 'Taxi';
-  const startDateRend  = dayjs(startDate).format('D MMMM YYYY');
-  const endDateRend  = dayjs(endDate).format('D MMMM YYYY');
+  const startDateRend  = dateRend(startDate, 'D MMMM YYYY');
+  const endDateRend  = dateRend(endDate, 'D MMMM YYYY');
 
   const createOffer = (offer) => {
     const name = offer.name;
