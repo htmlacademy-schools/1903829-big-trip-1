@@ -8,7 +8,7 @@ import { createEditNewPoint } from './view/site-edit-new-point.js';
 import { createEventsListTemplate } from './view/site-list-view.js';
 import { generatePoint } from './mock/point.js';
 
-const POINT_COUNT = 3;
+const POINT_COUNT = 15;
 const points = Array.from({ length: POINT_COUNT }, generatePoint);
 
 const TripControlsNavigationElement = document.querySelector('.trip-controls__navigation');

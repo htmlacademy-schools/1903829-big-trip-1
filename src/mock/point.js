@@ -42,7 +42,7 @@ const generateBeginEndDates = () => {
   };
 };
 
-const generateDescription = () => {
+export const generateDescription = () => {
   const description = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'Cras aliquet varius magna, non porta ligula feugiat eget.',
@@ -61,7 +61,70 @@ const generateDescription = () => {
 
 const generateCost = () => getRandomInteger(1, 100) * 10;
 
-const generateOffers = () => false;
+const generateOffers = () => {
+  const offers = [
+    {
+      name: 'Add luggage',
+      price: 30,
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'luggage'
+    },
+    {
+      name: 'Switch to comfort class',
+      price: 100,
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'flight'
+    },
+    {
+      name: 'Add meal',
+      price: 15,
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'meal'
+    },
+    {
+      name: 'Travel by train',
+      price: 40,
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'transport'
+    },
+    {
+      name: 'Rent a car',
+      price: 200,
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'car'
+    },
+    {
+      name: 'Add breakfast',
+      price: 40,
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'meal'
+    },
+  ];
+  let count = getRandomInteger(0, 5);
+  let len = offers.length;
+  const result = new Array(count);
+  const taken = new Array(len);
+  if (count > len)
+  {
+    throw new RangeError('getRandom: more elements taken than available');
+  }
+  while (count--) {
+    const x = Math.floor(Math.random() * len);
+    result[count] = offers[x in taken ? taken[x] : x];
+    taken[x] = --len;
+  }
+  return result;
+};
+
+export const generateImages = () => {
+  const arrayOfImages = [];
+
+  for (let i = 0; i < 3; i++) {
+    arrayOfImages[i] = `http://picsum.photos/248/152?${ getRandomInteger(0, 99).toString() }`;
+  }
+
+  return arrayOfImages;
+};
 
 export const generatePoint = () => {
   const date = generateBeginEndDates();
@@ -72,7 +135,7 @@ export const generatePoint = () => {
     startDate: date.start,
     endDate: date.end,
     description: generateDescription(),
-    image: 'http://picsum.photos/248/152?r=2',
+    images: generateImages(),
     cost: generateCost(),
     offers: generateOffers(),
     isArchive: Boolean(getRandomInteger(0, 1)),
