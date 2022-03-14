@@ -8,7 +8,7 @@ const getRandomInteger = (a = 0, b = 1) => {
 
 const generateType = () => {
   const types = [
-    'Taxi', 'Bus', 'Train', 'Ship', 
+    'Taxi', 'Bus', 'Train', 'Ship',
     'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant',
   ];
   const randomIndex = getRandomInteger(0, types.length - 1);
@@ -41,6 +41,8 @@ const generateBeginEndDates = () => {
     end: endDate.toDate()
   };
 };
+
+const getDuration = () => ' ';
 
 export const generateDescription = () => {
   const description = [
@@ -134,6 +136,7 @@ export const generatePoint = () => {
     destination: generateDestination(),
     startDate: date.start,
     endDate: date.end,
+    duration: getDuration(),
     description: generateDescription(),
     images: generateImages(),
     cost: generateCost(),
