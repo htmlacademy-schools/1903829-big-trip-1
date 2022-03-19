@@ -1,4 +1,4 @@
-import { createElement } from "../render";
+import { createElement } from '../render';
 
 const createTripSortTemplate = () => (
   `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -30,7 +30,7 @@ export default class TripSortTemplate {
 
   get element() {
     if (!this.#element) {
-      this.element = createElement(this.template);
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

@@ -123,17 +123,22 @@ const createEditNewPoint = (point) => {
 
 export default class EditNewPoint {
   #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
 
   get element() {
     if (!this.#element) {
-      this.element = createElement(this.template);
+      this.#element = createElement(this.template);
     }
 
     return this.#element;
   }
 
   get template() {
-    return createEditNewPoint();
+    return createEditNewPoint(this.#point);
   }
 
   removeElement() {

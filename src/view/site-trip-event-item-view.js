@@ -42,7 +42,6 @@ const createTripEventsItemTemplate = (point) => {
   const durat = getDuration(duration);
 
   return `<li class="trip-events__item">
-            <li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="${ startDate }">${ startDayMonth }</time>
                 <div class="event__type">
@@ -79,17 +78,22 @@ const createTripEventsItemTemplate = (point) => {
 
 export default class TripEventsItemTemplate {
   #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
 
   get element() {
     if (!this.#element) {
-      this.element = createElement(this.template);
+      this.#element = createElement(this.template);
     }
 
     return this.#element;
   }
 
   get template() {
-    return createTripEventsItemTemplate();
+    return createTripEventsItemTemplate(this.#point);
   }
 
   removeElement() {
