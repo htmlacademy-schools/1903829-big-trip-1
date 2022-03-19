@@ -1,6 +1,7 @@
 import { dateRend } from '../utils/functionsWithDayjs';
+import { createElement } from '../render';
 
-export const createTripEventsItemTemplate = (point) => {
+const createTripEventsItemTemplate = (point) => {
   const {waypointType, destination, startD, endD, cost, duration, offers, favor} = point;
   const startDayMonth = dateRend(startD, 'MMM D');
   const startDate = dateRend(startD, 'YYYY-MM-D');
@@ -75,3 +76,24 @@ export const createTripEventsItemTemplate = (point) => {
                 </div>
               </li>`;
 };
+
+export default class TripEventsItemTemplate {
+  #element = null;
+
+  get element() {
+    if (!this.#element) {
+      this.element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createTripEventsItemTemplate();
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
+
