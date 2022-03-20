@@ -22,35 +22,35 @@ render(tripControlsFiltersElement, new TripFiltersTemplate().element, RenderPosi
 render(tripEventsElement, new TripSortTemplate().element, RenderPosition.AFTERBEGIN);
 render(tripEventsListElement.element, new AddNewPoint(points[1]).element, RenderPosition.BEFOREEND);
 
-const renderPoint = (elements, point) => {
-  const itemTemplate = new TripEventsItemTemplate(point).element;
-  const editPoint = new EditNewPoint(point).element;
+const renderPoint = (elementsList, point) => {
+  const itemTemplate = new TripEventsItemTemplate(point);
+  const editPoint = new EditNewPoint(point);
 
   const replaceWaypointToForm = () => {
-    elements.replaceChild(editPoint, itemTemplate);
+    elementsList.replaceChild(editPoint.element, itemTemplate.element);
   };
   const replaceFormToWaypoint = () => {
-    elements.replaceChild(itemTemplate, editPoint);
+    elementsList.replaceChild(itemTemplate.element, editPoint.element);
   };
-  const pressEscape = (k) => {
-    if (k.key === 'Escape') {
-      k.preventDefault();
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
       replaceFormToWaypoint();
-      document.removeEventListener('keydown', pressEscape);
+      document.removeEventListener('keydown', onEscKeyDown);
     }
   };
 
-  itemTemplate.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  itemTemplate.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
     replaceWaypointToForm();
-    document.addEventListener('keydown', pressEscape);
+    document.addEventListener('keydown', onEscKeyDown);
   });
-  editPoint.querySelector('form').addEventListener('submit', (p) => {
+  editPoint.element.querySelector('form').addEventListener('submit', (p) => {
     p.preventDefault();
     replaceFormToWaypoint();
-    document.removeEventListener('keydown', pressEscape);
+    document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(elements, itemTemplate, RenderPosition.BEFOREEND);
+  render(elementsList, itemTemplate.element, RenderPosition.BEFOREEND);
 };
 
 for (let i = 1; i < POINT_COUNT; i++) {
