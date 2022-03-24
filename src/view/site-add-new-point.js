@@ -3,8 +3,9 @@ import { wayPointTypes } from '../utils/waypointTypes.js';
 import { generateDescription } from '../mock/point.js';
 import { generateImages } from '../utils/functions';
 import { dateRend } from '../utils/functionsWithDayjs.js';
+import { createElement } from '../render.js';
 
-export const createAddNewPoint = (point) => {
+const createAddNewPoint = (point) => {
   const  { startDate, endDate, cost, offers } = point;
   const waypointType = 'Taxi';
   const startDateRend  = dateRend(startDate, 'D MMMM YYYY');
@@ -125,3 +126,28 @@ export const createAddNewPoint = (point) => {
                 </form>
               </li>`;
 };
+
+export default class AddNewPoint {
+  #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createAddNewPoint(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

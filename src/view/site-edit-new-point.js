@@ -1,8 +1,9 @@
 import { destinations } from '../utils/destinations';
 import { wayPointTypes } from '../utils/waypointTypes';
 import { dateRend } from '../utils/functionsWithDayjs';
+import { createElement } from '../render';
 
-export const createEditNewPoint = (point) => {
+const createEditNewPoint = (point) => {
   const  { waypointType, startDate, endDate, cost, offers, description } = point;
   const startDateRend  = dateRend(startDate, 'D MMMM YYYY');
   const endDateRend  = dateRend(endDate, 'D MMMM YYYY');
@@ -119,3 +120,28 @@ export const createEditNewPoint = (point) => {
     </form>
   </li> `;
 };
+
+export default class EditNewPoint {
+  #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEditNewPoint(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
