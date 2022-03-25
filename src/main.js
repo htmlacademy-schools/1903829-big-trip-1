@@ -7,6 +7,7 @@ import AddNewPoint from './view/site-add-new-point.js';
 import EditNewPoint from './view/site-edit-new-point.js';
 import EventsListTemplate from './view/site-list-view.js';
 import { generatePoint} from './mock/point.js';
+import AddFirstPoint from './view/site-add-first-point.js';
 
 const POINT_COUNT = 15;
 const points = Array.from({ length: POINT_COUNT }, generatePoint);
@@ -16,15 +17,21 @@ const tripControlsFiltersElement = document.querySelector('.trip-controls__filte
 const tripEventsElement = document.querySelector('.trip-events');
 const tripEventsListElement = new EventsListTemplate();
 
-render(tripEventsElement, new EventsListTemplate().element, RenderPosition.BEFOREEND);
 render(tripControlsNavigationElement, new TripTabsTemplate().element, RenderPosition.BEFOREEND);
 render(tripControlsFiltersElement, new TripFiltersTemplate().element, RenderPosition.BEFOREEND);
-render(tripEventsElement, new TripSortTemplate().element, RenderPosition.AFTERBEGIN);
-render(tripEventsListElement.element, new AddNewPoint(points[1]).element, RenderPosition.BEFOREEND);
+
+if (points.length == 0) {
+  render(tripEventsElement, new AddFirstPoint().element, RenderPosition.BEFOREEND)
+} else {
+  render(tripEventsElement, tripEventsListElement.element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, new TripSortTemplate().element, RenderPosition.AFTERBEGIN);
+  const pnt1 = points[0];
+  render(tripEventsListElement.element, new AddNewPoint(pnt1).element, RenderPosition.BEFOREEND);
+}
 
 const renderPoint = (elementsList, point) => {
-  const itemTemplate = new TripEventsItemTemplate(point);
-  const editPoint = new EditNewPoint(point);
+  const itemTemplate = new TripEventsItemTemplate(point);   
+  const editPoint = new EditNewPoint(point);               
 
   const replaceWaypointToForm = () => {
     elementsList.replaceChild(editPoint.element, itemTemplate.element);
@@ -32,6 +39,7 @@ const renderPoint = (elementsList, point) => {
   const replaceFormToWaypoint = () => {
     elementsList.replaceChild(itemTemplate.element, editPoint.element);
   };
+  // 3.11
   const onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
@@ -44,8 +52,11 @@ const renderPoint = (elementsList, point) => {
     replaceWaypointToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
-  editPoint.element.querySelector('form').addEventListener('submit', (p) => {
-    p.preventDefault();
+  editPoint.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    replaceFormToWaypoint();
+  });
+  editPoint.element.querySelector('form').addEventListener('submit', (evt) => {
+    evt.preventDefault();
     replaceFormToWaypoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
