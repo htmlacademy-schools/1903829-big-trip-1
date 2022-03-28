@@ -1,4 +1,4 @@
-import { RenderPosition, render } from './render.js';
+import { RenderPosition, render } from './utils/render.js';
 import TripTabsTemplate from './view/site-trip-tabs.js';
 import TripSortTemplate from './view/site-trip-sort.js';
 import TripFiltersTemplate from './view/site-trip-filter.js';
@@ -17,16 +17,16 @@ const tripControlsFiltersElement = document.querySelector('.trip-controls__filte
 const tripEventsElement = document.querySelector('.trip-events');
 const tripEventsListElement = new EventsListTemplate();
 
-render(tripControlsNavigationElement, new TripTabsTemplate().element, RenderPosition.BEFOREEND);
-render(tripControlsFiltersElement, new TripFiltersTemplate().element, RenderPosition.BEFOREEND);
+render(tripControlsNavigationElement, TripTabsTemplate, RenderPosition.BEFOREEND);
+render(tripControlsFiltersElement, TripFiltersTemplate, RenderPosition.BEFOREEND);
 
 if (points.length === 0) {
-  render(tripEventsElement, new AddFirstPoint().element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, AddFirstPoint(), RenderPosition.BEFOREEND);
 } else {
-  render(tripEventsElement, tripEventsListElement.element, RenderPosition.BEFOREEND);
-  render(tripEventsElement, new TripSortTemplate().element, RenderPosition.AFTERBEGIN);
+  render(tripEventsElement, new TripSortTemplate(), RenderPosition.AFTERBEGIN);
+  render(tripEventsElement, tripEventsListElement, RenderPosition.BEFOREEND);
   const pnt1 = points[0];
-  render(tripEventsListElement.element, new AddNewPoint(pnt1).element, RenderPosition.BEFOREEND);
+  render(tripEventsListElement, AddNewPoint(pnt1), RenderPosition.BEFOREEND);
 }
 
 const renderPoint = (elementsList, point) => {
@@ -61,9 +61,9 @@ const renderPoint = (elementsList, point) => {
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(elementsList, itemTemplate.element, RenderPosition.BEFOREEND);
+  render(elementsList, itemTemplate, RenderPosition.BEFOREEND);
 };
 
 for (let i = 1; i < POINT_COUNT; i++) {
-  renderPoint(tripEventsListElement.element, points[i]);
+  renderPoint(tripEventsListElement, points[i]);
 }

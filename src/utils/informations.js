@@ -8,5 +8,15 @@ export const descriptions = () => ([
   'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
   'Sed sed nisi sed augue convallis suscipit in sed felis.',
   'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.',
-  'In rutrum ac purus sit amet tempus.',
+  'In rutrum ac purus sit amet tempus.'
+]);
+
+export const destinations = () => ([
+  'Podgorica', 'Moscow', 'New York',
+  'Bratislava', 'Oslo', 'Ottawa', 'Prague'
+]);
+
+export const wayPointTypes = () => ([
+  'Taxi', 'Bus', 'Train', 'Ship',
+  'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'
 ]);

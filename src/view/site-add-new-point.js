@@ -1,7 +1,7 @@
-import { destinations } from '../utils/destinations.js';
-import { wayPointTypes } from '../utils/waypointTypes.js';
+import { destinations } from '../utils/informations.js';
+import { wayPointTypes } from '../utils/informations.js';
 import { generateDescription } from '../mock/point.js';
-import { generateImages } from '../utils/functions';
+import { generateImages } from '../utils/common.js';
 import { dateRend } from '../utils/functionsWithDayjs.js';
 import AbstractView from './Abstract-view.js';
 

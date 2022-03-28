@@ -1,7 +1,7 @@
-import { destinations } from '../utils/destinations';
-import { wayPointTypes } from '../utils/waypointTypes';
-import { dateRend } from '../utils/functionsWithDayjs';
-import AbstractView from './Abstract-view';
+import { destinations } from '../utils/informations.js';
+import { wayPointTypes } from '../utils/informations.js';
+import { dateRend } from '../utils/functionsWithDayjs.js';
+import AbstractView from './Abstract-view.js';
 
 const createEditNewPoint = (point) => {
   const  { waypointType, startDate, endDate, cost, offers, description } = point;
