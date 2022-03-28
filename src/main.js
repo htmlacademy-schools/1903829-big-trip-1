@@ -39,7 +39,7 @@ const renderPoint = (elementsList, point) => {
   const replaceFormToWaypoint = () => {
     elementsList.replaceChild(itemTemplate.element, editPoint.element);
   };
-  // 3.11
+
   const onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
@@ -48,15 +48,15 @@ const renderPoint = (elementsList, point) => {
     }
   };
 
-  itemTemplate.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  itemTemplate.setEditClickHandler(() => {
     replaceWaypointToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
-  editPoint.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  editPoint.setEventRollupBtnHandler(() => {
     replaceFormToWaypoint();
+    document.addEventListener('keydown', onEscKeyDown);
   });
-  editPoint.element.querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  editPoint.setFormSubmitHandler(() => {
     replaceFormToWaypoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
