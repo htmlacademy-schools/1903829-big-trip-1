@@ -20,8 +20,8 @@ const tripEventsListElement = new EventsListTemplate();
 render(tripControlsNavigationElement, new TripTabsTemplate().element, RenderPosition.BEFOREEND);
 render(tripControlsFiltersElement, new TripFiltersTemplate().element, RenderPosition.BEFOREEND);
 
-if (points.length == 0) {
-  render(tripEventsElement, new AddFirstPoint().element, RenderPosition.BEFOREEND)
+if (points.length === 0) {
+  render(tripEventsElement, new AddFirstPoint().element, RenderPosition.BEFOREEND);
 } else {
   render(tripEventsElement, tripEventsListElement.element, RenderPosition.BEFOREEND);
   render(tripEventsElement, new TripSortTemplate().element, RenderPosition.AFTERBEGIN);
@@ -30,8 +30,8 @@ if (points.length == 0) {
 }
 
 const renderPoint = (elementsList, point) => {
-  const itemTemplate = new TripEventsItemTemplate(point);   
-  const editPoint = new EditNewPoint(point);               
+  const itemTemplate = new TripEventsItemTemplate(point);
+  const editPoint = new EditNewPoint(point);
 
   const replaceWaypointToForm = () => {
     elementsList.replaceChild(editPoint.element, itemTemplate.element);

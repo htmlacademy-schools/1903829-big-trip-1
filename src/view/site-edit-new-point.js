@@ -1,7 +1,7 @@
 import { destinations } from '../utils/destinations';
 import { wayPointTypes } from '../utils/waypointTypes';
 import { dateRend } from '../utils/functionsWithDayjs';
-import { createElement } from '../render';
+import AbstractView from './Abstract-view';
 
 const createEditNewPoint = (point) => {
   const  { waypointType, startDate, endDate, cost, offers, description } = point;
@@ -121,27 +121,15 @@ const createEditNewPoint = (point) => {
   </li> `;
 };
 
-export default class EditNewPoint {
-  #element = null;
+export default class EditNewPoint extends AbstractView{
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createEditNewPoint(this.#point);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
