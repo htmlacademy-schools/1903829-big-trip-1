@@ -1,7 +1,7 @@
-import { destinations } from '../utils/destinations';
-import { wayPointTypes } from '../utils/waypointTypes';
-import { dateRend } from '../utils/functionsWithDayjs';
-import { createElement } from '../render';
+import { destinations } from '../utils/informations.js';
+import { wayPointTypes } from '../utils/informations.js';
+import { dateRend } from '../utils/functionsWithDayjs.js';
+import AbstractView from './Abstract-view.js';
 
 const createEditNewPoint = (point) => {
   const  { waypointType, startDate, endDate, cost, offers, description } = point;
@@ -121,27 +121,35 @@ const createEditNewPoint = (point) => {
   </li> `;
 };
 
-export default class EditNewPoint {
-  #element = null;
+export default class EditNewPoint extends AbstractView{
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createEditNewPoint(this.#point);
   }
 
-  removeElement() {
-    this.#element = null;
-  }
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  };
+
+  setEventRollupBtnHandler = (callback) => {
+    this._callback.rollupClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#eventRollupBtnClickHandler);
+  };
+
+  #eventRollupBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.rollupClick();
+  };
 }

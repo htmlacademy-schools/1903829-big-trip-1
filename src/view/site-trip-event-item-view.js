@@ -1,5 +1,5 @@
-import { dateRend } from '../utils/functionsWithDayjs';
-import { createElement } from '../render';
+import { dateRend } from '../utils/functionsWithDayjs.js';
+import AbstractView from './Abstract-view.js';
 
 const createTripEventsItemTemplate = (point) => {
   const {waypointType, destination, startD, endD, cost, duration, offers, favor} = point;
@@ -76,28 +76,26 @@ const createTripEventsItemTemplate = (point) => {
               </li>`;
 };
 
-export default class TripEventsItemTemplate {
-  #element = null;
+export default class TripEventsItemTemplate extends AbstractView {
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createTripEventsItemTemplate(this.#point);
   }
 
-  removeElement() {
-    this.#element = null;
-  }
+  setEditClickHandler = (callback) => {
+    this._callback.editClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+  };
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.editClick();
+  };
 }
 

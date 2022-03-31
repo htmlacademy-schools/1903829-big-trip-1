@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { getRandomInteger } from './functions';
+import { getRandomInteger } from './common';
 
 export const generateBeginEndDates = () => {
   const maxGap = 10;

@@ -1,9 +1,9 @@
-import { descriptions } from '../utils/descriptions';
-import { wayPointTypes } from '../utils/waypointTypes';
-import { destinations } from '../utils/destinations';
-import { getRandomInteger } from '../utils/functions';
-import { generateImages } from '../utils/functions';
-import { generateBeginEndDates } from '../utils/functionsWithDayjs';
+import { descriptions } from '../utils/informations.js';
+import { wayPointTypes } from '../utils/informations.js';
+import { destinations } from '../utils/informations.js';
+import { getRandomInteger } from '../utils/common.js';
+import { generateImages } from '../utils/common.js';
+import { generateBeginEndDates } from '../utils/functionsWithDayjs.js';
 
 const generateType = () => {
   const types = wayPointTypes;
