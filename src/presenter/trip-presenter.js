@@ -3,6 +3,7 @@ import EventsListTemplate from '../view/site-list-view';
 import TripSortTemplate from '../view/site-trip-sort';
 import PointPresenter from './point-presenter';
 import { render, RenderPosition } from '../utils/render';
+import { updateItem } from '../utils/common';
 
 export default class TripPresenter {
   #tripContainer = null;
@@ -16,6 +17,8 @@ export default class TripPresenter {
 
   #tripPoints = [];
 
+  #pointPresenter = new Map();
+
   constructor(tripContainer) {
     this.#tripContainer = tripContainer;
     this.#tripEventsElement = this.#tripContainer.querySelector('.trip-events');
@@ -23,8 +26,12 @@ export default class TripPresenter {
 
   init = (tripPoints) => {
     this.#tripPoints = [...tripPoints];
-
     this.#renderPoint();
+  };
+
+  #handlePointChange = (updatedPoint) => {
+    this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
   #renderNoPoint = () => {
@@ -42,6 +49,7 @@ export default class TripPresenter {
   #renderPoint = (point) => {
     const pointPresenter = new PointPresenter(this.#tripEventsListElement);
     pointPresenter.init(point);
+    this.#pointPresenter.set(point.id, pointPresenter);
   };
 
   #renderPoints = () => {
@@ -58,5 +66,10 @@ export default class TripPresenter {
       this.#renderPointsListElements();
       this.#renderPoints();
     }
+  };
+
+  #clearPointList = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
   };
 }

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "dayjs": "^1.10.8",
-    "flatpickr": "^4.6.10"
+    "flatpickr": "^4.6.10",
+    "nanoid": "^3.3.2"
   }
 }

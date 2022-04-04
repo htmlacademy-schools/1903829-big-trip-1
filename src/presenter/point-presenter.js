@@ -1,6 +1,6 @@
 import EditNewPoint from '../view/site-edit-new-point';
 import TripEventsItemTemplate from '../view/site-trip-event-item-view';
-import { RenderPosition, render, replace } from '../utils/render';
+import { RenderPosition, render, replace, remove } from '../utils/render';
 
 export default class PointPresenter {
   #pointCointainer = null;
@@ -18,11 +18,33 @@ export default class PointPresenter {
     this.#itemTemplateComponent = new TripEventsItemTemplate(wayPoint);
     this.#editPointComponent = new EditNewPoint(wayPoint);
 
+    const prevItemComponent = this.#itemTemplateComponent;
+    const prevEditComponent = this.#editPointComponent;
+
     this.#itemTemplateComponent.setEditClickHandler(this.#editClickHandler);
     this.#editPointComponent.setEventRollupBtnHandler(this.#eventRollupHandler);
     this.#editPointComponent.setFormSubmitHandler(this.#formSubmitHandler);
 
-    render(this.#pointCointainer, this.#itemTemplateComponent, RenderPosition.BEFOREEND);
+    if (prevItemComponent === null || prevEditComponent === null) {
+      render(this.#pointCointainer, this.#itemTemplateComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this.#pointCointainer.element.contains(prevItemComponent.element)) {
+      replace(this.#itemTemplateComponent, prevItemComponent);
+    }
+
+    if (this.#pointCointainer.element.contains(prevEditComponent.element)) {
+      replace(this.#editPointComponent, prevEditComponent);
+    }
+
+    remove(prevItemComponent);
+    remove(prevEditComponent);
+  };
+
+  destroy = () => {
+    remove(this.#itemTemplateComponent);
+    remove(this.#editPointComponent);
   };
 
   #replaceWaypointToForm = () => {

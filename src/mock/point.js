@@ -1,9 +1,7 @@
-import { descriptions } from '../utils/informations.js';
-import { wayPointTypes } from '../utils/informations.js';
-import { destinations } from '../utils/informations.js';
-import { getRandomInteger } from '../utils/common.js';
-import { generateImages } from '../utils/common.js';
+import { descriptions, wayPointTypes, destinations } from '../utils/informations.js';
+import { getRandomInteger, generateImages } from '../utils/common.js';
 import { generateBeginEndDates } from '../utils/functionsWithDayjs.js';
+import { nanoid } from 'nanoid';
 
 const generateType = () => {
   const types = wayPointTypes;
@@ -87,6 +85,7 @@ export const generatePoint = () => {
   const date = generateBeginEndDates();
 
   return {
+    id: nanoid(),
     waypointType: generateType(),
     destination: generateDestination(),
     startDate: date.start,
