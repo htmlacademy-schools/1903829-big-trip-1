@@ -121,7 +121,7 @@ const createEditNewPoint = (point) => {
   </li> `;
 };
 
-export default class EditNewPoint extends AbstractView{
+export default class EditNewPoint extends AbstractView {
   #point = null;
 
   constructor(point) {
@@ -141,6 +141,7 @@ export default class EditNewPoint extends AbstractView{
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit();
+    this._callback.formSubmit(this.#point);
   };
 
   setEventRollupBtnHandler = (callback) => {
