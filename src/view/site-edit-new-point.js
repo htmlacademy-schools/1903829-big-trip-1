@@ -121,7 +121,7 @@ const createEditNewPoint = (point) => {
   </li> `;
 };
 
-export default class EditNewPoint extends AbstractView{
+export default class EditNewPoint extends AbstractView {
   #point = null;
 
   constructor(point) {
