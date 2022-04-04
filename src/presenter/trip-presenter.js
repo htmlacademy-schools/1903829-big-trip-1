@@ -1,24 +1,16 @@
-// класс для презентера маршрута
 import AddFirstPoint from '../view/site-add-first-point';
 import EventsListTemplate from '../view/site-list-view';
-import TripFiltersTemplate from '../view/site-trip-filter';
 import TripSortTemplate from '../view/site-trip-sort';
-import TripTabsTemplate from './view/site-trip-tabs.js';
-import { RenderPosition, render } from './utils/render.js';
-import TripEventsItemTemplate from '../view/site-trip-event-item-view';
-import EditNewPoint from '../view/site-edit-new-point';
+import PointPresenter from './point-presenter';
+import { render, RenderPosition } from '../utils/render';
 
 export default class TripPresenter {
   #tripContainer = null;
   wayPointElement = null;
 
-  #tripControlsNavigationElement = null;
-  #tripControlsFiltersElement = null;
   #tripEventsElement = null;
 
-  #tabsComponent = new TripTabsTemplate();
   #sortComponent = new TripSortTemplate();
-  #filterComponent = new TripFiltersTemplate();
   #noComponent = new AddFirstPoint();
   #tripEventsListElement = new EventsListTemplate();
 
@@ -26,9 +18,6 @@ export default class TripPresenter {
 
   constructor(tripContainer) {
     this.#tripContainer = tripContainer;
-
-    this.#tripControlsNavigationElement = this.#tripContainer.querySelector('.trip-controls__navigation');
-    this.#tripControlsFiltersElement = this.#tripContainer.querySelector('.trip-controls__filters');
     this.#tripEventsElement = this.#tripContainer.querySelector('.trip-events');
   }
 
@@ -36,14 +25,6 @@ export default class TripPresenter {
     this.#tripPoints = [...tripPoints];
 
     this.#renderPoint();
-  };
-
-  #renderTabs = () => {
-    render(this.#tripControlsNavigationElement, this.#tabsComponent, RenderPosition.BEFOREEND);
-  };
-
-  #renderFilters = () => {
-    render(this.#tripControlsFiltersElement, this.#filterComponent, RenderPosition.BEFOREEND);
   };
 
   #renderNoPoint = () => {
@@ -59,38 +40,8 @@ export default class TripPresenter {
   };
 
   #renderPoint = (point) => {
-    const itemTemplate = new TripEventsItemTemplate(point);
-    const editPoint = new EditNewPoint(point);
-
-    const replaceWaypointToForm = () => {
-      this.#tripEventsListElement.replaceChild(editPoint.element, itemTemplate.element);
-    };
-    const replaceFormToWaypoint = () => {
-      this.#tripEventsListElement.replaceChild(itemTemplate.element, editPoint.element);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormToWaypoint();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    itemTemplate.setEditClickHandler(() => {
-      replaceWaypointToForm();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-    editPoint.setEventRollupBtnHandler(() => {
-      replaceFormToWaypoint();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-    editPoint.setFormSubmitHandler(() => {
-      replaceFormToWaypoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-
-    render(this.#tripEventsListElement, itemTemplate, RenderPosition.BEFOREEND);
+    const pointPresenter = new PointPresenter(this.#tripEventsListElement);
+    pointPresenter.init(point);
   };
 
   #renderPoints = () => {
