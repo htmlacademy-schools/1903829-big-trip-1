@@ -20,3 +20,9 @@ export const wayPointTypes = () => ([
   'Taxi', 'Bus', 'Train', 'Ship',
   'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'
 ]);
+
+export const SortType = {
+  DEFAULT: 'default',
+  DATE_DOWN: 'date-down',
+  DATE_UP: 'date-up',
+};

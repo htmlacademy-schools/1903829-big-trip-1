@@ -25,11 +25,10 @@ export default class PointPresenter {
 
   init = (wayPoint) => {
     this.#wayPoint = wayPoint;
-    this.#itemTemplateComponent = new TripEventsItemTemplate(wayPoint);
-    this.#editPointComponent = new EditNewPoint(wayPoint);
-
     const prevItemComponent = this.#itemTemplateComponent;
     const prevEditComponent = this.#editPointComponent;
+    this.#itemTemplateComponent = new TripEventsItemTemplate(wayPoint);
+    this.#editPointComponent = new EditNewPoint(wayPoint);
 
     this.#itemTemplateComponent.setEditClickHandler(this.#editClickHandler);
     this.#itemTemplateComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
