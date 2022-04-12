@@ -2,7 +2,7 @@ import { dateRend } from '../utils/functionsWithDayjs.js';
 import AbstractView from './Abstract-view.js';
 
 const createTripEventsItemTemplate = (point) => {
-  const {waypointType, destination, startD, endD, cost, duration, offers, favor} = point;
+  const { waypointType, destination, cost, startD, endD, duration, offers, favor} = point;
   const startDayMonth = dateRend(startD, 'MMM D');
   const startDate = dateRend(startD, 'YYYY-MM-D');
   const startDatetime = dateRend(startD, 'YYYY-MM-DDTHH:mm');

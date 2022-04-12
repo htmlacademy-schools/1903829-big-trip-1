@@ -15,7 +15,15 @@ const generateDestination = () => {
   return dest[randomIndex];
 };
 
-const getDuration = () => ' ';
+const countDuration = (start, end) => {
+  const interval = new Date(end - start);
+
+  return {
+    days: interval.getUTCDate() - 1,
+    hours: interval.getUTCHours(),
+    minutes: interval.getUTCMinutes(),
+  };
+};
 
 export const generateDescription = () => {
   const description = descriptions;
@@ -90,7 +98,7 @@ export const generatePoint = () => {
     destination: generateDestination(),
     startDate: date.start,
     endDate: date.end,
-    duration: getDuration(),
+    duration: countDuration(date.start, date.end),
     description: generateDescription(),
     images: generateImages(),
     cost: generateCost(),
