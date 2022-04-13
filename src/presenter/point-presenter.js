@@ -1,4 +1,4 @@
-import EditNewPoint from '../view/site-edit-new-point';
+import EditNewPoint from '../view/site-edit-point';
 import TripEventsItemTemplate from '../view/site-trip-event-item-view';
 import { RenderPosition, render, replace, remove } from '../utils/render';
 

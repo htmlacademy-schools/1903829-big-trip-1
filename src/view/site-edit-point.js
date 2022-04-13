@@ -1,7 +1,8 @@
 import { destinations } from '../utils/informations.js';
 import { wayPointTypes } from '../utils/informations.js';
 import { dateRend } from '../utils/functionsWithDayjs.js';
-import AbstractView from './Abstract-view.js';
+import { isPointRepeating } from '../utils/common.js';
+import SmartView from './Smart-view.js';
 
 const createEditNewPoint = (point) => {
   const  { waypointType, startDate, endDate, cost, offers, description } = point;
@@ -121,17 +122,32 @@ const createEditNewPoint = (point) => {
   </li> `;
 };
 
-export default class EditNewPoint extends AbstractView {
-  #point = null;
-
+export default class EditNewPoint extends SmartView {
   constructor(point) {
     super();
-    this.#point = point;
+    this._data = EditNewPoint.parsePointToData(point);
+
+    this.element.querySelector();
+    this.element.querySelector();
   }
 
   get template() {
-    return createEditNewPoint(this.#point);
+    return createEditNewPoint(this._data);
   }
+
+  #dueDateToggleHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      isDueDate: !this._data.isDueDate,
+    });
+  };
+
+  #repeatingToggleHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      isRepeating: !this._data.isRepeating,
+    });
+  };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
@@ -140,8 +156,7 @@ export default class EditNewPoint extends AbstractView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit();
-    this._callback.formSubmit(this.#point);
+    this._callback.formSubmit(EditNewPoint.parseDataToPoint(this._data));
   };
 
   setEventRollupBtnHandler = (callback) => {
@@ -152,5 +167,35 @@ export default class EditNewPoint extends AbstractView {
   #eventRollupBtnClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.rollupClick();
+  };
+
+  static parsePointToData = (point) => ({...point,
+    isDueDate: point.dueDate !== null,
+    isRepeating: isPointRepeating(point.repeating),
+  });
+
+  static parseDataToPoint = (data) => {
+    const point = {...data};
+
+    if (!point.isDueDate) {
+      point.dueDate = null;
+    }
+
+    if (!point.isRepeating) {
+      point.repeating = {
+        mo: false,
+        tu: false,
+        we: false,
+        th: false,
+        fr: false,
+        sa: false,
+        su: false,
+      };
+    }
+
+    delete point.isDueDate;
+    delete point.isRepeating;
+
+    return point;
   };
 }
