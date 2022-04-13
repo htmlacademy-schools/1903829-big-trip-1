@@ -1,6 +1,5 @@
 import { destinations, wayPointTypes, offers,  } from '../utils/informations.js';
 import { dateRend } from '../utils/functionsWithDayjs.js';
-import { isPointRepeating } from '../utils/common.js';
 import SmartView from './Smart-view.js';
 
 const createEditNewPoint = (point) => {
@@ -125,31 +124,42 @@ export default class EditNewPoint extends SmartView {
   constructor(point) {
     super();
     this._data = EditNewPoint.parsePointToData(point);
-
-    this.element.querySelector();
-    this.element.querySelector();
+    this.#findTags();
   }
+
+  restoreHandlers = () => {
+    this.#findTags();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setEventRollupBtnHandler(this._callback.click);
+  };
 
   get template() {
     return createEditNewPoint(this._data);
   }
 
-  #dueDateToggleHandler = (evt) => {
+  #findTags = () => {
+    this.element.querySelector('.event__type-group').addEventListener('change',  this.#typesPointToggleHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change',  this.#citiesToggleHandler);
+  };
+
+  #typesPointToggleHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      isDueDate: !this._data.isDueDate,
+      currentType: { title: evt.target.value }
     });
   };
 
-  #repeatingToggleHandler = (evt) => {
+  #citiesToggleHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      isRepeating: !this._data.isRepeating,
+      currentCity: { titleCity: evt.target.value, isShowPhoto: true },
+      arrayCity: this._data.city.arrayCity
     });
   };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
+    this._data.city.currentCity.isShowPhoto = false;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
   };
 
@@ -160,41 +170,12 @@ export default class EditNewPoint extends SmartView {
 
   setEventRollupBtnHandler = (callback) => {
     this._callback.rollupClick = callback;
+    this._data.city.currentCity.isShowPhoto = false;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#eventRollupBtnClickHandler);
   };
 
   #eventRollupBtnClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.rollupClick();
-  };
-
-  static parsePointToData = (point) => ({...point,
-    isDueDate: point.dueDate !== null,
-    isRepeating: isPointRepeating(point.repeating),
-  });
-
-  static parseDataToPoint = (data) => {
-    const point = {...data};
-
-    if (!point.isDueDate) {
-      point.dueDate = null;
-    }
-
-    if (!point.isRepeating) {
-      point.repeating = {
-        mo: false,
-        tu: false,
-        we: false,
-        th: false,
-        fr: false,
-        sa: false,
-        su: false,
-      };
-    }
-
-    delete point.isDueDate;
-    delete point.isRepeating;
-
-    return point;
   };
 }
