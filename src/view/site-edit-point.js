@@ -1,13 +1,12 @@
-import { destinations } from '../utils/informations.js';
-import { wayPointTypes } from '../utils/informations.js';
+import { destinations, wayPointTypes, offers,  } from '../utils/informations.js';
 import { dateRend } from '../utils/functionsWithDayjs.js';
 import { isPointRepeating } from '../utils/common.js';
 import SmartView from './Smart-view.js';
 
 const createEditNewPoint = (point) => {
-  const  { waypointType, startDate, endDate, cost, offers, description } = point;
-  const startDateRend  = dateRend(startDate, 'D MMMM YYYY');
-  const endDateRend  = dateRend(endDate, 'D MMMM YYYY');
+  const  { date, waypointType, description } = point;
+  const startDateRend  = dateRend(date.start, 'D MMMM YYYY');
+  const endDateRend  = dateRend(date.end, 'D MMMM YYYY');
 
   const createListEventTypeItem = (types = wayPointTypes(), type) => {
     const createType = (currentType) => {
@@ -52,7 +51,7 @@ const createEditNewPoint = (point) => {
   const listEventTypeItem = createListEventTypeItem(wayPointTypes(), waypointType);
   const fieldLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
   const optionsLocations = destinations().map(createOptionsLocations).join('');
-  const editOffers = offers.map(createOffer).join('');
+  const editOffers = offers().map(createOffer).join('');
   const addableOffersList = createOfferList(editOffers);
 
   return `<li class="trip-events__item">
@@ -96,7 +95,7 @@ const createEditNewPoint = (point) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${ cost }">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
           </div>
     
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>

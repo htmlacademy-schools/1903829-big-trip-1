@@ -1,79 +1,26 @@
-import { descriptions, wayPointTypes, destinations } from '../utils/informations.js';
+import { descriptions, wayPointTypes, destinations, offers } from '../utils/informations.js';
 import { getRandomInteger, generateImages } from '../utils/common.js';
-import { generateBeginEndDates } from '../utils/functionsWithDayjs.js';
+import { generateBeginEndDates, countDuration } from '../utils/functionsWithDayjs.js';
 import { nanoid } from 'nanoid';
 
-const generateType = () => {
-  const types = wayPointTypes;
-  const randomIndex = getRandomInteger(0, types.length - 1);
-  return types[randomIndex];
-};
-
-const generateDestination = () => {
-  const dest = destinations;
-  const randomIndex = getRandomInteger(0, dest.length - 1);
-  return dest[randomIndex];
-};
-
-const countDuration = (start, end) => {
-  const interval = new Date(end - start);
-
-  return {
-    days: interval.getUTCDate() - 1,
-    hours: interval.getUTCHours(),
-    minutes: interval.getUTCMinutes(),
-  };
-};
-
 export const generateDescription = () => {
-  const description = descriptions;
-  const randomIndex = getRandomInteger(0, description.length - 1);
-  return description[randomIndex];
+  const points = destinations();
+  points.forEach((city) => {
+    const descriptionArray = descriptions();
+    const countDescription = getRandomInteger(1, descriptionArray.length);
+    for (let i = 0; i < countDescription; i++) {
+      const elementNumber = getRandomInteger(0, descriptionArray.length - 1);
+      const descriptionArrayElement = descriptionArray[elementNumber];
+      descriptionArray.splice(elementNumber, 1);
+      city.description += descriptionArrayElement;
+    }
+  });
 };
-
-const generateCost = () => getRandomInteger(1, 100) * 10;
 
 const generateOffers = () => {
-  const offers = [
-    {
-      name: 'Add luggage',
-      price: 30,
-      isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'luggage'
-    },
-    {
-      name: 'Switch to comfort class',
-      price: 100,
-      isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'flight'
-    },
-    {
-      name: 'Add meal',
-      price: 15,
-      isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'meal'
-    },
-    {
-      name: 'Travel by train',
-      price: 40,
-      isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'transport'
-    },
-    {
-      name: 'Rent a car',
-      price: 200,
-      isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'car'
-    },
-    {
-      name: 'Add breakfast',
-      price: 40,
-      isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'meal'
-    },
-  ];
   let count = getRandomInteger(0, 5);
-  let len = offers.length;
+  const off = offers();
+  let len = off.length;
   const result = new Array(count);
   const taken = new Array(len);
   if (count > len)
@@ -82,28 +29,31 @@ const generateOffers = () => {
   }
   while (count--) {
     const x = Math.floor(Math.random() * len);
-    result[count] = offers[x in taken ? taken[x] : x];
+    result[count] = off[x in taken ? taken[x] : x];
     taken[x] = --len;
   }
   return result;
 };
 
+generateOffers();
+generateDescription();
+generateImages();
 
 export const generatePoint = () => {
   const date = generateBeginEndDates();
+  const time = countDuration(date);
+  const dest = destinations();
+  const t = wayPointTypes();
+  const type = { currentType: t[getRandomInteger(0, 7)], arrayType: t };
+  const allPrice = type.currentType.allPriceOffers + getRandomInteger(10, 30);
 
   return {
     id: nanoid(),
-    waypointType: generateType(),
-    destination: generateDestination(),
-    startDate: date.start,
-    endDate: date.end,
-    duration: countDuration(date.start, date.end),
-    description: generateDescription(),
-    images: generateImages(),
-    cost: generateCost(),
-    offers: generateOffers(),
-    isArchive: Boolean(getRandomInteger(0, 1)),
+    date,
+    type,
+    city: {currentCity: dest[getRandomInteger(0, 2)], arrayCity: dest},
+    time,
+    allPrice,
     isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };

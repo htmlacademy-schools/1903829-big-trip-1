@@ -12,13 +12,24 @@ export const descriptions = () => ([
 ]);
 
 export const destinations = () => ([
-  'Podgorica', 'Moscow', 'New York',
-  'Bratislava', 'Oslo', 'Ottawa', 'Prague'
+  { titleCity: 'Podgorica', description: '', photos: [], isShowPhoto: false },
+  { titleCity: 'Moscow', description: '', photos: [], isShowPhoto: false },
+  { titleCity: 'New York', description: '', photos: [], isShowPhoto: false },
+  { titleCity: 'Bratislava', description: '', photos: [], isShowPhoto: false },
+  { titleCity: 'Oslo', description: '', photos: [], isShowPhoto: false },
+  { titleCity: 'Ottawa', description: '', photos: [], isShowPhoto: false },
+  { titleCity: 'Prague', description: '', photos: [], isShowPhoto: false }
 ]);
 
 export const wayPointTypes = () => ([
-  'Taxi', 'Bus', 'Train', 'Ship',
-  'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'
+  { title: 'taxi', img: 'img/icons/taxi.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'bus', img: 'img/icons/bus.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'drive', img: 'img/icons/drive.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'check-in', img: 'img/icons/check-in.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'flight', img: 'img/icons/flight.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'restaurant', img: 'img/icons/restaurant.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'sightseeing', img: 'img/icons/sightseeing.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'train', img: 'img/icons/train.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 }
 ]);
 
 export const SortType = {
@@ -26,3 +37,12 @@ export const SortType = {
   DATE_DOWN: 'date-down',
   DATE_UP: 'date-up',
 };
+
+export const offers = () => ([
+  { 'text': 'Add luggage', 'type': 'luggage', 'price': '30'},
+  { 'text': 'Switch to comfort class', 'type': 'flight', 'price': '100'},
+  { 'text': 'Add meal', 'type': 'meal', 'price': '15'},
+  { 'text': 'Travel by train', 'type': 'transport', 'price': '40'},
+  { 'text': 'Rent a car', 'type': 'car', 'price': '200'},
+  { 'text': 'Add breakfast', 'type': 'meal', 'price': '40'},
+]);
