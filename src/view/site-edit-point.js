@@ -123,7 +123,7 @@ const createEditNewPoint = (point) => {
 export default class EditNewPoint extends SmartView {
   constructor(point) {
     super();
-    this._data = EditNewPoint.parsePointToData(point);
+    this._data = { ...point };
     this.#findTags();
   }
 
