@@ -2,8 +2,8 @@ import { destinations, wayPointTypes, offers,  } from '../utils/informations.js'
 import { dateRend } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
-const createEditNewPoint = (point) => {
-  const  { date, waypointType, description } = point;
+const createEditNewPoint = (point = {}) => {
+  const  { date = null, waypointType = null, description = null } = point;
   const startDateRend  = dateRend(date.start, 'D MMMM YYYY');
   const endDateRend  = dateRend(date.end, 'D MMMM YYYY');
 
