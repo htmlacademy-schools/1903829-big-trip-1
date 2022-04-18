@@ -1,7 +1,18 @@
-import { descriptions, wayPointTypes, destinations, offers } from '../utils/informations.js';
+import { descriptions, destinations, offers } from '../utils/informations.js';
 import { getRandomInteger, generateImages } from '../utils/common.js';
 import { generateBeginEndDates, countDuration } from '../utils/functionsWithDayjs.js';
 import { nanoid } from 'nanoid';
+
+const types = [
+  { title: 'taxi', img: 'img/icons/taxi.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'bus', img: 'img/icons/bus.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'drive', img: 'img/icons/drive.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'check-in', img: 'img/icons/check-in.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'flight', img: 'img/icons/flight.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'restaurant', img: 'img/icons/restaurant.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'sightseeing', img: 'img/icons/sightseeing.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 },
+  { title: 'train', img: 'img/icons/train.png', allOffer: [], selectedOffer: [], allPriceOffers: 0 }
+];
 
 export const generateDescription = () => {
   const points = destinations();
@@ -43,8 +54,7 @@ export const generatePoint = () => {
   const date = generateBeginEndDates();
   const time = countDuration(date);
   const dest = destinations();
-  const t = wayPointTypes();
-  const type = { currentType: t[getRandomInteger(0, 7)], arrayType: t };
+  const type = { currentType: types[getRandomInteger(0, 7)], arrayType: types };
   const allPrice = type.currentType.allPriceOffers + getRandomInteger(10, 30);
 
   return {

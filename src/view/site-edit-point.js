@@ -1,25 +1,10 @@
-import { destinations, wayPointTypes, offers,  } from '../utils/informations.js';
 import { dateRend } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
 const createEditNewPoint = (point = {}) => {
-  const  { date = null, waypointType = null, description = null } = point;
+  const  { date = null, waypointType = null, waypoint = null } = point;
   const startDateRend  = dateRend(date.start, 'D MMMM YYYY');
   const endDateRend  = dateRend(date.end, 'D MMMM YYYY');
-
-  const createListEventTypeItem = (types = wayPointTypes(), type) => {
-    const createType = (currentType) => {
-      const isChecked = currentType === type ? 'checked=""' : '';
-      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
-      return `<div class="event__type-item">
-                          <input id="event-type-${ currentType }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ currentType }" ${ isChecked }>
-                          <label class="event__type-label  event__type-label--${ currentType }" for="event-type-${ currentType }-1">${ label }</label>
-                        </div>`;
-    };
-    return types.map(createType).join('');
-  };
-
-  const createOptionsLocations = (city) => (`<option value="${city}"></option>`);
 
   const createOffer = (offer) => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
@@ -38,20 +23,29 @@ const createEditNewPoint = (point = {}) => {
     `;
   };
 
-  const createOfferList = (editedOffers) => {
-    if (editedOffers.length !== 0){
-      return `<section class="event__section  event__section--offers">
-                <h3 class="event__section-title  event__section-title--offers">Offers</h3>${ editedOffers }
-              </section>`;
+  waypointType.arrayType.forEach((element) => {
+    if (element.title === waypointType.currentType.title) {
+      waypointType.currentType = element;
     }
-    return '';
-  };
+  });
 
-  const listEventTypeItem = createListEventTypeItem(wayPointTypes(), waypointType);
-  const fieldLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
-  const optionsLocations = destinations().map(createOptionsLocations).join('');
-  const editOffers = offers().map(createOffer).join('');
-  const addableOffersList = createOfferList(editOffers);
+  let offers = '';
+  waypointType.currentType.allOffer.forEach((offer) => {
+    const offerCurrent = createOffer(offer);
+    offers += offerCurrent;
+  });
+
+  waypoint.arrayCity.forEach((arrayCityElement) => {
+    if(arrayCityElement.titleCity === waypoint.currentCity.titleCity){
+      if(waypoint.currentCity.isShowPhoto) {
+        waypoint.currentCity = arrayCityElement;
+        waypoint.currentCity.isShowPhoto = true;
+      }
+      else {
+        waypoint.currentCity = arrayCityElement;
+      }
+    }
+  });
 
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -66,18 +60,59 @@ const createEditNewPoint = (point = {}) => {
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
-                ${ listEventTypeItem }
+                <div class="event__type-item">
+                  <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi" ${waypointType.currentType.title === 'taxi' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${waypointType.currentType.title === 'bus' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
+                </div>
+                <div class="event__type-item">                 
+                  <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${waypointType.currentType.title === 'train' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship" ${waypointType.currentType.title === 'ship' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive" ${waypointType.currentType.title === 'drive' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" ${waypointType.currentType.title === 'flight' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in" ${waypointType.currentType.title === 'check-in' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing" ${waypointType.currentType.title === 'sightseeing' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant" ${waypointType.currentType.title === 'restaurant' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
+                </div>
               </fieldset>
             </div>
           </div>
     
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${ fieldLabel }
+              ${ waypointType.currentType.title }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${waypoint.currentCity.titleCity}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${ optionsLocations }
+              <option value="Podgorica"></option>
+              <option value="Moscow"></option>
+              <option value="New York"></option>
+              <option value="Bratislava"></option>
+              <option value="Oslo"></option>
+              <option value="Ottawa"></option>
+              <option value="Prague"></option>
             </datalist>
           </div>
     
@@ -103,7 +138,7 @@ const createEditNewPoint = (point = {}) => {
             <span class="visually-hidden">Open event</span>
           </button>
         </header>
-        <section class="event__details">${ addableOffersList }
+        <section class="event__details">${ offers }
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
     
@@ -113,7 +148,7 @@ const createEditNewPoint = (point = {}) => {
     
          <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${ description }</p>
+          <p class="event__destination-description"></p>
         </section>
       </section>
     </form>
@@ -136,6 +171,12 @@ export default class EditNewPoint extends SmartView {
   get template() {
     return createEditNewPoint(this._data);
   }
+
+  reset = (point) => {
+    this.updateData(
+      point,
+    );
+  };
 
   #findTags = () => {
     this.element.querySelector('.event__type-group').addEventListener('change',  this.#typesPointToggleHandler);

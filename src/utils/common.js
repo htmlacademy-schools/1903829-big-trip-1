@@ -29,3 +29,17 @@ export const updateItem = (items, update) => {
 };
 
 export const isPointRepeating = (repeating) => Object.values(repeating).some(Boolean);
+
+export const createEventTypesMarkup = (types, chosenEventType) => {
+  const createTypeMarkup = (type) => {
+    const isChecked = type === chosenEventType ? 'checked=""' : '';
+    const label = type.charAt(0).toUpperCase() + type.slice(1);
+
+    return `<div class="event__type-item">
+                          <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+                          <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${label}</label>
+                        </div>`;
+  };
+
+  return types.map(createTypeMarkup).join('');
+};
