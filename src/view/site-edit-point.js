@@ -1,7 +1,7 @@
 import { dateRend } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
-const createEditNewPoint = (point = {}) => {
+const createEditPoint = (point = {}) => {
   const  { date = null, waypointType = null, waypoint = null } = point;
   const startDateRend  = dateRend(date.start, 'D MMMM YYYY');
   const endDateRend  = dateRend(date.end, 'D MMMM YYYY');
@@ -169,7 +169,7 @@ export default class EditNewPoint extends SmartView {
   };
 
   get template() {
-    return createEditNewPoint(this._data);
+    return createEditPoint(this._data);
   }
 
   reset = (point) => {
