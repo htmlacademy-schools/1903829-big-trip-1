@@ -21,6 +21,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const types = [{
+  title: 'taxi',
+  img: 'img/icons/taxi.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'bus',
+  img: 'img/icons/bus.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'drive',
+  img: 'img/icons/drive.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'check-in',
+  img: 'img/icons/check-in.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'flight',
+  img: 'img/icons/flight.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'restaurant',
+  img: 'img/icons/restaurant.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'sightseeing',
+  img: 'img/icons/sightseeing.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}, {
+  title: 'train',
+  img: 'img/icons/train.png',
+  allOffer: [],
+  selectedOffer: [],
+  allPriceOffers: 0
+}];
 const generateDescription = () => {
   const points = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.destinations)();
   points.forEach(city => {
@@ -63,10 +112,9 @@ const generatePoint = () => {
   const date = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_2__.generateBeginEndDates)();
   const time = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_2__.countDuration)(date);
   const dest = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.destinations)();
-  const t = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.wayPointTypes)();
   const type = {
-    currentType: t[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, 7)],
-    arrayType: t
+    currentType: types[(0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(0, 7)],
+    arrayType: types
   };
   const allPrice = type.currentType.allPriceOffers + (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_1__.getRandomInteger)(10, 30);
   return {
@@ -325,13 +373,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_site_add_first_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/site-add-first-point */ "./src/view/site-add-first-point.js");
 /* harmony import */ var _view_site_list_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/site-list-view */ "./src/view/site-list-view.js");
 /* harmony import */ var _view_site_trip_sort__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view/site-trip-sort */ "./src/view/site-trip-sort.js");
-/* harmony import */ var _point_presenter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./point-presenter */ "./src/presenter/point-presenter.js");
-/* harmony import */ var _utils_render__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/render */ "./src/utils/render.js");
-/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
-/* harmony import */ var _utils_informations__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/informations */ "./src/utils/informations.js");
-/* harmony import */ var _utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/functionsWithDayjs */ "./src/utils/functionsWithDayjs.js");
-/* harmony import */ var _view_site_board_view__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../view/site-board-view */ "./src/view/site-board-view.js");
-/* harmony import */ var _view_site_load_more_button_view__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../view/site-load-more-button-view */ "./src/view/site-load-more-button-view.js");
+/* harmony import */ var _view_site_trip_filter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/site-trip-filter */ "./src/view/site-trip-filter.js");
+/* harmony import */ var _point_presenter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./point-presenter */ "./src/presenter/point-presenter.js");
+/* harmony import */ var _view_site_trip_tabs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/site-trip-tabs */ "./src/view/site-trip-tabs.js");
+/* harmony import */ var _utils_render__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/render */ "./src/utils/render.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
+/* harmony import */ var _utils_informations__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/informations */ "./src/utils/informations.js");
+/* harmony import */ var _utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/functionsWithDayjs */ "./src/utils/functionsWithDayjs.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
@@ -358,39 +406,32 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 
 
-const POINT_COUNT_PER_STEP = 8;
 
 var _tripContainer = /*#__PURE__*/new WeakMap();
 
-var _renderedPointCount = /*#__PURE__*/new WeakMap();
+var _tabsContainer = /*#__PURE__*/new WeakMap();
 
-var _tripEventsElement = /*#__PURE__*/new WeakMap();
-
-var _sortComponent = /*#__PURE__*/new WeakMap();
-
-var _noComponent = /*#__PURE__*/new WeakMap();
-
-var _tripEventsListElement = /*#__PURE__*/new WeakMap();
-
-var _boardComponent = /*#__PURE__*/new WeakMap();
-
-var _loadMoreButtonComponent = /*#__PURE__*/new WeakMap();
-
-var _pointPresenter = /*#__PURE__*/new WeakMap();
+var _filterContainer = /*#__PURE__*/new WeakMap();
 
 var _currentSortType = /*#__PURE__*/new WeakMap();
 
+var _sortComponent = /*#__PURE__*/new WeakMap();
+
+var _tabsComponent = /*#__PURE__*/new WeakMap();
+
+var _filterComponent = /*#__PURE__*/new WeakMap();
+
+var _listPointComponent = /*#__PURE__*/new WeakMap();
+
+var _noComponent = /*#__PURE__*/new WeakMap();
+
 var _tripPoints = /*#__PURE__*/new WeakMap();
 
-var _sourcedPoints = /*#__PURE__*/new WeakMap();
+var _pointsPresenter = /*#__PURE__*/new WeakMap();
 
 var _handleModeChange = /*#__PURE__*/new WeakMap();
 
 var _handlePointChange = /*#__PURE__*/new WeakMap();
-
-var _renderNoPoint = /*#__PURE__*/new WeakMap();
-
-var _renderPointsListElements = /*#__PURE__*/new WeakMap();
 
 var _handleSortTypeChange = /*#__PURE__*/new WeakMap();
 
@@ -398,35 +439,36 @@ var _sortPoints = /*#__PURE__*/new WeakMap();
 
 var _renderSort = /*#__PURE__*/new WeakMap();
 
+var _renderPointList = /*#__PURE__*/new WeakMap();
+
 var _renderPoint = /*#__PURE__*/new WeakMap();
 
 var _renderPoints = /*#__PURE__*/new WeakMap();
 
-var _renderTripStart = /*#__PURE__*/new WeakMap();
-
 var _clearPointList = /*#__PURE__*/new WeakMap();
 
-var _renderPointList = /*#__PURE__*/new WeakMap();
+var _renderNoPoint = /*#__PURE__*/new WeakMap();
 
-var _renderLoadMoreButton = /*#__PURE__*/new WeakMap();
-
-var _handleLoadMoreButtonClick = /*#__PURE__*/new WeakMap();
+var _renderTripStart = /*#__PURE__*/new WeakMap();
 
 class TripPresenter {
-  constructor(tripContainer) {
+  constructor(tripContainer, tabsContainer, filterContainer) {
     _classPrivateFieldInitSpec(this, _tripContainer, {
       writable: true,
       value: null
     });
 
-    _defineProperty(this, "wayPointElement", null);
-
-    _classPrivateFieldInitSpec(this, _renderedPointCount, {
+    _classPrivateFieldInitSpec(this, _tabsContainer, {
       writable: true,
-      value: POINT_COUNT_PER_STEP
+      value: null
     });
 
-    _classPrivateFieldInitSpec(this, _tripEventsElement, {
+    _classPrivateFieldInitSpec(this, _filterContainer, {
+      writable: true,
+      value: null
+    });
+
+    _classPrivateFieldInitSpec(this, _currentSortType, {
       writable: true,
       value: null
     });
@@ -436,34 +478,24 @@ class TripPresenter {
       value: new _view_site_trip_sort__WEBPACK_IMPORTED_MODULE_2__["default"]()
     });
 
-    _classPrivateFieldInitSpec(this, _noComponent, {
+    _classPrivateFieldInitSpec(this, _tabsComponent, {
       writable: true,
-      value: new _view_site_add_first_point__WEBPACK_IMPORTED_MODULE_0__["default"]()
+      value: new _view_site_trip_tabs__WEBPACK_IMPORTED_MODULE_5__["default"]()
     });
 
-    _classPrivateFieldInitSpec(this, _tripEventsListElement, {
+    _classPrivateFieldInitSpec(this, _filterComponent, {
+      writable: true,
+      value: new _view_site_trip_filter__WEBPACK_IMPORTED_MODULE_3__["default"]()
+    });
+
+    _classPrivateFieldInitSpec(this, _listPointComponent, {
       writable: true,
       value: new _view_site_list_view__WEBPACK_IMPORTED_MODULE_1__["default"]()
     });
 
-    _classPrivateFieldInitSpec(this, _boardComponent, {
+    _classPrivateFieldInitSpec(this, _noComponent, {
       writable: true,
-      value: new _view_site_board_view__WEBPACK_IMPORTED_MODULE_8__["default"]()
-    });
-
-    _classPrivateFieldInitSpec(this, _loadMoreButtonComponent, {
-      writable: true,
-      value: new _view_site_load_more_button_view__WEBPACK_IMPORTED_MODULE_9__["default"]()
-    });
-
-    _classPrivateFieldInitSpec(this, _pointPresenter, {
-      writable: true,
-      value: new Map()
-    });
-
-    _classPrivateFieldInitSpec(this, _currentSortType, {
-      writable: true,
-      value: _utils_informations__WEBPACK_IMPORTED_MODULE_6__.SortType.DEFAULT
+      value: new _view_site_add_first_point__WEBPACK_IMPORTED_MODULE_0__["default"]()
     });
 
     _classPrivateFieldInitSpec(this, _tripPoints, {
@@ -471,48 +503,33 @@ class TripPresenter {
       value: []
     });
 
-    _classPrivateFieldInitSpec(this, _sourcedPoints, {
+    _classPrivateFieldInitSpec(this, _pointsPresenter, {
       writable: true,
-      value: []
+      value: new Map()
     });
 
     _defineProperty(this, "init", tripPoints => {
-      _classPrivateFieldSet(this, _sourcedPoints, [...tripPoints]);
-
       _classPrivateFieldSet(this, _tripPoints, [...tripPoints]);
 
-      _classPrivateFieldGet(this, _renderPoint).call(this);
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_6__.render)(_classPrivateFieldGet(this, _tabsContainer), _classPrivateFieldGet(this, _tabsComponent), _utils_render__WEBPACK_IMPORTED_MODULE_6__.RenderPosition.BEFOREEND);
+      (0,_utils_render__WEBPACK_IMPORTED_MODULE_6__.render)(_classPrivateFieldGet(this, _filterContainer), _classPrivateFieldGet(this, _filterComponent), _utils_render__WEBPACK_IMPORTED_MODULE_6__.RenderPosition.BEFOREEND);
+
+      _classPrivateFieldGet(this, _renderTripStart).call(this);
     });
 
     _classPrivateFieldInitSpec(this, _handleModeChange, {
       writable: true,
       value: () => {
-        _classPrivateFieldGet(this, _pointPresenter).forEach(presenter => presenter.resetView());
+        _classPrivateFieldGet(this, _pointsPresenter).forEach(presenter => presenter.resetView());
       }
     });
 
     _classPrivateFieldInitSpec(this, _handlePointChange, {
       writable: true,
       value: updatedPoint => {
-        _classPrivateFieldSet(this, _tripPoints, (0,_utils_common__WEBPACK_IMPORTED_MODULE_5__.updateItem)(_classPrivateFieldGet(this, _tripPoints), updatedPoint));
+        _classPrivateFieldSet(this, _tripPoints, (0,_utils_common__WEBPACK_IMPORTED_MODULE_7__.updateItem)(_classPrivateFieldGet(this, _tripPoints), updatedPoint));
 
-        _classPrivateFieldSet(this, _sourcedPoints, (0,_utils_common__WEBPACK_IMPORTED_MODULE_5__.updateItem)(_classPrivateFieldGet(this, _sourcedPoints), updatedPoint));
-
-        _classPrivateFieldGet(this, _pointPresenter).get(updatedPoint.id).init(updatedPoint);
-      }
-    });
-
-    _classPrivateFieldInitSpec(this, _renderNoPoint, {
-      writable: true,
-      value: () => {
-        (0,_utils_render__WEBPACK_IMPORTED_MODULE_4__.render)(_classPrivateFieldGet(this, _tripEventsElement), _classPrivateFieldGet(this, _noComponent), _utils_render__WEBPACK_IMPORTED_MODULE_4__.RenderPosition.BEFOREEND);
-      }
-    });
-
-    _classPrivateFieldInitSpec(this, _renderPointsListElements, {
-      writable: true,
-      value: () => {
-        (0,_utils_render__WEBPACK_IMPORTED_MODULE_4__.render)(_classPrivateFieldGet(this, _tripEventsElement), _classPrivateFieldGet(this, _tripEventsListElement), _utils_render__WEBPACK_IMPORTED_MODULE_4__.RenderPosition.BEFOREEND);
+        _classPrivateFieldGet(this, _pointsPresenter).get(updatedPoint.id).init(updatedPoint);
       }
     });
 
@@ -528,6 +545,8 @@ class TripPresenter {
         _classPrivateFieldGet(this, _clearPointList).call(this);
 
         _classPrivateFieldGet(this, _renderPointList).call(this);
+
+        _classPrivateFieldGet(this, _renderPoints).call(this);
       }
     });
 
@@ -535,19 +554,15 @@ class TripPresenter {
       writable: true,
       value: sortType => {
         switch (sortType) {
-          case _utils_informations__WEBPACK_IMPORTED_MODULE_6__.SortType.DATE_UP:
-            _classPrivateFieldGet(this, _tripPoints).sort(_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_7__.sortPointUp);
+          case _utils_informations__WEBPACK_IMPORTED_MODULE_8__.SortType.DATE_UP:
+            _classPrivateFieldGet(this, _tripPoints).sort(_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_9__.sortPointUp);
 
             break;
 
-          case _utils_informations__WEBPACK_IMPORTED_MODULE_6__.SortType.DATE_DOWN:
-            _classPrivateFieldGet(this, _tripPoints).sort(_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_7__.sortPointDown);
+          case _utils_informations__WEBPACK_IMPORTED_MODULE_8__.SortType.DATE_DOWN:
+            _classPrivateFieldGet(this, _tripPoints).sort(_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_9__.sortPointDown);
 
             break;
-
-          default:
-            _classPrivateFieldSet(this, _tripPoints, [..._classPrivateFieldGet(this, _sourcedPoints)]);
-
         }
 
         _classPrivateFieldSet(this, _currentSortType, sortType);
@@ -557,28 +572,53 @@ class TripPresenter {
     _classPrivateFieldInitSpec(this, _renderSort, {
       writable: true,
       value: () => {
-        (0,_utils_render__WEBPACK_IMPORTED_MODULE_4__.render)(_classPrivateFieldGet(this, _tripEventsElement), _classPrivateFieldGet(this, _sortComponent), _utils_render__WEBPACK_IMPORTED_MODULE_4__.RenderPosition.AFTERBEGIN);
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_6__.render)(_classPrivateFieldGet(this, _tripContainer), _classPrivateFieldGet(this, _sortComponent), _utils_render__WEBPACK_IMPORTED_MODULE_6__.RenderPosition.BEFOREEND);
 
         _classPrivateFieldGet(this, _sortComponent).setSortTypeChangeHandler(_classPrivateFieldGet(this, _handleSortTypeChange));
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderPointList, {
+      writable: true,
+      value: () => {
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_6__.render)(_classPrivateFieldGet(this, _tripContainer), _classPrivateFieldGet(this, _listPointComponent), _utils_render__WEBPACK_IMPORTED_MODULE_6__.RenderPosition.BEFOREEND);
       }
     });
 
     _classPrivateFieldInitSpec(this, _renderPoint, {
       writable: true,
       value: point => {
-        const pointPresenter = new _point_presenter__WEBPACK_IMPORTED_MODULE_3__["default"](_classPrivateFieldGet(this, _tripEventsListElement), _classPrivateFieldGet(this, _handlePointChange), _classPrivateFieldGet(this, _handleModeChange));
+        const pointPresenter = new _point_presenter__WEBPACK_IMPORTED_MODULE_4__["default"](_classPrivateFieldGet(this, _listPointComponent), _classPrivateFieldGet(this, _handlePointChange), _classPrivateFieldGet(this, _handleModeChange));
         pointPresenter.init(point);
 
-        _classPrivateFieldGet(this, _pointPresenter).set(point.id, pointPresenter);
+        _classPrivateFieldGet(this, _pointsPresenter).set(point.id, pointPresenter);
       }
     });
 
     _classPrivateFieldInitSpec(this, _renderPoints, {
       writable: true,
       value: () => {
-        for (let i = 1; i < _classPrivateFieldGet(this, _tripPoints).length; i++) {
-          this.renderPoint(_classPrivateFieldGet(this, _tripPoints)[i]);
-        }
+        _classPrivateFieldGet(this, _tripPoints).forEach(tripPoint => _classPrivateFieldGet(this, _renderPoint).call(this, tripPoint));
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _clearPointList, {
+      writable: true,
+      value: () => {
+        _classPrivateFieldGet(this, _pointsPresenter).forEach(presenter => presenter.destroy());
+
+        _classPrivateFieldGet(this, _pointsPresenter).clear();
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _renderNoPoint, {
+      writable: true,
+      value: () => {
+        (0,_utils_render__WEBPACK_IMPORTED_MODULE_6__.render)(_classPrivateFieldGet(this, _tripContainer), _classPrivateFieldGet(this, _noComponent), _utils_render__WEBPACK_IMPORTED_MODULE_6__.RenderPosition.BEFOREEND);
+
+        _classPrivateFieldGet(this, _listPointComponent).element.remove();
+
+        _classPrivateFieldGet(this, _sortComponent).element.remove();
       }
     });
 
@@ -587,61 +627,25 @@ class TripPresenter {
       value: () => {
         if (_classPrivateFieldGet(this, _tripPoints).length === 0) {
           _classPrivateFieldGet(this, _renderNoPoint).call(this);
-        } else {
-          _classPrivateFieldGet(this, _renderSort).call(this);
 
-          _classPrivateFieldGet(this, _renderPointsListElements).call(this);
-
-          _classPrivateFieldGet(this, _renderPoints).call(this);
+          return;
         }
-      }
-    });
 
-    _classPrivateFieldInitSpec(this, _clearPointList, {
-      writable: true,
-      value: () => {
-        _classPrivateFieldGet(this, _pointPresenter).forEach(presenter => presenter.destroy());
+        _classPrivateFieldGet(this, _renderSort).call(this);
 
-        _classPrivateFieldGet(this, _pointPresenter).clear();
-      }
-    });
+        _classPrivateFieldGet(this, _renderPointList).call(this);
 
-    _classPrivateFieldInitSpec(this, _renderPointList, {
-      writable: true,
-      value: () => {
-        _classPrivateFieldGet(this, _renderPoints).call(this, 0, Math.min(_classPrivateFieldGet(this, _tripPoints).length, POINT_COUNT_PER_STEP));
+        _classPrivateFieldGet(this, _renderPoints).call(this);
 
-        if (_classPrivateFieldGet(this, _tripPoints).length > POINT_COUNT_PER_STEP) {
-          _classPrivateFieldGet(this, _renderLoadMoreButton).call(this);
-        }
-      }
-    });
-
-    _classPrivateFieldInitSpec(this, _renderLoadMoreButton, {
-      writable: true,
-      value: () => {
-        (0,_utils_render__WEBPACK_IMPORTED_MODULE_4__.render)(_classPrivateFieldGet(this, _boardComponent), _classPrivateFieldGet(this, _loadMoreButtonComponent), _utils_render__WEBPACK_IMPORTED_MODULE_4__.RenderPosition.BEFOREEND);
-
-        _classPrivateFieldGet(this, _loadMoreButtonComponent).setClickHandler(_classPrivateFieldGet(this, _handleLoadMoreButtonClick));
-      }
-    });
-
-    _classPrivateFieldInitSpec(this, _handleLoadMoreButtonClick, {
-      writable: true,
-      value: () => {
-        _classPrivateFieldGet(this, _renderPoints).call(this, _classPrivateFieldGet(this, _renderedPointCount), _classPrivateFieldGet(this, _renderedPointCount) + POINT_COUNT_PER_STEP);
-
-        _classPrivateFieldSet(this, _renderedPointCount, _classPrivateFieldGet(this, _renderedPointCount) + POINT_COUNT_PER_STEP);
-
-        if (_classPrivateFieldGet(this, _renderedPointCount) >= _classPrivateFieldGet(this, _tripPoints).length) {
-          (0,_utils_render__WEBPACK_IMPORTED_MODULE_4__.remove)(_classPrivateFieldGet(this, _loadMoreButtonComponent));
-        }
+        _classPrivateFieldGet(this, _handleSortTypeChange).call(this, 'day');
       }
     });
 
     _classPrivateFieldSet(this, _tripContainer, tripContainer);
 
-    _classPrivateFieldSet(this, _tripEventsElement, _classPrivateFieldGet(this, _tripContainer).querySelector('.trip-events'));
+    _classPrivateFieldSet(this, _tabsContainer, tabsContainer);
+
+    _classPrivateFieldSet(this, _filterContainer, filterContainer);
   }
 
 }
@@ -660,7 +664,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getRandomInteger": () => (/* binding */ getRandomInteger),
 /* harmony export */   "generateImages": () => (/* binding */ generateImages),
 /* harmony export */   "updateItem": () => (/* binding */ updateItem),
-/* harmony export */   "isPointRepeating": () => (/* binding */ isPointRepeating)
+/* harmony export */   "isPointRepeating": () => (/* binding */ isPointRepeating),
+/* harmony export */   "createEventTypesMarkup": () => (/* binding */ createEventTypesMarkup)
 /* harmony export */ });
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -686,6 +691,18 @@ const updateItem = (items, update) => {
   return [...items.slice(0, index), update, ...items.slice(index + 1)];
 };
 const isPointRepeating = repeating => Object.values(repeating).some(Boolean);
+const createEventTypesMarkup = (types, chosenEventType) => {
+  const createTypeMarkup = type => {
+    const isChecked = type === chosenEventType ? 'checked=""' : '';
+    const label = type.charAt(0).toUpperCase() + type.slice(1);
+    return `<div class="event__type-item">
+                          <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+                          <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${label}</label>
+                        </div>`;
+  };
+
+  return types.map(createTypeMarkup).join('');
+};
 
 /***/ }),
 
@@ -1145,31 +1162,6 @@ class AddFirstPoint extends _Abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["defa
 
 /***/ }),
 
-/***/ "./src/view/site-board-view.js":
-/*!*************************************!*\
-  !*** ./src/view/site-board-view.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ BoardView)
-/* harmony export */ });
-/* harmony import */ var _Abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Abstract-view.js */ "./src/view/Abstract-view.js");
-
-
-const createBoardTemplate = () => '<section class="board container"></section>';
-
-class BoardView extends _Abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  get template() {
-    return createBoardTemplate();
-  }
-
-}
-
-/***/ }),
-
 /***/ "./src/view/site-edit-point.js":
 /*!*************************************!*\
   !*** ./src/view/site-edit-point.js ***!
@@ -1181,9 +1173,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ EditNewPoint)
 /* harmony export */ });
-/* harmony import */ var _utils_informations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/informations.js */ "./src/utils/informations.js");
-/* harmony import */ var _utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/functionsWithDayjs.js */ "./src/utils/functionsWithDayjs.js");
-/* harmony import */ var _Smart_view_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Smart-view.js */ "./src/view/Smart-view.js");
+/* harmony import */ var _utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/functionsWithDayjs.js */ "./src/utils/functionsWithDayjs.js");
+/* harmony import */ var _Smart_view_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Smart-view.js */ "./src/view/Smart-view.js");
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
 
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
@@ -1199,30 +1190,14 @@ function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { 
 
 
 
-
-const createEditNewPoint = point => {
+const createEditPoint = (point = {}) => {
   const {
-    date,
-    waypointType,
-    description
+    date = null,
+    waypointType = null,
+    waypoint = null
   } = point;
-  const startDateRend = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_1__.dateRend)(date.start, 'D MMMM YYYY');
-  const endDateRend = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_1__.dateRend)(date.end, 'D MMMM YYYY');
-
-  const createListEventTypeItem = (types = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.wayPointTypes)(), type) => {
-    const createType = currentType => {
-      const isChecked = currentType === type ? 'checked=""' : '';
-      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
-      return `<div class="event__type-item">
-                          <input id="event-type-${currentType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${currentType}" ${isChecked}>
-                          <label class="event__type-label  event__type-label--${currentType}" for="event-type-${currentType}-1">${label}</label>
-                        </div>`;
-    };
-
-    return types.map(createType).join('');
-  };
-
-  const createOptionsLocations = city => `<option value="${city}"></option>`;
+  const startDateRend = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.dateRend)(date.start, 'D MMMM YYYY');
+  const endDateRend = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.dateRend)(date.end, 'D MMMM YYYY');
 
   const createOffer = offer => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
@@ -1241,21 +1216,26 @@ const createEditNewPoint = point => {
     `;
   };
 
-  const createOfferList = editedOffers => {
-    if (editedOffers.length !== 0) {
-      return `<section class="event__section  event__section--offers">
-                <h3 class="event__section-title  event__section-title--offers">Offers</h3>${editedOffers}
-              </section>`;
+  waypointType.arrayType.forEach(element => {
+    if (element.title === waypointType.currentType.title) {
+      waypointType.currentType = element;
     }
-
-    return '';
-  };
-
-  const listEventTypeItem = createListEventTypeItem((0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.wayPointTypes)(), waypointType);
-  const fieldLabel = waypointType.charAt(0).toUpperCase() + waypointType.slice(1);
-  const optionsLocations = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.destinations)().map(createOptionsLocations).join('');
-  const editOffers = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_0__.offers)().map(createOffer).join('');
-  const addableOffersList = createOfferList(editOffers);
+  });
+  let offers = '';
+  waypointType.currentType.allOffer.forEach(offer => {
+    const offerCurrent = createOffer(offer);
+    offers += offerCurrent;
+  });
+  waypoint.arrayCity.forEach(arrayCityElement => {
+    if (arrayCityElement.titleCity === waypoint.currentCity.titleCity) {
+      if (waypoint.currentCity.isShowPhoto) {
+        waypoint.currentCity = arrayCityElement;
+        waypoint.currentCity.isShowPhoto = true;
+      } else {
+        waypoint.currentCity = arrayCityElement;
+      }
+    }
+  });
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
@@ -1269,18 +1249,59 @@ const createEditNewPoint = point => {
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
-                ${listEventTypeItem}
+                <div class="event__type-item">
+                  <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi" ${waypointType.currentType.title === 'taxi' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${waypointType.currentType.title === 'bus' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
+                </div>
+                <div class="event__type-item">                 
+                  <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${waypointType.currentType.title === 'train' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship" ${waypointType.currentType.title === 'ship' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive" ${waypointType.currentType.title === 'drive' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" ${waypointType.currentType.title === 'flight' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in" ${waypointType.currentType.title === 'check-in' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing" ${waypointType.currentType.title === 'sightseeing' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
+                </div>
+                <div class="event__type-item">
+                  <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant" ${waypointType.currentType.title === 'restaurant' ? 'checked' : ''}>
+                  <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
+                </div>
               </fieldset>
             </div>
           </div>
     
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${fieldLabel}
+              ${waypointType.currentType.title}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${waypoint.currentCity.titleCity}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${optionsLocations}
+              <option value="Podgorica"></option>
+              <option value="Moscow"></option>
+              <option value="New York"></option>
+              <option value="Bratislava"></option>
+              <option value="Oslo"></option>
+              <option value="Ottawa"></option>
+              <option value="Prague"></option>
             </datalist>
           </div>
     
@@ -1306,7 +1327,7 @@ const createEditNewPoint = point => {
             <span class="visually-hidden">Open event</span>
           </button>
         </header>
-        <section class="event__details">${addableOffersList}
+        <section class="event__details">${offers}
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
     
@@ -1316,7 +1337,7 @@ const createEditNewPoint = point => {
     
          <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
+          <p class="event__destination-description"></p>
         </section>
       </section>
     </form>
@@ -1333,8 +1354,8 @@ var _formSubmitHandler = /*#__PURE__*/new WeakMap();
 
 var _eventRollupBtnClickHandler = /*#__PURE__*/new WeakMap();
 
-class EditNewPoint extends _Smart_view_js__WEBPACK_IMPORTED_MODULE_2__["default"] {
-  constructor(point) {
+class EditNewPoint extends _Smart_view_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  constructor(_point) {
     super();
 
     _defineProperty(this, "restoreHandlers", () => {
@@ -1342,6 +1363,10 @@ class EditNewPoint extends _Smart_view_js__WEBPACK_IMPORTED_MODULE_2__["default"
 
       this.setFormSubmitHandler(this._callback.formSubmit);
       this.setEventRollupBtnHandler(this._callback.click);
+    });
+
+    _defineProperty(this, "reset", point => {
+      this.updateData(point);
     });
 
     _classPrivateFieldInitSpec(this, _findTags, {
@@ -1408,14 +1433,14 @@ class EditNewPoint extends _Smart_view_js__WEBPACK_IMPORTED_MODULE_2__["default"
       }
     });
 
-    this._data = { ...point
+    this._data = { ..._point
     };
 
     _classPrivateFieldGet(this, _findTags).call(this);
   }
 
   get template() {
-    return createEditNewPoint(this._data);
+    return createEditPoint(this._data);
   }
 
 }
@@ -1442,63 +1467,6 @@ const createEventsListTemplate = () => `<ul class="trip-events__list">
 class EventsListTemplate extends _Abstract_view__WEBPACK_IMPORTED_MODULE_0__["default"] {
   get template() {
     return createEventsListTemplate();
-  }
-
-}
-
-/***/ }),
-
-/***/ "./src/view/site-load-more-button-view.js":
-/*!************************************************!*\
-  !*** ./src/view/site-load-more-button-view.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ LoadMoreButtonView)
-/* harmony export */ });
-/* harmony import */ var _Abstract_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Abstract-view.js */ "./src/view/Abstract-view.js");
-function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
-
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
-
-function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
-
-function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-
-
-
-const createLoadMoreButtonTemplate = () => '<button class="load-more" type="button">load more</button>';
-
-var _clickHandler = /*#__PURE__*/new WeakMap();
-
-class LoadMoreButtonView extends _Abstract_view_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  constructor(...args) {
-    super(...args);
-
-    _defineProperty(this, "setClickHandler", callback => {
-      this._callback.click = callback;
-      this.element.addEventListener('click', _classPrivateFieldGet(this, _clickHandler));
-    });
-
-    _classPrivateFieldInitSpec(this, _clickHandler, {
-      writable: true,
-      value: evt => {
-        evt.preventDefault();
-
-        this._callback.click();
-      }
-    });
-  }
-
-  get template() {
-    return createLoadMoreButtonTemplate();
   }
 
 }
@@ -1971,26 +1939,18 @@ var __webpack_exports__ = {};
   !*** ./src/main.js ***!
   \*********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_render_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/render.js */ "./src/utils/render.js");
-/* harmony import */ var _view_site_trip_tabs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/site-trip-tabs.js */ "./src/view/site-trip-tabs.js");
-/* harmony import */ var _view_site_trip_filter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/site-trip-filter.js */ "./src/view/site-trip-filter.js");
-/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mock/point.js */ "./src/mock/point.js");
-/* harmony import */ var _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./presenter/trip-presenter.js */ "./src/presenter/trip-presenter.js");
-
-
-
+/* harmony import */ var _mock_point_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mock/point.js */ "./src/mock/point.js");
+/* harmony import */ var _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./presenter/trip-presenter.js */ "./src/presenter/trip-presenter.js");
 
 
 const POINT_COUNT = 15;
 const points = Array.from({
   length: POINT_COUNT
-}, _mock_point_js__WEBPACK_IMPORTED_MODULE_3__.generatePoint);
-const pageBodyElement = document.querySelector('.page-body');
+}, _mock_point_js__WEBPACK_IMPORTED_MODULE_0__.generatePoint);
+const tripEventsElement = document.querySelector('.trip-events');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.render)(tripControlsNavigationElement, _view_site_trip_tabs_js__WEBPACK_IMPORTED_MODULE_1__["default"], _utils_render_js__WEBPACK_IMPORTED_MODULE_0__.RenderPosition.BEFOREEND);
-(0,_utils_render_js__WEBPACK_IMPORTED_MODULE_0__.render)(tripControlsFiltersElement, _view_site_trip_filter_js__WEBPACK_IMPORTED_MODULE_2__["default"], _utils_render_js__WEBPACK_IMPORTED_MODULE_0__.RenderPosition.BEFOREEND);
-const tripPresenter = new _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_4__["default"](pageBodyElement);
+const tripPresenter = new _presenter_trip_presenter_js__WEBPACK_IMPORTED_MODULE_1__["default"](tripEventsElement, tripControlsNavigationElement, tripControlsFiltersElement);
 tripPresenter.init(points);
 })();
 
