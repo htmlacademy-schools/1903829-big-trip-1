@@ -1,7 +1,7 @@
 import { generatePoint} from './mock/point.js';
 import TripPresenter from './presenter/trip-presenter.js';
 
-const POINT_COUNT = 15;
+const POINT_COUNT = 10;
 const points = Array.from({ length: POINT_COUNT }, generatePoint);
 
 const tripEventsElement = document.querySelector('.trip-events');

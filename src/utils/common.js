@@ -1,16 +1,17 @@
+import { offers } from './informations';
+
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-export const generateImages = () => {
+export const generateListLinkImages = () => {
   const arrayOfImages = [];
-
-  for (let i = 0; i < 3; i++) {
+  const length = getRandomInteger(1, 5);
+  for (let i = 0; i < length; i++) {
     arrayOfImages[i] = `http://picsum.photos/248/152?${ getRandomInteger(0, 99).toString() }`;
   }
-
   return arrayOfImages;
 };
 
@@ -42,4 +43,34 @@ export const createEventTypesMarkup = (types, chosenEventType) => {
   };
 
   return types.map(createTypeMarkup).join('');
+};
+
+const createOffer = (offer) => {
+  const { title, type, price } = offer;
+  return `<div class="event__offer-selector">
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" value="${type}">
+  <label class="event__offer-label" for="event-offer-${type}-1">
+    <span class="event__offer-title">${title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${price}</span>
+  </label>
+</div>`;
+};
+
+function getRandomElement(arr, n) {
+  const result = new Array(n);
+  let len = arr.length;
+  const taken = new Array(len);
+  while (n--) {
+    const x = Math.floor(Math.random() * len);
+    result[n] = createOffer(arr[x in taken ? taken[x] : x]);
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+}
+
+export const generateOffers = () => {
+  const off = offers();
+  const randomIndex = getRandomInteger(1, 4);
+  return getRandomElement(off, randomIndex);
 };

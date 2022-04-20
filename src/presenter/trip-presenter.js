@@ -6,8 +6,7 @@ import PointPresenter from './point-presenter';
 import TripTabsTemplate from '../view/site-trip-tabs';
 import { render, RenderPosition} from '../utils/render';
 import { updateItem } from '../utils/common';
-import { SortType } from '../utils/informations';
-import { sortPointUp, sortPointDown } from '../utils/functionsWithDayjs';
+import { SortType, sortDate, sortPrice, sortTime } from '../utils/informations';
 
 export default class TripPresenter {
   #tripContainer = null;
@@ -59,11 +58,14 @@ export default class TripPresenter {
 
   #sortPoints = (sortType) => {
     switch (sortType) {
-      case SortType.DATE_UP:
-        this.#tripPoints.sort(sortPointUp);
+      case SortType.DAY.text:
+        this.#tripPoints.sort(sortDate);
         break;
-      case SortType.DATE_DOWN:
-        this.#tripPoints.sort(sortPointDown);
+      case SortType.TIME.text:
+        this.#tripPoints.sort(sortTime);
+        break;
+      case SortType.PRICE.text:
+        this.#tripPoints.sort(sortPrice);
         break;
     }
 

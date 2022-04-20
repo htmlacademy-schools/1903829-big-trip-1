@@ -2,37 +2,14 @@ import { dateRend } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
 const createEditPoint = (point = {}) => {
-  const  { date = null, type = null, city = null } = point;
-  const startDateRend  = dateRend(date.start, 'D MMMM YYYY');
-  const endDateRend  = dateRend(date.end, 'D MMMM YYYY');
-
-  const createOffer = (offer) => {
-    const isChecked = offer.isChosen ? ' checked=""' : '';
-    const name = offer.name;
-    const price = offer.price;
-    const tp = offer.type;
-    return `<div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ tp }-1" type="checkbox" name="event-offer-${ type }"${ isChecked }>
-                        <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${ name }</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">${ price }</span>
-                        </label>
-                      </div>
-    `;
-  };
+  const  { date = null, type = null, city = null, allPrice = null, offers = null} = point;
+  const startDateRend  = dateRend(date.start, 'DD/MM/YY HH:mm');
+  const endDateRend  = dateRend(date.end, 'DD/MM/YY HH:mm');
 
   type.arrayType.forEach((element) => {
     if (element.title === type.currentType.title) {
       type.currentType = element;
     }
-  });
-
-  let offers = '';
-  type.currentType.allOffer.forEach((offer) => {
-    const offerCurrent = createOffer(offer);
-    offers += offerCurrent;
   });
 
   city.arrayCity.forEach((arrayCityElement) => {
@@ -47,13 +24,22 @@ const createEditPoint = (point = {}) => {
     }
   });
 
+  const createphotoContainer = (photo) => (
+    `<div class="event__photos-container">
+      <div class="event__photos-tape">
+        ${photo}
+      </div>
+    </div>`
+  );
+  const photos = createphotoContainer(city.currentCity.photos);
+
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-                <img class="event__type-icon" width="17" height="17" src="img/icons/${ type }}" alt="Event type icon">
+                <img class="event__type-icon" width="17" height="17" src="${ type.currentType.img }" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
     
@@ -127,7 +113,7 @@ const createEditPoint = (point = {}) => {
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
-              &euro;
+              ${ allPrice } &euro;
             </label>
             <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
           </div>
@@ -138,17 +124,18 @@ const createEditPoint = (point = {}) => {
             <span class="visually-hidden">Open event</span>
           </button>
         </header>
-        <section class="event__details">${ offers }
+        <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-    
-              </div>
+            ${ offers }
+            </div>
             </div>
          </section>
     
          <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description"></p>
+          <h3 class="event__section-title  event__section-title--destination">Description</h3>
+          <p class="event__destination-description">${ city.currentCity.description }</p>
+          ${ photos }
         </section>
       </section>
     </form>

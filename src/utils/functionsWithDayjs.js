@@ -2,17 +2,16 @@ import dayjs from 'dayjs';
 import { getRandomInteger } from './common';
 
 export const generateBeginEndDates = () => {
-  const maxGap = 10;
-  const daysGap = getRandomInteger(0, maxGap);
-  const days = daysGap + getRandomInteger(0, 2);
-  const startHours = getRandomInteger(1, 6);
-  const endHours = getRandomInteger(startHours, startHours + 10);
-  const startMinutes = getRandomInteger(0, 59);
-  const endMinutes = getRandomInteger(startMinutes, startMinutes + 59);
-
+  const maxDaysGag = 7;
+  const daysGap = getRandomInteger(-7, maxDaysGag);
+  const daysAddition = daysGap + getRandomInteger(0, 2);
+  const startHoursAddition = getRandomInteger(1, 6);
+  const endHoursAddition = getRandomInteger(startHoursAddition, startHoursAddition + 10);
+  const startMinutesAddition = getRandomInteger(0, 59);
+  const endMinutesAddition = getRandomInteger(startMinutesAddition, startMinutesAddition + 59);
   return {
-    start: dayjs().add(daysGap, 'day').add(startHours, 'hour').add(startMinutes, 'minute').toDate(),
-    end: dayjs().add(days, 'day').add(endHours, 'hour').add(endMinutes, 'minute').toDate()
+    start: dayjs().add(daysGap, 'day').add(startHoursAddition, 'hour').add(startMinutesAddition, 'minute').toDate(),
+    end: dayjs().add(daysAddition, 'day').add(endHoursAddition, 'hour').add(endMinutesAddition, 'minute').toDate()
   };
 };
 
@@ -58,7 +57,7 @@ export const getDifferentDates = (dayOne, dayTwo) => {
 };
 
 export const countDuration = (date) => {
-  const duration = getDifferentDates(date.dataBeginEvent, date.dataEndEvent);
+  const duration = getDifferentDates(date.start, date.end);
   let durationFormat = '';
   if (duration.days !== 0) {
     durationFormat += `${(`0${duration.days}`).slice(-2)}D ${(`0${duration.hours}`).slice(-2)}H ${(`0${duration.minuts}`).slice(-2)}M`;
