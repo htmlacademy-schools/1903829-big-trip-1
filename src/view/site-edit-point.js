@@ -2,7 +2,7 @@ import { dateRend } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
 const createEditPoint = (point = {}) => {
-  const  { date = null, waypointType = null, waypoint = null } = point;
+  const  { date = null, type = null, city = null } = point;
   const startDateRend  = dateRend(date.start, 'D MMMM YYYY');
   const endDateRend  = dateRend(date.end, 'D MMMM YYYY');
 
@@ -10,10 +10,10 @@ const createEditPoint = (point = {}) => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
     const name = offer.name;
     const price = offer.price;
-    const type = offer.type;
+    const tp = offer.type;
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ type }-1" type="checkbox" name="event-offer-${ type }"${ isChecked }>
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ tp }-1" type="checkbox" name="event-offer-${ type }"${ isChecked }>
                         <label class="event__offer-label" for="event-offer-name-1">
                           <span class="event__offer-title">${ name }</span>
                           &plus;&euro;&nbsp;
@@ -23,26 +23,26 @@ const createEditPoint = (point = {}) => {
     `;
   };
 
-  waypointType.arrayType.forEach((element) => {
-    if (element.title === waypointType.currentType.title) {
-      waypointType.currentType = element;
+  type.arrayType.forEach((element) => {
+    if (element.title === type.currentType.title) {
+      type.currentType = element;
     }
   });
 
   let offers = '';
-  waypointType.currentType.allOffer.forEach((offer) => {
+  type.currentType.allOffer.forEach((offer) => {
     const offerCurrent = createOffer(offer);
     offers += offerCurrent;
   });
 
-  waypoint.arrayCity.forEach((arrayCityElement) => {
-    if(arrayCityElement.titleCity === waypoint.currentCity.titleCity){
-      if(waypoint.currentCity.isShowPhoto) {
-        waypoint.currentCity = arrayCityElement;
-        waypoint.currentCity.isShowPhoto = true;
+  city.arrayCity.forEach((arrayCityElement) => {
+    if(arrayCityElement.titleCity === city.currentCity.titleCity){
+      if(city.currentCity.isShowPhoto) {
+        city.currentCity = arrayCityElement;
+        city.currentCity.isShowPhoto = true;
       }
       else {
-        waypoint.currentCity = arrayCityElement;
+        city.currentCity = arrayCityElement;
       }
     }
   });
@@ -53,7 +53,7 @@ const createEditPoint = (point = {}) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-                <img class="event__type-icon" width="17" height="17" src="img/icons/${ waypointType }}" alt="Event type icon">
+                <img class="event__type-icon" width="17" height="17" src="img/icons/${ type }}" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
     
@@ -61,39 +61,39 @@ const createEditPoint = (point = {}) => {
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
                 <div class="event__type-item">
-                  <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi" ${waypointType.currentType.title === 'taxi' ? 'checked' : ''}>
+                  <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi" ${type.currentType.title === 'taxi' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${waypointType.currentType.title === 'bus' ? 'checked' : ''}>
+                  <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${type.currentType.title === 'bus' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
                 </div>
                 <div class="event__type-item">                 
-                  <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${waypointType.currentType.title === 'train' ? 'checked' : ''}>
+                  <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${type.currentType.title === 'train' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship" ${waypointType.currentType.title === 'ship' ? 'checked' : ''}>
+                  <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship" ${type.currentType.title === 'ship' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive" ${waypointType.currentType.title === 'drive' ? 'checked' : ''}>
+                  <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive" ${type.currentType.title === 'drive' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" ${waypointType.currentType.title === 'flight' ? 'checked' : ''}>
+                  <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" ${type.currentType.title === 'flight' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in" ${waypointType.currentType.title === 'check-in' ? 'checked' : ''}>
+                  <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in" ${type.currentType.title === 'check-in' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing" ${waypointType.currentType.title === 'sightseeing' ? 'checked' : ''}>
+                  <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing" ${type.currentType.title === 'sightseeing' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
                 </div>
                 <div class="event__type-item">
-                  <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant" ${waypointType.currentType.title === 'restaurant' ? 'checked' : ''}>
+                  <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant" ${type.currentType.title === 'restaurant' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
                 </div>
               </fieldset>
@@ -102,9 +102,9 @@ const createEditPoint = (point = {}) => {
     
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${ waypointType.currentType.title }
+              ${ type.currentType.title }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${waypoint.currentCity.titleCity}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city.currentCity.titleCity}" list="destination-list-1">
             <datalist id="destination-list-1">
               <option value="Podgorica"></option>
               <option value="Moscow"></option>
