@@ -1,6 +1,7 @@
-import EditNewPoint from '../view/site-edit-new-point';
-import TripEventsItemTemplate from '../view/site-trip-event-item-view';
+import EditNewPoint from '../view/site-edit-point';
+import TripEventsView from '../view/site-trip-events-view';
 import { RenderPosition, render, replace, remove } from '../utils/render';
+//import PointOffer from '../view/site-point-offers';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -27,8 +28,8 @@ export default class PointPresenter {
     this.#wayPoint = wayPoint;
     const prevItemComponent = this.#itemTemplateComponent;
     const prevEditComponent = this.#editPointComponent;
-    this.#itemTemplateComponent = new TripEventsItemTemplate(wayPoint);
-    this.#editPointComponent = new EditNewPoint(wayPoint);
+    this.#itemTemplateComponent = new TripEventsView(this.#wayPoint);
+    this.#editPointComponent = new EditNewPoint(this.#wayPoint);
 
     this.#itemTemplateComponent.setEditClickHandler(this.#editClickHandler);
     this.#itemTemplateComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
@@ -37,11 +38,13 @@ export default class PointPresenter {
 
     if (prevItemComponent === null || prevEditComponent === null) {
       render(this.#pointCointainer, this.#itemTemplateComponent, RenderPosition.BEFOREEND);
+      //this.#renderOffers();
       return;
     }
 
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#itemTemplateComponent, prevItemComponent);
+      //this.#renderOffers();
     }
 
     if (this.#mode === Mode.EDITING) {
@@ -97,6 +100,11 @@ export default class PointPresenter {
   };
 
   #favoriteClickHandler = () => {
-    this.#changeData({...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite});
+    this.#changeData({ ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite });
   };
+
+  //#renderOffers = () => {
+  //  const selectedOffers = this.#itemTemplateComponent.element.querySelector('.event__selected-offers');
+  //  this.#wayPoint.type.currentType.selectedOffer.forEach((offer) => render(selectedOffers, new PointOffer(offer), RenderPosition.BEFOREEND));
+  //};
 }

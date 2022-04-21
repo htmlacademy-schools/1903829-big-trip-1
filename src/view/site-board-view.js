@@ -1,4 +1,4 @@
-import AbstractView from './abstract-view.js';
+import AbstractView from './Abstract-view.js';
 
 const createBoardTemplate = () => '<section class="board container"></section>';
 
