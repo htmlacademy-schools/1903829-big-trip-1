@@ -28,8 +28,10 @@
     "node": "16"
   },
   "dependencies": {
+    "css-loader": "^6.7.1",
     "dayjs": "1.11.0",
-    "flatpickr": "4.6.11",
-    "nanoid": "3.3.2"
+    "flatpickr": "^4.6.11",
+    "nanoid": "3.3.2",
+    "style-loader": "^3.3.1"
   }
 }

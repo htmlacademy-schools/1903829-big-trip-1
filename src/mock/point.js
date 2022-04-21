@@ -18,7 +18,7 @@ export const generatePoint = () => {
     city: {currentCity: dest[getRandomInteger(0, 2)], arrayCity: dest},
     time,
     allPrice,
-    isFavorite: Boolean(getRandomInteger(0, 1)),
+    isFavorite: false,
     offers: generateOffers()
   };
 };

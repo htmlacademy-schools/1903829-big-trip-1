@@ -1,3 +1,5 @@
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
@@ -127,7 +129,7 @@ const createEditPoint = (point = {}) => {
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            ${ offers }
+            ${ offers.join('') }
             </div>
             </div>
          </section>
@@ -143,14 +145,20 @@ const createEditPoint = (point = {}) => {
 };
 
 export default class EditNewPoint extends SmartView {
+  #datepicker = null;
+
   constructor(point) {
     super();
     this._data = { ...point };
     this.#findTags();
+    this.#setBeginData();
+    this.#setEndData();
   }
 
   restoreHandlers = () => {
     this.#findTags();
+    this.#setBeginData();
+    this.#setEndData();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setEventRollupBtnHandler(this._callback.click);
   };
@@ -158,6 +166,13 @@ export default class EditNewPoint extends SmartView {
   get template() {
     return createEditPoint(this._data);
   }
+
+  removeElement = () => {
+    super.removeElement();
+
+    this.#datepicker.destroy();
+    this.#datepicker = null;
+  };
 
   reset = (point) => {
     this.updateData(
@@ -171,39 +186,69 @@ export default class EditNewPoint extends SmartView {
   };
 
   #typesPointToggleHandler = (evt) => {
-    evt.preventDefault();
     this.updateData({
-      currentType: { title: evt.target.value }
-    });
+      type: { currentType: { title: evt.target.value },
+        arrayType: this._data.type.arrayType } });
   };
 
   #citiesToggleHandler = (evt) => {
-    evt.preventDefault();
     this.updateData({
-      currentCity: { titleCity: evt.target.value, isShowPhoto: true },
+      currentCity: { titleCity: evt.target.value },
       arrayCity: this._data.city.arrayCity
     });
   };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
-    this._data.city.currentCity.isShowPhoto = false;
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event').addEventListener('submit', this.#formSubmitHandler);
   };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit(EditNewPoint.parseDataToPoint(this._data));
+    this._callback.formSubmit();
   };
 
   setEventRollupBtnHandler = (callback) => {
     this._callback.rollupClick = callback;
-    this._data.city.currentCity.isShowPhoto = false;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#eventRollupBtnClickHandler);
   };
 
   #eventRollupBtnClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.rollupClick();
+    this._callback.click();
+  };
+
+  #setBeginData = () => {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        dateFormat: 'DD/MM/YYYY HH:mm',
+        defaultDate: this._data.date.begin,
+        onChange: this.#beginDateChangeHandler,
+      },
+    );
+  };
+
+  #setEndData = () => {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        dateFormat: 'DD/MM/YYYY HH:mm',
+        defaultDate: this._data.date.end,
+        onChange: this.#endDateChangeHandler,
+      },
+    );
+  };
+
+  #beginDateChangeHandler = ([userDate]) => {
+    this.updateData({
+      date: { start: userDate, end: this._data.date.end },
+    });
+  };
+
+  #endDateChangeHandler = ([userDate]) => {
+    this.updateData({
+      date: { begin: this._data.date.begin, endt: userDate },
+    });
   };
 }

@@ -66,12 +66,12 @@ export const wayPointTypes = () => ([
 ]);
 
 export const offers = () => ([
-  { 'title': 'Add luggage', 'type': 'luggage', 'price': '4'},
-  { 'title': 'Switch to comfort class', 'type': 'flight', 'price': '10'},
-  { 'title': 'Add meal', 'type': 'meal', 'price': '10'},
-  { 'title': 'Rent a car', 'type': 'car', 'price': '10'},
-  { 'title': 'Add breakfast', 'type': 'meal', 'price': '5'},
-  { 'title': 'Add a shower', 'type': 'flight', 'price': '5'},
+  { 'title': 'Add luggage', 'type': 'luggage', 'price': '4', 'id': 'luggage'},
+  { 'title': 'Switch to comfort class', 'type': 'flight', 'price': '10', 'id': 'comfort'},
+  { 'title': 'Add meal', 'type': 'meal', 'price': '10', 'id': 'meal'},
+  { 'title': 'Rent a car', 'type': 'car', 'price': '10', 'id': 'car'},
+  { 'title': 'Add breakfast', 'type': 'meal', 'price': '5', 'id': 'breakfast'},
+  { 'title': 'Add a shower', 'type': 'flight', 'price': '5', 'id': 'shower'},
 ]);
 
 export const SortType = {
