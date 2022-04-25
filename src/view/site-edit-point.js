@@ -1,6 +1,6 @@
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import { dateRend } from '../utils/functionsWithDayjs.js';
+import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view.js';
 
 const createEditPoint = (point = {}) => {
@@ -161,6 +161,7 @@ export default class EditNewPoint extends SmartView {
     this.#setEndData();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setEventRollupBtnHandler(this._callback.click);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   };
 
   get template() {
@@ -205,12 +206,22 @@ export default class EditNewPoint extends SmartView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit();
+    const offers = document.querySelectorAll('.event__offer-checkbox');
+    const filteredOffersChecked = Array.from(offers).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+    const filteredOffersData = Array.from(this._data.type.currentType.allOffer)
+      .filter((offer) =>
+        filteredOffersChecked
+          .some((filteredOfferChecked) => filteredOfferChecked === offer.title.id));
+    this._data.type.currentType.selectedOffer = filteredOffersData;
+    this._callback.formSubmit(this._data);
   };
 
   setEventRollupBtnHandler = (callback) => {
     this._callback.rollupClick = callback;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#eventRollupBtnClickHandler);
+    const rollupButtonTemplate = this.element.querySelector('.event__rollup-btn');
+    if (rollupButtonTemplate) {
+      rollupButtonTemplate.addEventListener('click', this.#eventRollupBtnClickHandler);
+    }
   };
 
   #eventRollupBtnClickHandler = (evt) => {
@@ -218,23 +229,37 @@ export default class EditNewPoint extends SmartView {
     this._callback.click();
   };
 
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
+  };
+
   #setBeginData = () => {
+    const currentDate = this._data.date ? this._data.date.dataBeginEvent : '';
     this.#datepicker = flatpickr(
       this.element.querySelector('#event-start-time-1'),
       {
         dateFormat: 'DD/MM/YYYY HH:mm',
-        defaultDate: this._data.date.begin,
+        defaultDate: currentDate,
+        enableTime: true,
         onChange: this.#beginDateChangeHandler,
       },
     );
   };
 
   #setEndData = () => {
+    const currentDate = this._data.date ? this._data.date.dataEndEvent : '';
     this.#datepicker = flatpickr(
       this.element.querySelector('#event-end-time-1'),
       {
         dateFormat: 'DD/MM/YYYY HH:mm',
-        defaultDate: this._data.date.end,
+        defaultDate: currentDate,
+        enableTime: true,
         onChange: this.#endDateChangeHandler,
       },
     );
@@ -244,11 +269,13 @@ export default class EditNewPoint extends SmartView {
     this.updateData({
       date: { start: userDate, end: this._data.date.end },
     });
+    this._data.time =  countDuration({dataBeginEvent: userDate, dataEndEvent: this._data.date.dataEndEvent});
   };
 
   #endDateChangeHandler = ([userDate]) => {
     this.updateData({
       date: { begin: this._data.date.begin, endt: userDate },
     });
+    this._data.time = countDuration({ dataBeginEvent: this._data.date.dataBeginEvent, dataEndEvent: userDate });
   };
 }

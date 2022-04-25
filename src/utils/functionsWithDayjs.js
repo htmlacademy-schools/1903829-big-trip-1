@@ -76,3 +76,5 @@ export const countDuration = (date) => {
     'arrayDurationFormat': duration
   };
 };
+
+export const chackedDate = (d1, d2) => (d1 === null && d2 === null) || dayjs(d1).isSame(d2, 'D');
