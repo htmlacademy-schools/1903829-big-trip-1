@@ -1,7 +1,8 @@
 import EditNewPoint from '../view/site-edit-point';
 import TripEventsView from '../view/site-trip-events-view';
 import { RenderPosition, render, replace, remove } from '../utils/render';
-//import PointOffer from '../view/site-point-offers';
+import { UpdateType, UserAction } from '../const';
+import { chackedDate } from '../utils/functionsWithDayjs';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -35,16 +36,15 @@ export default class PointPresenter {
     this.#itemTemplateComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
     this.#editPointComponent.setEventRollupBtnHandler(this.#eventRollupHandler);
     this.#editPointComponent.setFormSubmitHandler(this.#formSubmitHandler);
+    this.#editPointComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     if (prevItemComponent === null || prevEditComponent === null) {
       render(this.#pointCointainer, this.#itemTemplateComponent, RenderPosition.BEFOREEND);
-      //this.#renderOffers();
       return;
     }
 
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#itemTemplateComponent, prevItemComponent);
-      //this.#renderOffers();
     }
 
     if (this.#mode === Mode.EDITING) {
@@ -74,6 +74,7 @@ export default class PointPresenter {
   };
 
   #replaceFormToWaypoint = () => {
+    this.#editPointComponent.reset(this.#wayPoint);
     replace(this.#itemTemplateComponent, this.#editPointComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
@@ -101,10 +102,31 @@ export default class PointPresenter {
 
   #favoriteClickHandler = () => {
     this.#changeData({ ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite });
+    this.#changeData(
+      UserAction.UPDATE_EVENT,
+      UpdateType.PATCH,
+      { ...this.#wayPoint, favorite: !this.#wayPoint.favorite },
+    );
   };
 
-  //#renderOffers = () => {
-  //  const selectedOffers = this.#itemTemplateComponent.element.querySelector('.event__selected-offers');
-  //  this.#wayPoint.type.currentType.selectedOffer.forEach((offer) => render(selectedOffers, new PointOffer(offer), RenderPosition.BEFOREEND));
-  //};
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate =
+      !chackedDate(this.#wayPoint.date.dataBeginEvent, update.date.dataBeginEvent) ||
+      !chackedDate(this.#wayPoint.date.dataEndEvent, update.date.dataEndEvent);
+
+    this.#changeData(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
+    this.#replaceFormToWaypoint();
+  };
+
+  #handleDeleteClick = (event) => {
+    this.#changeData(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
+      event,
+    );
+  };
 }
