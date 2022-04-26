@@ -101,11 +101,10 @@ export default class PointPresenter {
   };
 
   #favoriteClickHandler = () => {
-    this.#changeData({ ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite });
     this.#changeData(
       UserAction.UPDATE_EVENT,
       UpdateType.PATCH,
-      { ...this.#wayPoint, favorite: !this.#wayPoint.favorite },
+      { ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite },
     );
   };
 

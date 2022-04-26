@@ -45,10 +45,7 @@ export default class TripSortTemplate extends AbstractView {
 
   #sortTypeChangeHandler = (evt) => {
     if (evt.target.tagName !== 'A') {
-      return;
+      this._callback.sortTypeChange(evt.target.dataset.sortType);
     }
-
-    evt.preventDefault();
-    this._callback.sortTypeChange(evt.target.dataset.sortType);
   };
 }
