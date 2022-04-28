@@ -55,7 +55,7 @@ const handleSiteMenuClick = (menuItem) => {
       clearStatistics();
       break;
     case MenuItem.STATISTICS:
-      counting(pointsModel.events);
+      counting(pointsModel.points);
       statsView = new StatisticsView();
       render(siteMainElement, statsView, RenderPosition.BEFOREEND);
       filterPresenter.destroy();
