@@ -1,7 +1,6 @@
 import AddFirstPoint from '../view/site-add-first-point';
 import EventsListTemplate from '../view/site-list-view';
 import PointPresenter from './point-presenter';
-import TripTabsTemplate from '../view/site-trip-tabs';
 import { render, RenderPosition, remove } from '../utils/render';
 import { SortType, sortDate, sortTime, sortPrice } from '../utils/informations';
 import { UpdateType } from '../const';
@@ -10,15 +9,14 @@ import { FilterType, UserAction } from '../const';
 import EventNewPresenter from './event-new-presenter';
 import TripSortTemplate from '../view/site-trip-sort';
 import { filter } from '../utils/filter';
+import { clearStatistics } from '../utils/statistics.js';
 
 export default class TripPresenter {
   #tripContainer = null;
-  #tabsContainer = null;
   #currentSortType = SortType.DAY.text;
   #filterType = FilterType.EVERYTHING;
 
   #sortComponent = null;
-  #tabsComponent = new TripTabsTemplate();
   #listPointComponent = new EventsListTemplate();
   #noComponent = null;
 
@@ -28,14 +26,11 @@ export default class TripPresenter {
   #pointsModel = null;
   #filterModel = null;
 
-  constructor(tripContainer, tabsContainer, pointsModel, filterModel) {
+  constructor(tripContainer, pointsModel, filterModel) {
     this.#tripContainer = tripContainer;
-    this.#tabsContainer = tabsContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
     this.#pointNewPresenter = new EventNewPresenter(this.#listPointComponent, this.#handleViewAction);
-    this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -54,6 +49,15 @@ export default class TripPresenter {
 
     return filtered;
   }
+
+  destroy = () => {
+    this.#clearPointList({resetRenderedTaskCount: true, resetSortType: true});
+
+    remove(this.#listPointComponent);
+
+    this.#pointsModel.removeObserver(this.#handleModelEvent);
+    this.#filterModel.removeObserver(this.#handleModelEvent);
+  };
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
@@ -86,8 +90,9 @@ export default class TripPresenter {
   };
 
   init = () => {
-    render(this.#tabsContainer, this.#tabsComponent, RenderPosition.BEFOREEND);
     this.#renderTripStart();
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   };
 
   #handleModeChange = () => {
@@ -111,8 +116,11 @@ export default class TripPresenter {
 
   createPoint = () => {
     const point = generatePoint();
-    const createPointData = {...point, isCreateEvent : true};
+    const createPointData = {...point, isCreatePoint : true};
     this.#handleModeChange();
+    this.#currentSortType = SortType.DAY.text;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    clearStatistics();
     this.#pointNewPresenter.init(createPointData);
   };
 

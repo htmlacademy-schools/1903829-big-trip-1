@@ -11,7 +11,6 @@ export default class FilterPresenter {
   constructor(filterContainer, filterModel) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
-    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get filters() {
@@ -22,11 +21,21 @@ export default class FilterPresenter {
     ];
   }
 
+  destroy = () => {
+    remove(this.#filterComponent);
+    this.#filterComponent = null;
+
+    this.#filterModel.removeObserver(this.#handleModelEvent);
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+  };
+
   init = () => {
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new TripFiltersTemplate( this.#filterModel.filter);
     this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
+
+    this.#filterModel.addObserver(this.#handleModelEvent);
 
     if (prevFilterComponent === null) {
       render(this.#filterContainer, this.#filterComponent, RenderPosition.BEFOREEND);

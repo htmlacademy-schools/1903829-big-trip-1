@@ -74,3 +74,5 @@ export const generateOffers = () => {
   const randomIndex = getRandomInteger(1, 4);
   return getRandomElement(off, randomIndex);
 };
+
+export const sortStatistics = (a, b) => b[1] - a[1];
