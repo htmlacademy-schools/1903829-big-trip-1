@@ -1,4 +1,4 @@
-import SmartView from './smart-view.js';
+import SmartView from './Smart-view.js';
 import { Chart } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MONEY, COUNTTYPE } from '../utils/informations.js';

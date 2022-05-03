@@ -1,7 +1,7 @@
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
-import SmartView from './Smart-view.js';
+import SmartView from './Smart-view';
 
 const createEditPoint = (point = {}) => {
   const  { date = null, type = null, city = null, allPrice = null, offers = null} = point;
