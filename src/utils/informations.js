@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { getRandomInteger } from './common';
 import { generateListLinkImages } from './common';
+import { TYPEPOINT } from '../const.js';
 
 export const descriptions = () => ([
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -89,3 +90,36 @@ export const sortTime = (a, b) => {
 };
 
 export const sortPrice = (a, b) => a.allPrice - b.allPrice;
+
+export const TIME = {
+  [TYPEPOINT.TAXI]: 0,
+  [TYPEPOINT.BUS]: 0,
+  [TYPEPOINT.DRIVE]: 0,
+  [TYPEPOINT.CHECKIN]: 0,
+  [TYPEPOINT.FLIGHT]: 0,
+  [TYPEPOINT.RESTAURANT]: 0,
+  [TYPEPOINT.SIGHTSEEING]: 0,
+  [TYPEPOINT.TRAIN]: 0,
+};
+
+export const MONEY = {
+  [TYPEPOINT.TAXI]: 0,
+  [TYPEPOINT.BUS]: 0,
+  [TYPEPOINT.DRIVE]: 0,
+  [TYPEPOINT.CHECKIN]: 0,
+  [TYPEPOINT.FLIGHT]: 0,
+  [TYPEPOINT.RESTAURANT]: 0,
+  [TYPEPOINT.SIGHTSEEING]: 0,
+  [TYPEPOINT.TRAIN]: 0,
+};
+
+export const COUNTTYPE = {
+  [TYPEPOINT.TAXI]: 0,
+  [TYPEPOINT.BUS]: 0,
+  [TYPEPOINT.DRIVE]: 0,
+  [TYPEPOINT.CHECKIN]: 0,
+  [TYPEPOINT.FLIGHT]: 0,
+  [TYPEPOINT.RESTAURANT]: 0,
+  [TYPEPOINT.SIGHTSEEING]: 0,
+  [TYPEPOINT.TRAIN]: 0,
+};
