@@ -1,4 +1,3 @@
-import { generatePoint} from './mock/point.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
@@ -8,8 +7,10 @@ import TripTabsTemplate from './view/site-trip-tabs.js';
 import { render, RenderPosition, remove } from './utils/render.js';
 import StatisticsView from './view/statistics-view.js';
 import { clearStatistics, counting } from './utils/statistics.js';
+import ApiService from './api-service.js';
 
-const POINT_COUNT = 10;
+const AUTHORIZATION = 'Basic ffg7e433kkd9fOps';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 const points = Array.from({ length: POINT_COUNT }, generatePoint);
 
 const siteMenuComponent = new TripTabsTemplate();
@@ -18,7 +19,7 @@ const tripControlsNavigationElement = document.querySelector('.trip-controls__na
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main').querySelector('.page-body__container');
 
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 pointsModel.points = points;
 
 const filterModel = new FilterModel();
@@ -78,3 +79,5 @@ document.querySelector('.trip-main__event-add-btn').addEventListener('click', (e
   tripPresenter.init();
   tripPresenter.createPoint();
 });
+
+pointsModel.init();

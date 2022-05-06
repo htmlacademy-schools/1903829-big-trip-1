@@ -2,14 +2,21 @@ import AbstractObservable from '../utils/abstract-observable.js';
 
 export default class PointsModel extends AbstractObservable {
   #points = [];
+  #apiService = null;
 
-  set points(points) {
-    this.#points = [...points];
+  constructor(apiService) {
+    super();
+    this.#apiService = apiService;
   }
 
   get points() {
     return this.#points;
   }
+
+  init = async () => {
+    const points = await this.#apiService.tasks;
+    this.#points = points.map(this.#adaptToClient);
+  };
 
   updateEvent = (updateType, update) => {
     const index = this.#points.findIndex((event) => event.id === update.id);
@@ -49,5 +56,21 @@ export default class PointsModel extends AbstractObservable {
     ];
 
     this._notify(updateType);
+  };
+
+  #adaptToClient = (point) => {
+    const adaptedTask = {...point,
+      dueDate: point['due_date'] !== null ? new Date(point['due_date']) : point['due_date'],
+      isArchive: point['is_archived'],
+      isFavorite: point['is_favorite'],
+      repeating: point['repeating_days'],
+    };
+
+    delete adaptedTask['due_date'];
+    delete adaptedTask['is_archived'];
+    delete adaptedTask['is_favorite'];
+    delete adaptedTask['repeating_days'];
+
+    return adaptedTask;
   };
 }
