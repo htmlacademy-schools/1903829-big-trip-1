@@ -11,20 +11,19 @@ import ApiService from './api-service.js';
 
 const AUTHORIZATION = 'Basic ffg7e433kkd9fOps';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
-const points = Array.from({ length: POINT_COUNT }, generatePoint);
 
 const siteMenuComponent = new TripTabsTemplate();
 const tripEventsElement = document.querySelector('.trip-events');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main').querySelector('.page-body__container');
+const tripAddButton = document.querySelector('.trip-main__event-add-btn');
+tripAddButton.disabled = true;
 
 const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
-pointsModel.points = points;
 
 const filterModel = new FilterModel();
 
-render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel);
 
@@ -50,9 +49,12 @@ const handleSiteMenuClick = (menuItem) => {
       siteMenuComponent.element.querySelector(`[value=${MenuItem.STATISTICS}]`).disabled = true;
       break;
     case MenuItem.POINTS:
+      filterPresenter.destroy();
+      tripPresenter.destroy();
       filterPresenter.init();
       tripPresenter.init();
       remove(statsView);
+      statsView = null;
       clearStatistics();
       break;
     case MenuItem.STATISTICS:
@@ -61,14 +63,20 @@ const handleSiteMenuClick = (menuItem) => {
       render(siteMainElement, statsView, RenderPosition.BEFOREEND);
       filterPresenter.destroy();
       tripPresenter.destroy();
+      //
       break;
   }
 };
 
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+pointsModel.init().finally(() => {
+  render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+  tripAddButton.disabled = false;
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+});
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+tripAddButton.addEventListener('click', (evt) => {
   evt.preventDefault();
+  evt.target.disabled = true;
   const tableLink = document.querySelector('#POINTS');
   const statsLink = document.querySelector('#STATISTICS');
   tableLink.classList.add('trip-tabs__btn--active');
@@ -76,8 +84,12 @@ document.querySelector('.trip-main__event-add-btn').addEventListener('click', (e
   filterPresenter.destroy();
   filterPresenter.init();
   tripPresenter.destroy();
-  tripPresenter.init();
+  if(statsView) {
+    remove(statsView);
+  }
+  clearStatistics();
   tripPresenter.createPoint();
+  tripPresenter.init();
 });
 
-pointsModel.init();
+

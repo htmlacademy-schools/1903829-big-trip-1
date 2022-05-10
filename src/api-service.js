@@ -17,7 +17,17 @@ export default class ApiService {
       .then(ApiService.parseResponse);
   }
 
-  updateTask = async (point) => {
+  get offers() {
+    return this.#load({url: 'offers'})
+      .then(ApiService.parseResponse);
+  }
+
+  get cities() {
+    return this.#load({url: 'destinations'})
+      .then(ApiService.parseResponse);
+  }
+
+  updatePoint = async (point) => {
     const response = await this.#load({
       url: `points/${point.id}`,
       method: Method.PUT,
@@ -51,6 +61,7 @@ export default class ApiService {
     }
   };
 
+  ////-------------------
   #adaptToServer = (point) => {
     const adaptedTask = {...point,
       'due_date': point.dueDate instanceof Date ? point.dueDate.toISOString() : null,
@@ -65,6 +76,7 @@ export default class ApiService {
 
     return adaptedTask;
   };
+  ////---------------------------
 
   static parseResponse = (response) => response.json();
 
