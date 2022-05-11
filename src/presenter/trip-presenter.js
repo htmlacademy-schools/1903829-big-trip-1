@@ -10,6 +10,9 @@ import TripSortTemplate from '../view/site-trip-sort';
 import { filter } from '../utils/filter';
 import { clearStatistics } from '../utils/statistics.js';
 import LoadingView from '../view/loading-view';
+import { State } from './point-presenter';
+import { newEvent } from '../utils/common';
+import PointsInfoView from '../view/site-trip-info-view';
 
 const tripMainContainer = document.querySelector('.trip-main');
 
@@ -25,6 +28,7 @@ export default class TripPresenter {
 
   #pointsPresenter = new Map();
   #pointNewPresenter = null;
+  #infoTrip = null;
 
   #pointsModel = null;
   #filterModel = null;
@@ -55,7 +59,7 @@ export default class TripPresenter {
   }
 
   destroy = () => {
-    this.#clearPointList({resetRenderedTaskCount: true, resetSortType: true});
+    this.#clearPointList({ resetSortType: true });
 
     remove(this.#listPointComponent);
 
@@ -63,16 +67,33 @@ export default class TripPresenter {
     this.#filterModel.removeObserver(this.#handleModelEvent);
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
-      case UserAction.UPDATE_EVENT:
+      case UserAction.UPDATE_TASK:
+        this.#pointsPresenter.get(update.id).setViewState(State.SAVING);
         this.#pointsModel.updateEvent(updateType, update);
+        try {
+          await this.#pointsModel.updateEvent(updateType, update);
+        } catch(err) {
+          this.#pointsPresenter.get(update.id).setViewState(State.ABORTING);
+        }
         break;
-      case UserAction.ADD_EVENT:
-        this.#pointsModel.addEvent(updateType, update);
+      case UserAction.ADD_TASK:
+        this.#pointNewPresenter.setSaving();
+        try {
+          await this.#pointsModel.addEvent(updateType, update);
+        } catch(err) {
+          this.#pointNewPresenter.setAborting();
+        }
         break;
-      case UserAction.DELETE_EVENT:
+      case UserAction.DELETE_TASK:
+        this.#pointsPresenter.get(update.id).setViewState(State.DELETING);
         this.#pointsModel.deleteEvents(updateType, update);
+        try {
+          await this.#pointsModel.deleteEvents(updateType, update);
+        } catch(err) {
+          this.#pointsPresenter.get(update.id).setViewState(State.ABORTING);
+        }
         break;
     }
   };
@@ -93,7 +114,7 @@ export default class TripPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
-        this.#renderBoard();
+        this.#renderTripStart();
         break;
     }
   };
@@ -128,7 +149,8 @@ export default class TripPresenter {
     this.#currentSortType = SortType.DAY.text;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     clearStatistics();
-    //this.#pointNewPresenter.init(createPointData);
+    newEvent.type.currentType.selectedOffers = [];
+    this.#pointNewPresenter.init(newEvent);
   };
 
   #renderSort = () => {
@@ -148,7 +170,7 @@ export default class TripPresenter {
   };
 
   #renderLoading = () => {
-    render(tripMainContainer, this.#loadingComponent, RenderPosition.AFTERBEGIN);
+    render(this.#tripContainer, this.#loadingComponent, RenderPosition.AFTERBEGIN);
   };
 
   #renderNoPoint = () => {
@@ -164,6 +186,7 @@ export default class TripPresenter {
     remove(this.#sortComponent);
     remove(this.#noComponent);
     remove(this.#loadingComponent);
+    remove(this.#infoTrip);
 
     if (this.#noComponent) {
       remove(this.#noComponent);
@@ -174,7 +197,19 @@ export default class TripPresenter {
     }
   };
 
+  renderInfoTrip = () => {
+    if (this.points.length > 0 ) {
+      this.#infoTrip = new PointsInfoView(this.points);
+      render(tripMainContainer, this.#infoTrip, RenderPosition.AFTERBEGIN);
+    }
+  };
+
   #renderTripStart = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     if (this.points.length === 0) {
       this.#renderNoPoint();
       return;
@@ -184,13 +219,8 @@ export default class TripPresenter {
 
     this.#renderSort();
     this.#renderPointList();
+    this.renderInfoTrip();
     this.#renderPoints(points);
     this.#handleSortTypeChange(this.#currentSortType);
-  };
-
-  #renderBoard = () => {
-    if (this.#isLoading) {
-      this.#renderLoading();
-    }
   };
 }

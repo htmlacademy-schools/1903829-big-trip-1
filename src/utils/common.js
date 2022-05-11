@@ -1,4 +1,10 @@
-import { offers } from './informations';
+import dayjs from 'dayjs';
+import { wayPointTypes } from './informations';
+import { countDuration } from './functionsWithDayjs';
+import { FilterType } from '../const';
+
+export const typesList = wayPointTypes();
+const arrayTypes = [];
 
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -45,7 +51,7 @@ export const createEventTypesMarkup = (types, chosenEventType) => {
   return types.map(createTypeMarkup).join('');
 };
 
-const createOffer = (offer) => {
+export const createOffer = (offer) => {
   const { title, type, price } = offer;
   return `<div class="event__offer-selector">
   <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" value="${type}">
@@ -57,22 +63,66 @@ const createOffer = (offer) => {
 </div>`;
 };
 
-function getRandomElement(arr, n) {
-  const result = new Array(n);
-  let len = arr.length;
-  const taken = new Array(len);
-  while (n--) {
-    const x = Math.floor(Math.random() * len);
-    result[n] = createOffer(arr[x in taken ? taken[x] : x]);
-    taken[x] = --len in taken ? taken[len] : len;
-  }
-  return result;
-}
-
-export const generateOffers = () => {
-  const off = offers();
-  const randomIndex = getRandomInteger(1, 4);
-  return getRandomElement(off, randomIndex);
+export const generateOffers = (alloffers) => {
+  alloffers.forEach((allOffer) => {
+    typesList[allOffer.type].allOffer = allOffer.offers;
+    const offer = {
+      allOffer: typesList[allOffer.type].allOffer,
+      img: typesList[allOffer.type].img,
+      selectedOffers: [],
+      title: allOffer.type
+    };
+    arrayTypes.push(offer);
+  });
 };
 
 export const sortStatistics = (a, b) => b[1] - a[1];
+
+export let arrayCities = null;
+export const generateCities = (cities) => {
+  arrayCities = cities.map((city) => ({ ...city }));
+};
+
+export let newEvent = null;
+export const createNewEvent = () => {
+  newEvent = {
+    favorite: false,
+    isCreateEvent: true,
+    city: {
+      currentCity: {
+        description: 's',
+        isShowPhoto: true,
+        pictures: [],
+        name: ''
+      },
+      arrayCity: arrayCities
+    },
+    date: {
+      dataBeginEvent: dayjs(),
+      dataEndEvent: dayjs().add(1, 'hour')
+    },
+    basePrice: 0,
+    allPrice: null,
+    type: {
+      currentType: {
+        //allOffer: typesList['taxi'].allOffer,
+        //img: typesList['taxi'].img,
+        selectedOffers: [],
+        title: 'taxi'
+      },
+      arrayType: arrayTypes
+    },
+    time: countDuration(dayjs(), dayjs().add(1, 'hour')),
+    isDisabled: false,
+    isDeleting: false,
+    isSaving: false,
+  };
+};
+
+export const filter = {
+  [FilterType.EVERYTHING]: (events) => events,
+  [FilterType.FUTURE]: (events) => events.filter((event) => dayjs().isBefore(dayjs(event.date.dataBeginEvent))),
+  [FilterType.PAST]: (events) => events.filter((event) => dayjs().isAfter(dayjs(event.date.dataBeginEvent))),
+};
+
+export const sorttDate = (taskA, taskB) => dayjs(taskA.date.start).diff(dayjs(taskB.date.start));

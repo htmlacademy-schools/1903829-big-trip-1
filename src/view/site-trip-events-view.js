@@ -60,8 +60,8 @@ export default class TripEventsView extends AbstractView {
     return createTripEventsView(this.#point);
   }
 
-  setEditClickHandler = (callback) => {
-    this._callback.editClick = callback;
+  setClickRollupHandler = (callback) => {
+    this._callback.click = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   };
 

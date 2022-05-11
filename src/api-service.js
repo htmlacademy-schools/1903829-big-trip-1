@@ -15,7 +15,7 @@ export default class ApiService {
   }
 
   get points() {
-    return this.#load({url: 'tasks'})
+    return this.#load({url: 'points'})
       .then(ApiService.parseResponse);
   }
 
@@ -31,14 +31,13 @@ export default class ApiService {
 
   updatePoint = async (point) => {
     const response = await this.#load({
-      url: `points/${point.id}`,
+      url: `points/${ point.id }`,
       method: Method.PUT,
       body: JSON.stringify(this.#adaptToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-
     return parsedResponse;
   };
 
@@ -51,7 +50,6 @@ export default class ApiService {
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-
     return parsedResponse;
   };
 
@@ -73,8 +71,8 @@ export default class ApiService {
     headers.append('Authorization', this.#authorization);
 
     const response = await fetch(
-      `${this.#endPoint}/${url}`,
-      {method, body, headers},
+      `${this.#endPoint}/${ url }`,
+      { method, body, headers },
     );
 
     try {
@@ -85,7 +83,7 @@ export default class ApiService {
     }
   };
 
-  ////-------------------
+  //// тут чето переделать надо
   #adaptToServer = (point) => {
     const adaptedTask = {...point,
       'due_date': point.dueDate instanceof Date ? point.dueDate.toISOString() : null,
@@ -100,13 +98,13 @@ export default class ApiService {
 
     return adaptedTask;
   };
-  ////---------------------------
+  ///////////////////
 
   static parseResponse = (response) => response.json();
 
   static checkStatus = (response) => {
     if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
+      throw new Error(`${ response.status }: ${ response.statusText }`);
     }
   };
 

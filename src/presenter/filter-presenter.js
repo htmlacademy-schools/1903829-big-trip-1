@@ -1,24 +1,28 @@
 import TripFiltersTemplate from '../view/site-trip-filter.js';
 import { render, RenderPosition, replace,remove } from '../utils/render.js';
 import { FilterType, UpdateType } from '../const.js';
+import { filter } from '../utils/common.js';
 
 export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
-
+  #pointsModel = null;
   #filterComponent = null;
 
-  constructor(filterContainer, filterModel) {
+  constructor(filterContainer, filterModel, pointsModel) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
+    this.#pointsModel = pointsModel;
   }
 
   get filters() {
-    return [
-      { type: FilterType.EVERYTHING, name: 'Everything', },
-      { type: FilterType.FUTURE, name: 'Future', },
-      { type: FilterType.PAST, name: 'Past', },
-    ];
+    const points = this.#pointsModel.points;
+
+    return {
+      [FilterType.EVERYTHING]: { name: 'Everything', count: filter[FilterType.EVERYTHING](points).length, },
+      [FilterType.FUTURE]: { name: 'Future', count: filter[FilterType.FUTURE](points).length,  },
+      [FilterType.PAST]: { name: 'Past', count: filter[FilterType.PAST](points).length, },
+    };
   }
 
   destroy = () => {
@@ -30,9 +34,10 @@ export default class FilterPresenter {
   };
 
   init = () => {
+    const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
-    this.#filterComponent = new TripFiltersTemplate( this.#filterModel.filter);
+    this.#filterComponent = new TripFiltersTemplate( this.#filterModel.filter, filters);
     this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
 
     this.#filterModel.addObserver(this.#handleModelEvent);

@@ -1,6 +1,6 @@
 import AbstractObservable from '../utils/abstract-observable.js';
 import { UpdateType } from '../const.js';
-import { generateOffers } from '../utils/common.js';
+import { generateOffers, generateCities, createNewEvent } from '../utils/common.js';
 
 export default class PointsModel extends AbstractObservable {
   #points = [];
@@ -19,58 +19,64 @@ export default class PointsModel extends AbstractObservable {
     try {
       const offers = await this.#apiService.offers;
       generateOffers(offers);
+      const cities = await this.#apiService.cities;
+      generateCities(cities);
       const points = await this.#apiService.points;
-      this.#points = points.map(this.#adaptToClient);
+      this.#points = points.map((point) => this.#adaptToClient(point));
+      createNewEvent();
     } catch(err) {
       this.#points = [];
+      createNewEvent();
     }
 
     this._notify(UpdateType.INIT);
   };
 
-  updateEvent = async (updateType, update) => {
+  updatePoint = async (updateType, update) => {
     const index = this.#points.findIndex((event) => event.id === update.id);
 
     if (index === -1) {
-      throw new Error('Can\'t update unexisting event');
+      throw new Error('Can\'t update unexisting point');
     }
 
     try {
-      const response = await this.#apiService.updateTask(update);
+      const response = await this.#apiService.updatePoint(update);
       const updatedPoint = this.#adaptToClient(response);
-      this.#points = [
-        ...this.#points.slice(0, index),
-        updatedPoint,
-        ...this.#points.slice(index + 1),
-      ];
+      this.#points = [ ...this.#points.slice(0, index), update, ...this.#points.slice(index + 1), ];
       this._notify(updateType, updatedPoint);
     } catch(err) {
-      throw new Error('Can\'t update task');
+      throw new Error('Can\'t update point');
     }
   };
 
-  addEvent = (updateType, update) => {
-    this.#points = [
-      update,
-      ...this.#points,
-    ];
-
-    this._notify(updateType, update);
+  addPoint = async (updateType, update) => {
+    try {
+      const response = await this.#apiService.addPoint(update);
+      const newPoint = this.#adaptToClient(response);
+      this.#points = [newPoint, ...this.#points];
+      this._notify(updateType, newPoint);
+    } catch(err) {
+      throw new Error('Can\'t add task');
+    }
   };
 
-  deleteEvents = (updateType, update) => {
-    const index = this.#points.findIndex((event) => event.id === update.id);
+  deletePoints = (updateType, update) => {
+    const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting event');
     }
 
-    this.#points = [
-      ...this.#points.slice(0, index),
-      ...this.#points.slice(index + 1),
-    ];
-
-    this._notify(updateType);
+    try {
+      /*await*/ this.#apiService.deletePoints(update);
+      this.#points = [
+        ...this.#points.slice(0, index),
+        ...this.#points.slice(index + 1),
+      ];
+      this._notify(updateType);
+    } catch(err) {
+      throw new Error('Can\'t delete event');
+    }
   };
 
   #adaptToClient = (point) => {

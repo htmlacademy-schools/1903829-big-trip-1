@@ -14,17 +14,17 @@ const createEditPoint = (point = {}) => {
     }
   });
 
-  city.arrayCity.forEach((arrayCityElement) => {
-    if(arrayCityElement.titleCity === city.currentCity.titleCity){
-      if(city.currentCity.isShowPhoto) {
-        city.currentCity = arrayCityElement;
-        city.currentCity.isShowPhoto = true;
-      }
-      else {
-        city.currentCity = arrayCityElement;
-      }
-    }
-  });
+  // city.arrayCity.forEach((arrayCityElement) => {
+  //   if(arrayCityElement.titleCity === city.currentCity.titleCity){
+  //     if(city.currentCity.isShowPhoto) {
+  //       city.currentCity = arrayCityElement;
+  //       city.currentCity.isShowPhoto = true;
+  //     }
+  //     else {
+  //       city.currentCity = arrayCityElement;
+  //     }
+  //   }
+  // });
 
   const createphotoContainer = (photo) => (
     `<div class="event__photos-container">
@@ -129,7 +129,7 @@ const createEditPoint = (point = {}) => {
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            ${ offers.join('') }
+            ${ offers }
             </div>
             </div>
          </section>
@@ -224,8 +224,23 @@ export default class EditNewPoint extends SmartView {
     }
   };
 
+  setClickRollupHandler = (callback) => {
+    this._callback.click = callback;
+    if(!this._data.isCreateEvent) {
+      this._data.city.currentCity.isShowPhoto = false;
+    }
+    const rollupButtonTemplate = this.element.querySelector('.event__rollup-btn');
+    if (rollupButtonTemplate) {
+      rollupButtonTemplate.addEventListener('click', this.#eventRollupBtnClickHandler);
+    }
+  };
+
   #eventRollupBtnClickHandler = (evt) => {
     evt.preventDefault();
+    buttonAddNewPoint.disabled = false;
+    this._data.isDisabled = false;
+    this._data.isSaving = false;
+    this._data.isDeleting = false;
     this._callback.click();
   };
 
