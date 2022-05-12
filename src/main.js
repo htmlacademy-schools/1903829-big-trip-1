@@ -12,7 +12,7 @@ import ApiService from './api-service.js';
 const AUTHORIZATION = 'Basic ffg7e433kkd9fOps';
 const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 
-const siteMenuComponent = new TripTabsTemplate(); //
+const siteMenuComponent = new TripTabsTemplate();
 const tripEventsElement = document.querySelector('.trip-events');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');

@@ -7,7 +7,7 @@ const createTripInfo = (points) => {
   const cities = points.map((point)=> point.city.currentCity.name);
   // eslint-disable-next-line no-unused-vars
   let totalPrice = null;
-  points.forEach((point) => { totalPrice += Number(point.basePrice); });
+  points.forEach((point) => { totalPrice += Number(point.startPrice); });
   const dateBegin = dayjs(points[0].date.start).format('MMM D');
   const dateEnd = dayjs(points[points.length-1].date.end).format('DD');
 
@@ -28,8 +28,8 @@ const createTripInfo = (points) => {
 
   return `<section class="trip-main__trip-info  trip-info">
             <div class="trip-info__main">
-              <h1 class="trip-info__title">${tripTitles}</h1>
-              <p class="trip-info__dates">${dateBegin}&nbsp;&mdash;&nbsp;${dateEnd}</p>
+              <h1 class="trip-info__title">${ tripTitles }</h1>
+              <p class="trip-info__dates">${ dateBegin }&nbsp;&mdash;&nbsp;${ dateEnd }</p>
             </div>
             <p class="trip-info__cost">
               Total: &euro;&nbsp;<span class="trip-info__cost-value"}</span>

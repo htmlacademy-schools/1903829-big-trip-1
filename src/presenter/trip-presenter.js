@@ -149,7 +149,7 @@ export default class TripPresenter {
     this.#currentSortType = SortType.DAY.text;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     clearStatistics();
-    newEvent.type.currentType.selectedOffers = [];
+    //newEvent.type.currentType.selectedOffer = [];
     this.#pointNewPresenter.init(newEvent);
   };
 

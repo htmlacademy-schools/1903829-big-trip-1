@@ -43,8 +43,8 @@ export const createEventTypesMarkup = (types, chosenEventType) => {
     const label = type.charAt(0).toUpperCase() + type.slice(1);
 
     return `<div class="event__type-item">
-                          <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
-                          <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${label}</label>
+                          <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+                          <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ label }</label>
                         </div>`;
   };
 
@@ -91,24 +91,23 @@ export const createNewEvent = () => {
     city: {
       currentCity: {
         description: 's',
-        isShowPhoto: true,
-        pictures: [],
-        name: ''
+        photos: [],
+        titleCity: ''
       },
       arrayCity: arrayCities
     },
     date: {
-      dataBeginEvent: dayjs(),
-      dataEndEvent: dayjs().add(1, 'hour')
+      start: dayjs(),
+      end: dayjs().add(1, 'hour')
     },
-    basePrice: 0,
-    allPrice: null,
+    startPrice: 0,
+    price: null,
     type: {
       currentType: {
-        //allOffer: typesList['taxi'].allOffer,
-        //img: typesList['taxi'].img,
-        selectedOffers: [],
-        title: 'taxi'
+        title: 'taxi',
+        img: 'img/icons/taxi.png',
+        allOffer: [],
+        selectedOffer: [],
       },
       arrayType: arrayTypes
     },

@@ -3,8 +3,10 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
 
+const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
+
 const createEditPoint = (point = {}) => {
-  const  { date = null, type = null, city = null, allPrice = null, offers = null} = point;
+  const  { date, type, city, allPrice, offers } = point;
   const startDateRend  = dateRend(date.start, 'DD/MM/YY HH:mm');
   const endDateRend  = dateRend(date.end, 'DD/MM/YY HH:mm');
 
@@ -160,7 +162,7 @@ export default class EditNewPoint extends SmartView {
     this.#setBeginData();
     this.#setEndData();
     this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setEventRollupBtnHandler(this._callback.click);
+    this.setClickRollupHandler(this._callback.click);
     this.setDeleteClickHandler(this._callback.deleteClick);
   };
 
@@ -206,22 +208,21 @@ export default class EditNewPoint extends SmartView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
+    buttonAddPoint.disabled = false;
+    this._data.isDisabled = false;
+    this._data.isSaving = false;
+    this._data.isDeleting = false;
+    const priceValue = this.element.querySelector('#event-price-1').value;
+    this._data.startPrice = Number(priceValue);
+    this._data.isCreateEvent = false;
     const offers = document.querySelectorAll('.event__offer-checkbox');
-    const filteredOffersChecked = Array.from(offers).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+    const filteredOffersChecked = Array.from(offers).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value.split('-').join(' '));
     const filteredOffersData = Array.from(this._data.type.currentType.allOffer)
       .filter((offer) =>
         filteredOffersChecked
           .some((filteredOfferChecked) => filteredOfferChecked === offer.title.id));
     this._data.type.currentType.selectedOffer = filteredOffersData;
     this._callback.formSubmit(this._data);
-  };
-
-  setEventRollupBtnHandler = (callback) => {
-    this._callback.rollupClick = callback;
-    const rollupButtonTemplate = this.element.querySelector('.event__rollup-btn');
-    if (rollupButtonTemplate) {
-      rollupButtonTemplate.addEventListener('click', this.#eventRollupBtnClickHandler);
-    }
   };
 
   setClickRollupHandler = (callback) => {
@@ -237,7 +238,7 @@ export default class EditNewPoint extends SmartView {
 
   #eventRollupBtnClickHandler = (evt) => {
     evt.preventDefault();
-    buttonAddNewPoint.disabled = false;
+    buttonAddPoint.disabled = false;
     this._data.isDisabled = false;
     this._data.isSaving = false;
     this._data.isDeleting = false;
@@ -251,11 +252,12 @@ export default class EditNewPoint extends SmartView {
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
+    buttonAddPoint.disabled = false;
     this._callback.deleteClick(this._data);
   };
 
   #setBeginData = () => {
-    const currentDate = this._data.date ? this._data.date.dataBeginEvent : '';
+    const currentDate = this._data.date ? this._data.date.start : '';
     this.#datepicker = flatpickr(
       this.element.querySelector('#event-start-time-1'),
       {
@@ -268,7 +270,7 @@ export default class EditNewPoint extends SmartView {
   };
 
   #setEndData = () => {
-    const currentDate = this._data.date ? this._data.date.dataEndEvent : '';
+    const currentDate = this._data.date ? this._data.date.end : '';
     this.#datepicker = flatpickr(
       this.element.querySelector('#event-end-time-1'),
       {
@@ -284,13 +286,13 @@ export default class EditNewPoint extends SmartView {
     this.updateData({
       date: { start: userDate, end: this._data.date.end },
     });
-    this._data.time =  countDuration({dataBeginEvent: userDate, dataEndEvent: this._data.date.dataEndEvent});
+    this._data.time =  countDuration({ start: userDate, end: this._data.date.end });
   };
 
   #endDateChangeHandler = ([userDate]) => {
     this.updateData({
       date: { begin: this._data.date.begin, endt: userDate },
     });
-    this._data.time = countDuration({ dataBeginEvent: this._data.date.dataBeginEvent, dataEndEvent: userDate });
+    this._data.time = countDuration({ start: this._data.date.start, end: userDate });
   };
 }

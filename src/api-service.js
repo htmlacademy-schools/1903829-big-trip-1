@@ -15,18 +15,15 @@ export default class ApiService {
   }
 
   get points() {
-    return this.#load({url: 'points'})
-      .then(ApiService.parseResponse);
+    return this.#load({url: 'points'}).then(ApiService.parseResponse);
   }
 
   get offers() {
-    return this.#load({url: 'offers'})
-      .then(ApiService.parseResponse);
+    return this.#load({url: 'offers'}).then(ApiService.parseResponse);
   }
 
   get cities() {
-    return this.#load({url: 'destinations'})
-      .then(ApiService.parseResponse);
+    return this.#load({url: 'destinations'}).then(ApiService.parseResponse);
   }
 
   updatePoint = async (point) => {
@@ -83,22 +80,24 @@ export default class ApiService {
     }
   };
 
-  //// тут чето переделать надо
   #adaptToServer = (point) => {
-    const adaptedTask = {...point,
-      'due_date': point.dueDate instanceof Date ? point.dueDate.toISOString() : null,
-      'is_favorite': point.isFavorite,
-      'repeating_days': point.repeating,
+    const adaptedPoint = {
+      'id': point.id,
+      'is_favorite': point.favorite,
+      'date_from': point.date.start,
+      'date_to': point.date.end,
+      'base_price': Number(point.startPrice),
+      'type': point.type.currentType.title,
+      'destination': {
+        'titleCity': point.city.currentCity.titleCity,
+        'description': point.city.currentCity.description,
+        'photos': point.city.currentCity.photos,
+      },
+      'offers': point.type.currentType.selectedOffers,
     };
 
-    delete adaptedTask.dueDate;
-    delete adaptedTask.isArchive;
-    delete adaptedTask.isFavorite;
-    delete adaptedTask.repeating;
-
-    return adaptedTask;
+    return adaptedPoint;
   };
-  ///////////////////
 
   static parseResponse = (response) => response.json();
 
