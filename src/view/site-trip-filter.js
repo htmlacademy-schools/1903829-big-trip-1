@@ -1,4 +1,4 @@
-import AbstractView from './Abstract-view';
+import AbstractView from './abstract-view';
 
 const createTripFiltersTemplate = (currentFilterType) => (
   `<form class="trip-filters" action="#" method="get">

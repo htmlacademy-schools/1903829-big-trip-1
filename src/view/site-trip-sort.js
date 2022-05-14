@@ -1,4 +1,4 @@
-import AbstractView from './Abstract-view';
+import AbstractView from './abstract-view';
 import { SortType } from '../utils/informations';
 
 const createTripSortTemplate = (currentSortType) => (

@@ -5,7 +5,7 @@ import { render, RenderPosition, remove } from '../utils/render';
 import { SortType, sortDate, sortTime, sortPrice } from '../utils/informations';
 import { UpdateType } from '../const';
 import { FilterType, UserAction } from '../const';
-import EventNewPresenter from './event-new-presenter';
+import EventNewPresenter from './point-new-presenter';
 import TripSortTemplate from '../view/site-trip-sort';
 import { filter } from '../utils/filter';
 import { clearStatistics } from '../utils/statistics.js';

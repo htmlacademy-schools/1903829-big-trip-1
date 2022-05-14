@@ -1,4 +1,4 @@
-import AbstractView from './Abstract-view';
+import AbstractView from './abstract-view';
 
 const createNoTaskTemplate = () => (
   `<p class="trip-events__msg">
