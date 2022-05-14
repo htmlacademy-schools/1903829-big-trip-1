@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import { wayPointTypes } from './informations';
-import { countDuration } from './functionsWithDayjs';
 import { FilterType } from '../const';
 
 export const typesList = wayPointTypes();
@@ -77,46 +76,6 @@ export const generateOffers = (alloffers) => {
 };
 
 export const sortStatistics = (a, b) => b[1] - a[1];
-
-export let arrayCities = null;
-export const generateCities = (cities) => {
-  arrayCities = cities.map((city) => ({ ...city }));
-};
-
-export let newEvent = null;
-export const createNewEvent = () => {
-  newEvent = {
-    favorite: false,
-    isCreateEvent: true,
-    city: {
-      currentCity: {
-        description: 's',
-        photos: [],
-        titleCity: ''
-      },
-      arrayCity: arrayCities
-    },
-    date: {
-      start: dayjs(),
-      end: dayjs().add(1, 'hour')
-    },
-    startPrice: 0,
-    price: null,
-    type: {
-      currentType: {
-        title: 'taxi',
-        img: 'img/icons/taxi.png',
-        allOffer: [],
-        selectedOffer: [],
-      },
-      arrayType: arrayTypes
-    },
-    time: countDuration(dayjs(), dayjs().add(1, 'hour')),
-    isDisabled: false,
-    isDeleting: false,
-    isSaving: false,
-  };
-};
 
 export const filter = {
   [FilterType.EVERYTHING]: (events) => events,

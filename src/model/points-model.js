@@ -1,48 +1,8 @@
 import AbstractObservable from '../utils/abstract-observable.js';
 import { UpdateType } from '../const.js';
-import { generateOffers, generateCities, createNewEvent } from '../utils/common.js';
-import { countDuration } from '../utils/functionsWithDayjs.js';
-import { wayPointTypes } from '../utils/informations.js';
-
-const arrayCities = null;
-const arrayTypes = [];
-const listTypes = wayPointTypes();
-
-const adaptToClient = (point) => {
-  const adaptedPoint = {
-    id: point.id,
-    isCreateEvent: false,
-    favorite: point.is_favorite,
-    city: {
-      currentCity: {
-        titleCity: point.destination.titleCity,
-        description: point.destination.description,
-        photos: point.destination.photos
-      },
-      arrayCity: arrayCities
-    },
-    date: {
-      start: point.date_from,
-      end: point.date_to
-    },
-    startPrice: point.base_price,
-    price: null,
-    type: {
-      currentType: {
-        title: point.type,
-        img: listTypes[point.type].img,
-        allOffer: listTypes[point.type].allOffer,
-        selectedOffer: point.offers,
-      },
-      arrayType: arrayTypes
-    },
-    time: countDuration(point.date_from, point.date_to),
-    isDisabled: false,
-    isDeleting: false,
-    isSaving: false,
-  };
-  return adaptedPoint;
-};
+import { generateOffers } from '../utils/common.js';
+import { createNewEvent } from '../utils/adapt.js';
+import { adaptToClient, generateCities } from '../utils/adapt.js';
 
 export default class PointsModel extends AbstractObservable {
   #points = [];

@@ -2,40 +2,66 @@ import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
+import { createOffer } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
 const createEditPoint = (point = {}) => {
-  const  { date, type, city, allPrice, offers } = point;
+  const  { date, type, city, startPrice, isDisabled, isDeleting, isSaving } = point;
   const startDateRend  = dateRend(date.start, 'DD/MM/YY HH:mm');
   const endDateRend  = dateRend(date.end, 'DD/MM/YY HH:mm');
+  let offers = '';
+  let allCitiesTemplate = '';
 
   type.arrayType.forEach((element) => {
     if (element.title === type.currentType.title) {
-      type.currentType = element;
+      type.currentType = { ...element, selectedOffers: type.currentType.selectedOffers ? type.currentType.selectedOffers : [] };
     }
   });
 
-  // city.arrayCity.forEach((arrayCityElement) => {
-  //   if(arrayCityElement.titleCity === city.currentCity.titleCity){
-  //     if(city.currentCity.isShowPhoto) {
-  //       city.currentCity = arrayCityElement;
-  //       city.currentCity.isShowPhoto = true;
-  //     }
-  //     else {
-  //       city.currentCity = arrayCityElement;
-  //     }
-  //   }
-  // });
+  type.currentType.allOffer.forEach((offer) => {
+    let checked = false;
+    type.currentType.selectedOffers.forEach((selectedOffer) => {
+      if (selectedOffer.id === offer.id) {
+        checked = true;
+      }
+    });
+    const offerCurrent = createOffer(offer, checked);
+    offers += offerCurrent;
+  });
+
+  let flag = false;
+  city.arrayCity.forEach((cityElement) => {
+    if (cityElement.titleCity === city.currentCity.titleCity) {
+      flag = true;
+      city.currentCity = cityElement;
+    }
+  });
+
+  if (!flag) {
+    city.currentCity = {
+      ...city.currentCity,
+      description: '',
+      pictures: []
+    };
+  }
+
+  if (city.arrayCity) {
+    city.arrayCity.forEach((ct) => {
+      allCitiesTemplate += `<option value="${ ct.titleCity }"></option>`;
+    });
+  }
 
   const createphotoContainer = (photo) => (
     `<div class="event__photos-container">
       <div class="event__photos-tape">
-        ${photo}
+        ${ photo }
       </div>
     </div>`
   );
   const photos = createphotoContainer(city.currentCity.photos);
+
+  const buttonDeleteText = (isDeleting ? 'Deleting...' : 'Delete');
 
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -96,13 +122,7 @@ const createEditPoint = (point = {}) => {
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city.currentCity.titleCity}" list="destination-list-1">
             <datalist id="destination-list-1">
-              <option value="Podgorica"></option>
-              <option value="Moscow"></option>
-              <option value="New York"></option>
-              <option value="Bratislava"></option>
-              <option value="Oslo"></option>
-              <option value="Ottawa"></option>
-              <option value="Prague"></option>
+              ${ allCitiesTemplate }
             </datalist>
           </div>
     
@@ -117,30 +137,35 @@ const createEditPoint = (point = {}) => {
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
-              ${ allPrice } &euro;
+              ${ startPrice } &euro;
             </label>
             <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
           </div>
     
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__save-btn  btn  btn--blue" type="submit"${ isDisabled ? 'disabled' : '' }>
+            ${ isSaving ? 'Saving...' : 'Save' }
+          </button>
+          <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
+            ${!point.isCreateEvent ? buttonDeleteText : 'Cancel'}
+          </button>
+          ${!point.isCreateEvent ? `
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
-          </button>
+          </button>` : ''}
         </header>
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            ${ offers }
+            <div class="event__available-offers">
+              ${ offers }
             </div>
-            </div>
-         </section>
-    
-         <section class="event__section  event__section--destination">
+        </section>
+        ${city.currentCity.description === '' && photos.length === 0 ? '' :
+    `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Description</h3>
           <p class="event__destination-description">${ city.currentCity.description }</p>
           ${ photos }
-        </section>
+        </section>`}
       </section>
     </form>
   </li> `;

@@ -11,8 +11,8 @@ import { filter } from '../utils/filter';
 import { clearStatistics } from '../utils/statistics.js';
 import LoadingView from '../view/loading-view';
 import { State } from './point-presenter';
-import { newEvent } from '../utils/common';
 import PointsInfoView from '../view/site-trip-info-view';
+import { newEvent } from '../utils/adapt';
 
 const tripMainContainer = document.querySelector('.trip-main');
 

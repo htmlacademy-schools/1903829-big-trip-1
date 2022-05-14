@@ -2,14 +2,14 @@ import { dateRend } from '../utils/functionsWithDayjs.js';
 import AbstractView from './Abstract-view.js';
 
 const createTripEventsView = (point) => {
-  const { date, type, city, allPrice, time, isFavorite } = point;
+  const { date, type, city, startPrice, time, favorite } = point;
 
   const startDate = dateRend(date.start, 'DD/MM/YY HH:mm');
   const startDayMonth = dateRend(date.start, 'DD.MM');
   const endDayMonth = dateRend(date.end, 'DD.MM');
 
   let favoriteClass = '';
-  if (isFavorite === true) {
+  if (favorite === true) {
     favoriteClass = 'event__favorite-btn--active';
   }
 
@@ -29,7 +29,7 @@ const createTripEventsView = (point) => {
                   <p class="event__duration">${ time.duration } </p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${ allPrice }</span>
+                  &euro;&nbsp;<span class="event__price-value">${ startPrice }</span>
                 </p>
                   <h4 class="visually-hidden">Offers:</h4>
                   <ul class="event__selected-offers">
