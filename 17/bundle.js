@@ -304,8 +304,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/abstract-observable.js */ "./src/utils/abstract-observable.js");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../const.js */ "./src/const.js");
 /* harmony import */ var _utils_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/common.js */ "./src/utils/common.js");
-/* harmony import */ var _utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/functionsWithDayjs.js */ "./src/utils/functionsWithDayjs.js");
-/* harmony import */ var _utils_informations_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/informations.js */ "./src/utils/informations.js");
+/* harmony import */ var _utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/adapt.js */ "./src/utils/adapt.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
@@ -327,45 +326,6 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 
 
-const arrayCities = null;
-const arrayTypes = [];
-const listTypes = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_4__.wayPointTypes)();
-
-const adaptToClient = point => {
-  const adaptedPoint = {
-    id: point.id,
-    isCreateEvent: false,
-    favorite: point.is_favorite,
-    city: {
-      currentCity: {
-        titleCity: point.destination.titleCity,
-        description: point.destination.description,
-        photos: point.destination.photos
-      },
-      arrayCity: arrayCities
-    },
-    date: {
-      start: point.date_from,
-      end: point.date_to
-    },
-    startPrice: point.base_price,
-    price: null,
-    type: {
-      currentType: {
-        title: point.type,
-        img: listTypes[point.type].img,
-        allOffer: listTypes[point.type].allOffer,
-        selectedOffer: point.offers
-      },
-      arrayType: arrayTypes
-    },
-    time: (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_3__.countDuration)(point.date_from, point.date_to),
-    isDisabled: false,
-    isDeleting: false,
-    isSaving: false
-  };
-  return adaptedPoint;
-};
 
 var _points = /*#__PURE__*/new WeakMap();
 
@@ -390,16 +350,16 @@ class PointsModel extends _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE
         const offers = await _classPrivateFieldGet(this, _apiService).offers;
         (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_2__.generateOffers)(offers);
         const cities = await _classPrivateFieldGet(this, _apiService).cities;
-        (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_2__.generateCities)(cities);
+        (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__.generateCities)(cities);
         const points = await _classPrivateFieldGet(this, _apiService).points;
 
-        _classPrivateFieldSet(this, _points, points.map(point => adaptToClient(point)));
+        _classPrivateFieldSet(this, _points, points.map(point => (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__.adaptToClient)(point)));
 
-        (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_2__.createNewEvent)();
+        (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__.createNewEvent)();
       } catch (err) {
         _classPrivateFieldSet(this, _points, []);
 
-        (0,_utils_common_js__WEBPACK_IMPORTED_MODULE_2__.createNewEvent)();
+        (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__.createNewEvent)();
       }
 
       this._notify(_const_js__WEBPACK_IMPORTED_MODULE_1__.UpdateType.INIT);
@@ -414,7 +374,7 @@ class PointsModel extends _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE
 
       try {
         const response = await _classPrivateFieldGet(this, _apiService).updatePoint(update);
-        const updatedPoint = adaptToClient(response);
+        const updatedPoint = (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__.adaptToClient)(response);
 
         _classPrivateFieldSet(this, _points, [..._classPrivateFieldGet(this, _points).slice(0, index), update, ..._classPrivateFieldGet(this, _points).slice(index + 1)]);
 
@@ -427,7 +387,7 @@ class PointsModel extends _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE
     _defineProperty(this, "addPoint", async (updateType, update) => {
       try {
         const response = await _classPrivateFieldGet(this, _apiService).addPoint(update);
-        const newPoint = adaptToClient(response);
+        const newPoint = (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_3__.adaptToClient)(response);
 
         _classPrivateFieldSet(this, _points, [newPoint, ..._classPrivateFieldGet(this, _points)]);
 
@@ -1067,8 +1027,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/filter */ "./src/utils/filter.js");
 /* harmony import */ var _utils_statistics_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/statistics.js */ "./src/utils/statistics.js");
 /* harmony import */ var _view_loading_view__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../view/loading-view */ "./src/view/loading-view.js");
-/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
-/* harmony import */ var _view_site_trip_info_view__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../view/site-trip-info-view */ "./src/view/site-trip-info-view.js");
+/* harmony import */ var _view_site_trip_info_view__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../view/site-trip-info-view */ "./src/view/site-trip-info-view.js");
+/* harmony import */ var _utils_adapt__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../utils/adapt */ "./src/utils/adapt.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
@@ -1360,7 +1320,7 @@ class TripPresenter {
 
       (0,_utils_statistics_js__WEBPACK_IMPORTED_MODULE_9__.clearStatistics)(); //newEvent.type.currentType.selectedOffer = [];
 
-      _classPrivateFieldGet(this, _pointNewPresenter).init(_utils_common__WEBPACK_IMPORTED_MODULE_11__.newEvent);
+      _classPrivateFieldGet(this, _pointNewPresenter).init(_utils_adapt__WEBPACK_IMPORTED_MODULE_12__.newEvent);
     });
 
     _classPrivateFieldInitSpec(this, _renderSort, {
@@ -1437,7 +1397,7 @@ class TripPresenter {
 
     _defineProperty(this, "renderInfoTrip", () => {
       if (this.points.length > 0) {
-        _classPrivateFieldSet(this, _infoTrip, new _view_site_trip_info_view__WEBPACK_IMPORTED_MODULE_12__["default"](this.points));
+        _classPrivateFieldSet(this, _infoTrip, new _view_site_trip_info_view__WEBPACK_IMPORTED_MODULE_11__["default"](this.points));
 
         (0,_utils_render__WEBPACK_IMPORTED_MODULE_3__.render)(tripMainContainer, _classPrivateFieldGet(this, _infoTrip), _utils_render__WEBPACK_IMPORTED_MODULE_3__.RenderPosition.AFTERBEGIN);
       }
@@ -1553,6 +1513,106 @@ class AbstractObservable {
 
 /***/ }),
 
+/***/ "./src/utils/adapt.js":
+/*!****************************!*\
+  !*** ./src/utils/adapt.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "generateCities": () => (/* binding */ generateCities),
+/* harmony export */   "adaptToClient": () => (/* binding */ adaptToClient),
+/* harmony export */   "newEvent": () => (/* binding */ newEvent),
+/* harmony export */   "createNewEvent": () => (/* binding */ createNewEvent)
+/* harmony export */ });
+/* harmony import */ var _utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/functionsWithDayjs.js */ "./src/utils/functionsWithDayjs.js");
+/* harmony import */ var _utils_informations_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/informations.js */ "./src/utils/informations.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+let arrayCities = null;
+const arrayTypes = [];
+const listTypes = (0,_utils_informations_js__WEBPACK_IMPORTED_MODULE_1__.wayPointTypes)();
+const generateCities = cities => {
+  arrayCities = cities.map(city => ({ ...city
+  }));
+};
+const adaptToClient = point => {
+  const adaptedPoint = {
+    id: point.id,
+    isCreateEvent: false,
+    favorite: point.is_favorite,
+    city: {
+      currentCity: {
+        titleCity: point.destination.titleCity,
+        description: point.destination.description,
+        photos: point.destination.photos
+      },
+      arrayCity: arrayCities
+    },
+    date: {
+      start: point.date_from,
+      end: point.date_to
+    },
+    startPrice: point.base_price,
+    price: null,
+    type: {
+      currentType: {
+        title: point.type,
+        img: listTypes[point.type].img,
+        allOffer: listTypes[point.type].allOffer,
+        selectedOffer: point.offers
+      },
+      arrayType: arrayTypes
+    },
+    time: (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.countDuration)(point.date_from, point.date_to),
+    isDisabled: false,
+    isDeleting: false,
+    isSaving: false
+  };
+  return adaptedPoint;
+};
+let newEvent = null;
+const createNewEvent = () => {
+  newEvent = {
+    favorite: false,
+    isCreateEvent: true,
+    city: {
+      currentCity: {
+        description: 's',
+        photos: [],
+        titleCity: ''
+      },
+      arrayCity: arrayCities
+    },
+    date: {
+      start: dayjs__WEBPACK_IMPORTED_MODULE_2___default()(),
+      end: dayjs__WEBPACK_IMPORTED_MODULE_2___default()().add(1, 'hour')
+    },
+    startPrice: 0,
+    price: null,
+    type: {
+      currentType: {
+        title: 'taxi',
+        img: 'img/icons/taxi.png',
+        allOffer: [],
+        selectedOffer: []
+      },
+      arrayType: arrayTypes
+    },
+    time: (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.countDuration)(dayjs__WEBPACK_IMPORTED_MODULE_2___default()(), dayjs__WEBPACK_IMPORTED_MODULE_2___default()().add(1, 'hour')),
+    isDisabled: false,
+    isDeleting: false,
+    isSaving: false
+  };
+};
+
+/***/ }),
+
 /***/ "./src/utils/common.js":
 /*!*****************************!*\
   !*** ./src/utils/common.js ***!
@@ -1571,19 +1631,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "createOffer": () => (/* binding */ createOffer),
 /* harmony export */   "generateOffers": () => (/* binding */ generateOffers),
 /* harmony export */   "sortStatistics": () => (/* binding */ sortStatistics),
-/* harmony export */   "arrayCities": () => (/* binding */ arrayCities),
-/* harmony export */   "generateCities": () => (/* binding */ generateCities),
-/* harmony export */   "newEvent": () => (/* binding */ newEvent),
-/* harmony export */   "createNewEvent": () => (/* binding */ createNewEvent),
 /* harmony export */   "filter": () => (/* binding */ filter),
 /* harmony export */   "sorttDate": () => (/* binding */ sorttDate)
 /* harmony export */ });
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _informations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./informations */ "./src/utils/informations.js");
-/* harmony import */ var _functionsWithDayjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./functionsWithDayjs */ "./src/utils/functionsWithDayjs.js");
-/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../const */ "./src/const.js");
-
+/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../const */ "./src/const.js");
 
 
 
@@ -1654,49 +1708,10 @@ const generateOffers = alloffers => {
   });
 };
 const sortStatistics = (a, b) => b[1] - a[1];
-let arrayCities = null;
-const generateCities = cities => {
-  arrayCities = cities.map(city => ({ ...city
-  }));
-};
-let newEvent = null;
-const createNewEvent = () => {
-  newEvent = {
-    favorite: false,
-    isCreateEvent: true,
-    city: {
-      currentCity: {
-        description: 's',
-        photos: [],
-        titleCity: ''
-      },
-      arrayCity: arrayCities
-    },
-    date: {
-      start: dayjs__WEBPACK_IMPORTED_MODULE_0___default()(),
-      end: dayjs__WEBPACK_IMPORTED_MODULE_0___default()().add(1, 'hour')
-    },
-    startPrice: 0,
-    price: null,
-    type: {
-      currentType: {
-        title: 'taxi',
-        img: 'img/icons/taxi.png',
-        allOffer: [],
-        selectedOffer: []
-      },
-      arrayType: arrayTypes
-    },
-    time: (0,_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_2__.countDuration)(dayjs__WEBPACK_IMPORTED_MODULE_0___default()(), dayjs__WEBPACK_IMPORTED_MODULE_0___default()().add(1, 'hour')),
-    isDisabled: false,
-    isDeleting: false,
-    isSaving: false
-  };
-};
 const filter = {
-  [_const__WEBPACK_IMPORTED_MODULE_3__.FilterType.EVERYTHING]: events => events,
-  [_const__WEBPACK_IMPORTED_MODULE_3__.FilterType.FUTURE]: events => events.filter(event => dayjs__WEBPACK_IMPORTED_MODULE_0___default()().isBefore(dayjs__WEBPACK_IMPORTED_MODULE_0___default()(event.date.dataBeginEvent))),
-  [_const__WEBPACK_IMPORTED_MODULE_3__.FilterType.PAST]: events => events.filter(event => dayjs__WEBPACK_IMPORTED_MODULE_0___default()().isAfter(dayjs__WEBPACK_IMPORTED_MODULE_0___default()(event.date.dataBeginEvent)))
+  [_const__WEBPACK_IMPORTED_MODULE_2__.FilterType.EVERYTHING]: events => events,
+  [_const__WEBPACK_IMPORTED_MODULE_2__.FilterType.FUTURE]: events => events.filter(event => dayjs__WEBPACK_IMPORTED_MODULE_0___default()().isBefore(dayjs__WEBPACK_IMPORTED_MODULE_0___default()(event.date.dataBeginEvent))),
+  [_const__WEBPACK_IMPORTED_MODULE_2__.FilterType.PAST]: events => events.filter(event => dayjs__WEBPACK_IMPORTED_MODULE_0___default()().isAfter(dayjs__WEBPACK_IMPORTED_MODULE_0___default()(event.date.dataBeginEvent)))
 };
 const sorttDate = (taskA, taskB) => dayjs__WEBPACK_IMPORTED_MODULE_0___default()(taskA.date.start).diff(dayjs__WEBPACK_IMPORTED_MODULE_0___default()(taskB.date.start));
 
@@ -2364,6 +2379,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_flatpickr_dist_flatpickr_min_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/flatpickr/dist/flatpickr.min.css */ "./node_modules/flatpickr/dist/flatpickr.min.css");
 /* harmony import */ var _utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/functionsWithDayjs.js */ "./src/utils/functionsWithDayjs.js");
 /* harmony import */ var _Smart_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Smart-view */ "./src/view/Smart-view.js");
+/* harmony import */ var _utils_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/common */ "./src/utils/common.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
@@ -2384,6 +2400,7 @@ function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { 
 
 
 
+
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
 const createEditPoint = (point = {}) => {
@@ -2391,26 +2408,52 @@ const createEditPoint = (point = {}) => {
     date,
     type,
     city,
-    allPrice,
-    offers
+    startPrice,
+    isDisabled,
+    isDeleting,
+    isSaving
   } = point;
   const startDateRend = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_2__.dateRend)(date.start, 'DD/MM/YY HH:mm');
   const endDateRend = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_2__.dateRend)(date.end, 'DD/MM/YY HH:mm');
+  let offers = '';
+  let allCitiesTemplate = '';
   type.arrayType.forEach(element => {
     if (element.title === type.currentType.title) {
-      type.currentType = element;
+      type.currentType = { ...element,
+        selectedOffers: type.currentType.selectedOffers ? type.currentType.selectedOffers : []
+      };
     }
-  }); // city.arrayCity.forEach((arrayCityElement) => {
-  //   if(arrayCityElement.titleCity === city.currentCity.titleCity){
-  //     if(city.currentCity.isShowPhoto) {
-  //       city.currentCity = arrayCityElement;
-  //       city.currentCity.isShowPhoto = true;
-  //     }
-  //     else {
-  //       city.currentCity = arrayCityElement;
-  //     }
-  //   }
-  // });
+  });
+  type.currentType.allOffer.forEach(offer => {
+    let checked = false;
+    type.currentType.selectedOffers.forEach(selectedOffer => {
+      if (selectedOffer.id === offer.id) {
+        checked = true;
+      }
+    });
+    const offerCurrent = (0,_utils_common__WEBPACK_IMPORTED_MODULE_4__.createOffer)(offer, checked);
+    offers += offerCurrent;
+  });
+  let flag = false;
+  city.arrayCity.forEach(cityElement => {
+    if (cityElement.titleCity === city.currentCity.titleCity) {
+      flag = true;
+      city.currentCity = cityElement;
+    }
+  });
+
+  if (!flag) {
+    city.currentCity = { ...city.currentCity,
+      description: '',
+      pictures: []
+    };
+  }
+
+  if (city.arrayCity) {
+    city.arrayCity.forEach(ct => {
+      allCitiesTemplate += `<option value="${ct.titleCity}"></option>`;
+    });
+  }
 
   const createphotoContainer = photo => `<div class="event__photos-container">
       <div class="event__photos-tape">
@@ -2419,6 +2462,7 @@ const createEditPoint = (point = {}) => {
     </div>`;
 
   const photos = createphotoContainer(city.currentCity.photos);
+  const buttonDeleteText = isDeleting ? 'Deleting...' : 'Delete';
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
@@ -2478,13 +2522,7 @@ const createEditPoint = (point = {}) => {
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city.currentCity.titleCity}" list="destination-list-1">
             <datalist id="destination-list-1">
-              <option value="Podgorica"></option>
-              <option value="Moscow"></option>
-              <option value="New York"></option>
-              <option value="Bratislava"></option>
-              <option value="Oslo"></option>
-              <option value="Ottawa"></option>
-              <option value="Prague"></option>
+              ${allCitiesTemplate}
             </datalist>
           </div>
     
@@ -2499,30 +2537,34 @@ const createEditPoint = (point = {}) => {
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
-              ${allPrice} &euro;
+              ${startPrice} &euro;
             </label>
             <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
           </div>
     
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled ? 'disabled' : ''}>
+            ${isSaving ? 'Saving...' : 'Save'}
+          </button>
+          <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
+            ${!point.isCreateEvent ? buttonDeleteText : 'Cancel'}
+          </button>
+          ${!point.isCreateEvent ? `
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
-          </button>
+          </button>` : ''}
         </header>
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            ${offers}
+            <div class="event__available-offers">
+              ${offers}
             </div>
-            </div>
-         </section>
-    
-         <section class="event__section  event__section--destination">
+        </section>
+        ${city.currentCity.description === '' && photos.length === 0 ? '' : `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Description</h3>
           <p class="event__destination-description">${city.currentCity.description}</p>
           ${photos}
-        </section>
+        </section>`}
       </section>
     </form>
   </li> `;
@@ -2825,16 +2867,16 @@ const createTripEventsView = point => {
     date,
     type,
     city,
-    allPrice,
+    startPrice,
     time,
-    isFavorite
+    favorite
   } = point;
   const startDate = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.dateRend)(date.start, 'DD/MM/YY HH:mm');
   const startDayMonth = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.dateRend)(date.start, 'DD.MM');
   const endDayMonth = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__.dateRend)(date.end, 'DD.MM');
   let favoriteClass = '';
 
-  if (isFavorite === true) {
+  if (favorite === true) {
     favoriteClass = 'event__favorite-btn--active';
   }
 
@@ -2854,7 +2896,7 @@ const createTripEventsView = point => {
                   <p class="event__duration">${time.duration} </p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${allPrice}</span>
+                  &euro;&nbsp;<span class="event__price-value">${startPrice}</span>
                 </p>
                   <h4 class="visually-hidden">Offers:</h4>
                   <ul class="event__selected-offers">
