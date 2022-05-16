@@ -1,6 +1,6 @@
 import { createElement } from '../utils/render.js';
 
-const timeOut = 600;
+export const timeOut = 600;
 
 export default class AbstractView {
   #element = null;
