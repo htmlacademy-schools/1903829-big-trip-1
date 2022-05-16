@@ -197,7 +197,7 @@ export default class TripPresenter {
     }
   };
 
-  renderInfoTrip = () => {
+  renderTrip = () => {
     if (this.points.length > 0 ) {
       this.#infoTrip = new PointsInfoView(this.points);
       render(tripMainContainer, this.#infoTrip, RenderPosition.AFTERBEGIN);
@@ -219,7 +219,7 @@ export default class TripPresenter {
 
     this.#renderSort();
     this.#renderPointList();
-    this.renderInfoTrip();
+    this.renderTrip();
     this.#renderPoints(points);
     this.#handleSortTypeChange(this.#currentSortType);
   };

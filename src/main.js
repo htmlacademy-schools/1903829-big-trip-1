@@ -80,5 +80,3 @@ tripAddButton.addEventListener('click', (evt) => {
   tripPresenter.createPoint();
   tripPresenter.init();
 });
-
-
