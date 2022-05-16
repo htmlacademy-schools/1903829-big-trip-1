@@ -8,7 +8,7 @@ const createTripInfo = (points) => {
   let allPrice = null;
   points.forEach((point) => { allPrice += Number(point.startPrice); });
   const dateBegin = dayjs(points[0].date.start).format('MMM D');
-  const dateEnd = dayjs(points[points.length-1].date.end).format('DD');
+  const dateEnd = dayjs(points[points.length-1].date.end).format('MMM DD');
 
   let tripTitles = '';
 
@@ -31,7 +31,7 @@ const createTripInfo = (points) => {
               <p class="trip-info__dates">${ dateBegin }&nbsp;&mdash;&nbsp;${ dateEnd }</p>
             </div>
             <p class="trip-info__cost">
-              Total: &euro;&nbsp; ${ allPrice } <span class="trip-info__cost-value"}</span>
+              Total: &euro;&nbsp; ${ allPrice } <span class="trip-info__cost-value"</span>
             </p>
           </section>`;
 };

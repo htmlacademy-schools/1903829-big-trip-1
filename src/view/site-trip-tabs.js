@@ -3,8 +3,12 @@ import { MenuItem } from '../const';
 
 export const createTripTabsTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
-    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#" " id="${ MenuItem.POINTS }" data-value="${ MenuItem.POINTS }">Table</a>
-    <a class="trip-tabs__btn" href="#"  id="${ MenuItem.STATISTICS }"  data-value="${ MenuItem.STATISTICS }">Stats</a>
+    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#" " id="${ MenuItem.POINTS }" data-value="${ MenuItem.POINTS }">
+      Table
+    </a>
+    <a class="trip-tabs__btn" href="#"  id="${ MenuItem.STATISTICS }"  data-value="${ MenuItem.STATISTICS }">
+      Stats
+    </a>
   </nav>`
 );
 

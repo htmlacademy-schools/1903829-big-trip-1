@@ -79,3 +79,13 @@ export const createOffers = (offer) => {
     <span class="event__offer-price">${ price }</span>
   </li>`;
 };
+
+export const createPhoto = (photo) => `<img class="event__photo" src="${ photo.src }" alt="Event photo">`;
+
+export const createphotoContainer = (photo) => (
+  `<div class="event__photos-container">
+    <div class="event__photos-tape">
+      ${ photo }
+    </div>
+  </div>`
+);

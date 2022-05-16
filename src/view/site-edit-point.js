@@ -3,6 +3,7 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
 import { createOffer } from '../utils/common';
+import { createPhoto, createphotoContainer } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
@@ -52,14 +53,12 @@ const createEditPoint = (point = {}) => {
     });
   }
 
-  const createphotoContainer = (photo) => (
-    `<div class="event__photos-container">
-      <div class="event__photos-tape">
-        ${ photo }
-      </div>
-    </div>`
-  );
-  const photos = createphotoContainer(city.currentCity.photos);
+  let photos = '';
+  city.currentCity.photos.forEach((photo) => {
+    const xPhoto = createPhoto(photo);
+    photos += xPhoto;
+  });
+  photos = createphotoContainer(photos);
 
   const buttonDeleteText = (isDeleting ? 'Deleting...' : 'Delete');
 
@@ -145,13 +144,13 @@ const createEditPoint = (point = {}) => {
           <button class="event__save-btn  btn  btn--blue" type="submit"${ isDisabled ? 'disabled' : '' }>
             ${ isSaving ? 'Saving...' : 'Save' }
           </button>
-          <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
-            ${!point.isCreateEvent ? buttonDeleteText : 'Cancel'}
+          <button class="event__reset-btn" type="reset" ${ isDisabled ? 'disabled' : '' }>
+            ${ !point.isCreateEvent ? buttonDeleteText : 'Cancel' }
           </button>
-          ${!point.isCreateEvent ? `
+          ${ !point.isCreateEvent ? `
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
-          </button>` : ''}
+          </button>` : '' }
         </header>
         <section class="event__details">
           <section class="event__section  event__section--offers">
@@ -160,12 +159,12 @@ const createEditPoint = (point = {}) => {
               ${ offers }
             </div>
         </section>
-        ${city.currentCity.description === '' && photos.length === 0 ? '' :
+        ${ city.currentCity.description === '' && photos.length === 0 ? '' :
     `<section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Description</h3>
-          <p class="event__destination-description">${ city.currentCity.description }</p>
-          ${ photos }
-        </section>`}
+      <h3 class="event__section-title  event__section-title--destination">Description</h3>
+      <p class="event__destination-description">${ city.currentCity.description }</p>
+      ${ photos }
+    </section>` }
       </section>
     </form>
   </li> `;
