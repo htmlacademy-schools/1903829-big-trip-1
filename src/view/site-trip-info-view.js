@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import AbstractView from './abstract-view.js';
+import AbstractView from './abstract-view';
 import { sortDate } from '../utils/informations.js';
 
 const createTripInfo = (points) => {
