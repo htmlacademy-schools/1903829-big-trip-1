@@ -44,18 +44,18 @@ export default class TripPresenter {
   get points() {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-    const filtered = filter[this.#filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
       case SortType.DAY.text:
-        return filtered.sort(sortDate);
+        return filteredPoints.sort(sortDate);
       case SortType.TIME.text:
-        return filtered.sort(sortTime);
+        return filteredPoints.sort(sortTime);
       case SortType.PRICE.text:
-        return filtered.sort(sortPrice);
+        return filteredPoints.sort(sortPrice);
     }
 
-    return filtered;
+    return filteredPoints;
   }
 
   destroy = () => {

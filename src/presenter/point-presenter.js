@@ -104,8 +104,8 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isMinorUpdate =
-      !chackedDate(this.#wayPoint.date.dataBeginEvent, update.date.dataBeginEvent) ||
-      !chackedDate(this.#wayPoint.date.dataEndEvent, update.date.dataEndEvent);
+      !chackedDate(this.#wayPoint.date.start, update.date.start) ||
+      !chackedDate(this.#wayPoint.date.end, update.date.end);
 
     this.#changeData(
       UserAction.UPDATE_TASK,

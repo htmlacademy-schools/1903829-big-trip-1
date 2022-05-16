@@ -81,15 +81,15 @@ export const SortType = {
   PRICE: {text: 'price', checked: false},
 };
 
-export const sortDate = (a, b) => dayjs(a.date.dataBeginEvent).diff(dayjs(b.date.dataBeginEvent));
+export const sortDate = (a, b) => dayjs(a.date.start).diff(dayjs(b.date.start));
 
 export const sortTime = (a, b) => {
-  const timeOne = dayjs(a.date.dataEndEvent).diff(dayjs(a.date.dataBeginEvent));
-  const timeTwo = dayjs(b.date.dataEndEvent).diff(dayjs(b.date.dataBeginEvent));
+  const timeOne = dayjs(a.date.end).diff(dayjs(a.date.start));
+  const timeTwo = dayjs(b.date.end).diff(dayjs(b.date.start));
   return timeOne - timeTwo;
 };
 
-export const sortPrice = (a, b) => a.allPrice - b.allPrice;
+export const sortPrice = (a, b) => a.startPrice - b.startPrice;
 
 export const TIME = {
   [TYPEPOINT.TAXI]: 0,
