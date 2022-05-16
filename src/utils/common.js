@@ -3,7 +3,6 @@ import { wayPointTypes } from './informations';
 import { FilterType } from '../const';
 
 export const typesList = wayPointTypes();
-const arrayTypes = [];
 
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -62,19 +61,6 @@ export const createOffer = (offer) => {
 </div>`;
 };
 
-export const generateOffers = (alloffers) => {
-  alloffers.forEach((allOffer) => {
-    typesList[allOffer.type].allOffer = allOffer.offers;
-    const offer = {
-      allOffer: typesList[allOffer.type].allOffer,
-      img: typesList[allOffer.type].img,
-      selectedOffers: [],
-      title: allOffer.type
-    };
-    arrayTypes.push(offer);
-  });
-};
-
 export const sortStatistics = (a, b) => b[1] - a[1];
 
 export const filter = {
@@ -84,3 +70,12 @@ export const filter = {
 };
 
 export const sorttDate = (taskA, taskB) => dayjs(taskA.date.start).diff(dayjs(taskB.date.start));
+
+export const createOffers = (offer) => {
+  const { title, price } = offer;
+  return `<li class="event__offer">
+    <span class="event__offer-title">${ title }</span>
+      &plus;&euro;&nbsp;
+    <span class="event__offer-price">${ price }</span>
+  </li>`;
+};

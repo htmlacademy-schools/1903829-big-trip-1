@@ -1,8 +1,6 @@
 import AbstractObservable from '../utils/abstract-observable.js';
 import { UpdateType } from '../const.js';
-import { generateOffers } from '../utils/common.js';
-import { createNewEvent } from '../utils/adapt.js';
-import { adaptToClient, generateCities } from '../utils/adapt.js';
+import { generateOffers, createNewEvent, adaptToClient, generateCities } from '../utils/adapt.js';
 
 export default class PointsModel extends AbstractObservable {
   #points = [];
@@ -29,6 +27,7 @@ export default class PointsModel extends AbstractObservable {
     } catch(err) {
       this.#points = [];
       createNewEvent();
+      throw new Error('Can\'t init event');
     }
 
     this._notify(UpdateType.INIT);

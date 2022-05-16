@@ -4,7 +4,7 @@ import { sortDate } from '../utils/informations.js';
 
 const createTripInfo = (points) => {
   points.sort(sortDate);
-  const cities = points.map((point)=> point.city.currentCity.name);
+  const cities = points.map((point)=> point.city.currentCity.titleCity);
   // eslint-disable-next-line no-unused-vars
   let totalPrice = null;
   points.forEach((point) => { totalPrice += Number(point.startPrice); });

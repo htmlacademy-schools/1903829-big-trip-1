@@ -39,7 +39,7 @@ export default class PointPresenter {
     this.#editPointComponent = new EditNewPoint(this.#wayPoint);
 
     this.#itemTemplateComponent.setClickRollupHandler(this.#replacePointToEditPoint);
-    this.#editPointComponent.setEventRollupBtnHandler(this.#replaceEditPointToPoint);
+    this.#editPointComponent.setClickRollupHandler(this.#replaceEditPointToPoint);
     this.#editPointComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#itemTemplateComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
     this.#editPointComponent.setDeleteClickHandler(this.#handleDeleteClick);
