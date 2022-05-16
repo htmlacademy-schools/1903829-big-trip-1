@@ -8,7 +8,7 @@ const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
 const createEditPoint = (point = {}) => {
   const  { date, type, city, startPrice, isDisabled, isDeleting, isSaving } = point;
-  const startDateRend  = dateRend(date.start, 'DD/MM/YY HH:mm');
+  const startDateRend  = 0; //dateRend(date.start, 'DD/MM/YY HH:mm');
   const endDateRend  = dateRend(date.end, 'DD/MM/YY HH:mm');
   let offers = '';
   let allCitiesTemplate = '';
@@ -42,7 +42,7 @@ const createEditPoint = (point = {}) => {
     city.currentCity = {
       ...city.currentCity,
       description: '',
-      pictures: []
+      photos: []
     };
   }
 
