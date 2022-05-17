@@ -1,5 +1,5 @@
 import { dateRend } from '../utils/functionsWithDayjs.js';
-import AbstractView from './abstract-view';
+import AbstractView from './Abstract-view';
 import { createOffers } from '../utils/common.js';
 
 const createTripEventsView = (point) => {

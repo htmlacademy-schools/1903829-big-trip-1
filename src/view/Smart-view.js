@@ -1,4 +1,4 @@
-import AbstractView from './abstract-view';
+import AbstractView from './Abstract-view';
 
 export default class SmartView extends AbstractView {
   _data = {};

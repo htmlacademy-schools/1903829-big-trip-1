@@ -1,4 +1,4 @@
-import AbstractView from './abstract-view';
+import AbstractView from './Abstract-view';
 import { FilterType } from '../const.js';
 
 const PointsType = {
