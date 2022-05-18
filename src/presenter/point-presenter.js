@@ -9,6 +9,12 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+  ABORTING: 'ABORTING',
+};
+
 export default class PointPresenter {
   #pointCointainer = null;
   #changeData = null;
@@ -32,10 +38,10 @@ export default class PointPresenter {
     this.#itemTemplateComponent = new TripEventsView(this.#wayPoint);
     this.#editPointComponent = new EditNewPoint(this.#wayPoint);
 
-    this.#itemTemplateComponent.setEditClickHandler(this.#editClickHandler);
+    this.#itemTemplateComponent.setClickRollupHandler(this.#replacePointToEditPoint);
+    this.#editPointComponent.setClickRollupHandler(this.#replaceEditPointToPoint);
+    this.#editPointComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#itemTemplateComponent.setFavoriteClickHandler(this.#favoriteClickHandler);
-    this.#editPointComponent.setEventRollupBtnHandler(this.#eventRollupHandler);
-    this.#editPointComponent.setFormSubmitHandler(this.#formSubmitHandler);
     this.#editPointComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     if (prevItemComponent === null || prevEditComponent === null) {
@@ -48,7 +54,7 @@ export default class PointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#editPointComponent, prevEditComponent);
+      replace(this.#itemTemplateComponent, prevEditComponent);
     }
 
     remove(prevItemComponent);
@@ -62,42 +68,30 @@ export default class PointPresenter {
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
-      this.#replaceFormToWaypoint();
+      this.#replaceEditPointToPoint();
     }
   };
 
-  #replaceWaypointToForm = () => {
-    replace(this.#editPointComponent, this.#itemTemplateComponent);
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-    this.#changeMode();
-    this.#mode = Mode.EDITING;
+  #onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this.#replaceEditPointToPoint();
+      document.removeEventListener('keydown', this.#onEscKeyDown);
+    }
   };
 
-  #replaceFormToWaypoint = () => {
+  #replaceEditPointToPoint = () => {
     this.#editPointComponent.reset(this.#wayPoint);
     replace(this.#itemTemplateComponent, this.#editPointComponent);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.removeEventListener('keydown', this.#onEscKeyDown);
     this.#mode = Mode.DEFAULT;
   };
 
-  #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      this.#replaceFormToWaypoint();
-    }
-  };
-
-  #eventRollupHandler = () => {
-    this.#replaceFormToWaypoint();
-  };
-
-  #formSubmitHandler = (pnt) => {
-    this.#changeData(pnt);
-    this.#replaceFormToWaypoint();
-  };
-
-  #editClickHandler = () => {
-    this.#replaceWaypointToForm();
+  #replacePointToEditPoint = () => {
+    replace(this.#editPointComponent, this.#itemTemplateComponent);
+    this.#changeMode();
+    this.#mode = Mode.EDITING;
+    document.addEventListener('keydown', this.#onEscKeyDown);
   };
 
   #favoriteClickHandler = () => {
@@ -110,22 +104,54 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isMinorUpdate =
-      !chackedDate(this.#wayPoint.date.dataBeginEvent, update.date.dataBeginEvent) ||
-      !chackedDate(this.#wayPoint.date.dataEndEvent, update.date.dataEndEvent);
+      !chackedDate(this.#wayPoint.date.start, update.date.start) ||
+      !chackedDate(this.#wayPoint.date.end, update.date.end);
 
     this.#changeData(
-      UserAction.UPDATE_EVENT,
+      UserAction.UPDATE_TASK,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
-    this.#replaceFormToWaypoint();
   };
 
-  #handleDeleteClick = (event) => {
+  #handleDeleteClick = (point) => {
     this.#changeData(
-      UserAction.DELETE_EVENT,
+      UserAction.DELETE_TASK,
       UpdateType.MINOR,
-      event,
+      point,
     );
+  };
+
+  setViewState = (state) => {
+    if (this.#mode === Mode.DEFAULT) {
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#editPointComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    switch (state) {
+      case State.SAVING:
+        this.#editPointComponent.updateData({
+          isDisabled: true,
+          isSaving: true,
+        });
+        break;
+      case State.DELETING:
+        this.#editPointComponent.updateData({
+          isDisabled: true,
+          isDeleting: true,
+        });
+        break;
+      case State.ABORTING:
+        this.#itemTemplateComponent.shake(resetFormState);
+        this.#editPointComponent.shake(resetFormState);
+        break;
+    }
   };
 }

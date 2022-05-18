@@ -1,4 +1,8 @@
-import { offers } from './informations';
+import dayjs from 'dayjs';
+import { wayPointTypes } from './informations';
+import { FilterType } from '../const';
+
+export const typesList = wayPointTypes();
 
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -37,15 +41,15 @@ export const createEventTypesMarkup = (types, chosenEventType) => {
     const label = type.charAt(0).toUpperCase() + type.slice(1);
 
     return `<div class="event__type-item">
-                          <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
-                          <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${label}</label>
+                          <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+                          <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ label }</label>
                         </div>`;
   };
 
   return types.map(createTypeMarkup).join('');
 };
 
-const createOffer = (offer) => {
+export const createOffer = (offer) => {
   const { title, type, price } = offer;
   return `<div class="event__offer-selector">
   <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" value="${type}">
@@ -57,22 +61,31 @@ const createOffer = (offer) => {
 </div>`;
 };
 
-function getRandomElement(arr, n) {
-  const result = new Array(n);
-  let len = arr.length;
-  const taken = new Array(len);
-  while (n--) {
-    const x = Math.floor(Math.random() * len);
-    result[n] = createOffer(arr[x in taken ? taken[x] : x]);
-    taken[x] = --len in taken ? taken[len] : len;
-  }
-  return result;
-}
+export const sortStatistics = (a, b) => b[1] - a[1];
 
-export const generateOffers = () => {
-  const off = offers();
-  const randomIndex = getRandomInteger(1, 4);
-  return getRandomElement(off, randomIndex);
+export const filter = {
+  [FilterType.EVERYTHING]: (events) => events,
+  [FilterType.FUTURE]: (events) => events.filter((event) => dayjs().isBefore(dayjs(event.date.start))),
+  [FilterType.PAST]: (events) => events.filter((event) => dayjs().isAfter(dayjs(event.date.start))),
 };
 
-export const sortStatistics = (a, b) => b[1] - a[1];
+export const sorttDate = (taskA, taskB) => dayjs(taskA.date.start).diff(dayjs(taskB.date.start));
+
+export const createOffers = (offer) => {
+  const { title, price } = offer;
+  return `<li class="event__offer">
+    <span class="event__offer-title">${ title }</span>
+      &plus;&euro;&nbsp;
+    <span class="event__offer-price">${ price }</span>
+  </li>`;
+};
+
+export const createPhoto = (photo) => `<img class="event__photo" src="${ photo.src }" alt="Event photo">`;
+
+export const createphotoContainer = (photo) => (
+  `<div class="event__photos-container">
+    <div class="event__photos-tape">
+      ${ photo }
+    </div>
+  </div>`
+);

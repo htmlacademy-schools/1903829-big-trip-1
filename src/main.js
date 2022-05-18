@@ -1,4 +1,3 @@
-import { generatePoint} from './mock/point.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
@@ -8,73 +7,76 @@ import TripTabsTemplate from './view/site-trip-tabs.js';
 import { render, RenderPosition, remove } from './utils/render.js';
 import StatisticsView from './view/statistics-view.js';
 import { clearStatistics, counting } from './utils/statistics.js';
+import ApiService from './api-service.js';
 
-const POINT_COUNT = 10;
-const points = Array.from({ length: POINT_COUNT }, generatePoint);
+const AUTHORIZATION = 'Basic ffg7e433kkd9fOps';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 
 const siteMenuComponent = new TripTabsTemplate();
 const tripEventsElement = document.querySelector('.trip-events');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main').querySelector('.page-body__container');
+const tripAddButton = document.querySelector('.trip-main__event-add-btn');
 
-const pointsModel = new PointsModel();
-pointsModel.points = points;
+tripAddButton.disabled = true;
 
+const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 const filterModel = new FilterModel();
 
-render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
 const tripPresenter = new TripPresenter(tripEventsElement, pointsModel, filterModel);
-const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel);
+const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
-filterPresenter.init();
 tripPresenter.init();
 
 let statsView = null;
 
-const handleTaskNewFormClose = () => {
-  siteMenuComponent.element.querySelector(`[value=${MenuItem.POINTS}]`).disabled = false;
-  siteMenuComponent.element.querySelector(`[value=${MenuItem.STATISTICS}]`).disabled = false;
-  siteMenuComponent.setMenuItem(MenuItem.TASKS);
-};
-
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
-    case MenuItem.ADD_NEW_POINT:
-      // Скрыть статистику
-      // Показать фильтры
-      // Показать доску
-      tripPresenter.createTask(handleTaskNewFormClose);
-      siteMenuComponent.element.querySelector(`[value=${MenuItem.POINTS}]`).disabled = true;
-      siteMenuComponent.element.querySelector(`[value=${MenuItem.STATISTICS}]`).disabled = true;
-      break;
     case MenuItem.POINTS:
-      filterPresenter.init();
+      tripEventsElement.classList.add('trip-events');
+      filterPresenter.destroy();
+      tripPresenter.destroy();
+      filterPresenter.init(pointsModel.points);
       tripPresenter.init();
       remove(statsView);
+      statsView = null;
       clearStatistics();
       break;
     case MenuItem.STATISTICS:
+      tripEventsElement.classList.remove('trip-events');
       counting(pointsModel.points);
       statsView = new StatisticsView();
       render(siteMainElement, statsView, RenderPosition.BEFOREEND);
       filterPresenter.destroy();
       tripPresenter.destroy();
+      tripPresenter.renderTrip();
       break;
   }
 };
 
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+pointsModel.init().finally(() => {
+  filterPresenter.init(pointsModel.points);
+  render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+  tripAddButton.disabled = false;
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+});
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+tripAddButton.addEventListener('click', (evt) => {
   evt.preventDefault();
+  evt.target.disabled = true;
+  tripEventsElement.classList.add('trip-events');
   const tableLink = document.querySelector('#POINTS');
   const statsLink = document.querySelector('#STATISTICS');
   tableLink.classList.add('trip-tabs__btn--active');
   statsLink.classList.remove('trip-tabs__btn--active');
   filterPresenter.destroy();
-  filterPresenter.init();
+  filterPresenter.init(pointsModel.points);
   tripPresenter.destroy();
-  tripPresenter.init();
+  if(statsView) {
+    remove(statsView);
+  }
+  clearStatistics();
   tripPresenter.createPoint();
+  tripPresenter.init();
 });

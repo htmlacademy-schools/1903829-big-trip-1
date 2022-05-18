@@ -1,16 +1,25 @@
 import { dateRend } from '../utils/functionsWithDayjs.js';
-import AbstractView from './Abstract-view.js';
+import AbstractView from './Abstract-view';
+import { createOffers } from '../utils/common.js';
 
 const createTripEventsView = (point) => {
-  const { date, type, city, allPrice, time, isFavorite } = point;
+  const { date, type, city, startPrice, time, favorite } = point;
 
-  const startDate = dateRend(date.start, 'DD/MM/YY HH:mm');
-  const startDayMonth = dateRend(date.start, 'DD.MM');
-  const endDayMonth = dateRend(date.end, 'DD.MM');
+  const startDate = dateRend(date.start, 'DD MMM');
+  const startDayMonth = dateRend(date.start, 'HH:mm');
+  const endDayMonth = dateRend(date.end, 'hh:mm');
 
   let favoriteClass = '';
-  if (isFavorite === true) {
+  if (favorite === true) {
     favoriteClass = 'event__favorite-btn--active';
+  }
+
+  let offers = '';
+  if(type.currentType.selectedOffers) {
+    type.currentType.selectedOffers.forEach((offer) => {
+      const offerCurrent = createOffers(offer);
+      offers += offerCurrent;
+    });
   }
 
   return `<li class="trip-events__item">
@@ -29,11 +38,11 @@ const createTripEventsView = (point) => {
                   <p class="event__duration">${ time.duration } </p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${ allPrice }</span>
+                  &euro;&nbsp;<span class="event__price-value">${ startPrice }</span>
                 </p>
                   <h4 class="visually-hidden">Offers:</h4>
                   <ul class="event__selected-offers">
-                    
+                    ${ offers }
                   </ul>
                   <button class="event__favorite-btn ${ favoriteClass }" type="button">
                     <span class="visually-hidden">Add to favorite</span>
@@ -60,8 +69,8 @@ export default class TripEventsView extends AbstractView {
     return createTripEventsView(this.#point);
   }
 
-  setEditClickHandler = (callback) => {
-    this._callback.editClick = callback;
+  setClickRollupHandler = (callback) => {
+    this._callback.click = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   };
 
@@ -72,7 +81,7 @@ export default class TripEventsView extends AbstractView {
 
   #editClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.editClick();
+    this._callback.click();
   };
 
   #favoriteClickHandler = (evt) => {

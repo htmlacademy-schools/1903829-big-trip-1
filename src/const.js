@@ -41,5 +41,6 @@ export const TYPEPOINT = {
   FLIGHT: 'flight',
   RESTAURANT: 'restaurant',
   SIGHTSEEING: 'sightseeing',
-  TRAIN: 'train'
+  TRAIN: 'train',
+  SHIP: 'ship',
 };

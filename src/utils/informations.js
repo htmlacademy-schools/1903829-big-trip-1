@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { getRandomInteger } from './common';
 import { generateListLinkImages } from './common';
-import { TYPEPOINT } from '../const.js';
 
 export const descriptions = () => ([
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -81,45 +80,12 @@ export const SortType = {
   PRICE: {text: 'price', checked: false},
 };
 
-export const sortDate = (a, b) => dayjs(a.date.dataBeginEvent).diff(dayjs(b.date.dataBeginEvent));
+export const sortDate = (a, b) => dayjs(a.date.start).diff(dayjs(b.date.start));
 
 export const sortTime = (a, b) => {
-  const timeOne = dayjs(a.date.dataEndEvent).diff(dayjs(a.date.dataBeginEvent));
-  const timeTwo = dayjs(b.date.dataEndEvent).diff(dayjs(b.date.dataBeginEvent));
+  const timeOne = dayjs(a.date.end).diff(dayjs(a.date.start));
+  const timeTwo = dayjs(b.date.end).diff(dayjs(b.date.start));
   return timeOne - timeTwo;
 };
 
-export const sortPrice = (a, b) => a.allPrice - b.allPrice;
-
-export const TIME = {
-  [TYPEPOINT.TAXI]: 0,
-  [TYPEPOINT.BUS]: 0,
-  [TYPEPOINT.DRIVE]: 0,
-  [TYPEPOINT.CHECKIN]: 0,
-  [TYPEPOINT.FLIGHT]: 0,
-  [TYPEPOINT.RESTAURANT]: 0,
-  [TYPEPOINT.SIGHTSEEING]: 0,
-  [TYPEPOINT.TRAIN]: 0,
-};
-
-export const MONEY = {
-  [TYPEPOINT.TAXI]: 0,
-  [TYPEPOINT.BUS]: 0,
-  [TYPEPOINT.DRIVE]: 0,
-  [TYPEPOINT.CHECKIN]: 0,
-  [TYPEPOINT.FLIGHT]: 0,
-  [TYPEPOINT.RESTAURANT]: 0,
-  [TYPEPOINT.SIGHTSEEING]: 0,
-  [TYPEPOINT.TRAIN]: 0,
-};
-
-export const COUNTTYPE = {
-  [TYPEPOINT.TAXI]: 0,
-  [TYPEPOINT.BUS]: 0,
-  [TYPEPOINT.DRIVE]: 0,
-  [TYPEPOINT.CHECKIN]: 0,
-  [TYPEPOINT.FLIGHT]: 0,
-  [TYPEPOINT.RESTAURANT]: 0,
-  [TYPEPOINT.SIGHTSEEING]: 0,
-  [TYPEPOINT.TRAIN]: 0,
-};
+export const sortPrice = (a, b) => a.startPrice - b.startPrice;

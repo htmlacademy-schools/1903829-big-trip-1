@@ -56,8 +56,8 @@ export const getDifferentDates = (dayOne, dayTwo) => {
   return { 'days': days, 'hours': hours, 'minuts': minuts, 'unix': diffDateUnix };
 };
 
-export const countDuration = (date) => {
-  const duration = getDifferentDates(date.start, date.end);
+export const countDuration = (dateStart, dateEnd) => {
+  const duration = getDifferentDates(dateStart, dateEnd);
   let durationFormat = '';
   if (duration.days !== 0) {
     durationFormat += `${(`0${duration.days}`).slice(-2)}D ${(`0${duration.hours}`).slice(-2)}H ${(`0${duration.minuts}`).slice(-2)}M`;
@@ -70,8 +70,8 @@ export const countDuration = (date) => {
   }
 
   return {
-    'startTime': `${dayjs(date.dataBeginEvent).format('HH')}:${dayjs(date.dataBeginEvent).format('mm')}`,
-    'endTime': `${dayjs(date.dataEndEvent).format('HH')}:${dayjs(date.dataEndEvent).format('mm')}`,
+    'startTime': `${dayjs(dateStart).format('HH')}:${dayjs(dateStart).format('mm')}`,
+    'endTime': `${dayjs(dateEnd).format('HH')}:${dayjs(dateEnd).format('mm')}`,
     'duration': durationFormat,
     'arrayDurationFormat': duration
   };

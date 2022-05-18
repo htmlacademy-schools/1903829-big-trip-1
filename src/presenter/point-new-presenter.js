@@ -23,7 +23,7 @@ export default class EventNewPresenter {
 
     this.#pointEditComponent = new EditNewPoint(this.#waypoint);
     this.#pointEditComponent.setClickRollupHandler(this.#handleDeleteClick);
-    this.#pointEditComponent.setFormSubmitHadler(this.#handleFormSubmit);
+    this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     render(this.#pointListContainer, this.#pointEditComponent, RenderPosition.AFTERBEGIN);
@@ -53,10 +53,28 @@ export default class EventNewPresenter {
 
   #handleFormSubmit = (point) => {
     this.#changeData(
-      UserAction.ADD_EVENT,
+      UserAction.ADD_TASK,
       UpdateType.MINOR,
       { id: nanoid(), ...point },
     );
-    this.destroy();
+  };
+
+  setSaving = () => {
+    this.#pointEditComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
   };
 }

@@ -3,8 +3,12 @@ import { MenuItem } from '../const';
 
 export const createTripTabsTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
-    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#" " id="${ MenuItem.POINTS }" data-value="${ MenuItem.POINTS }">Table</a>
-    <a class="trip-tabs__btn" href="#"  id="${ MenuItem.STATISTICS }"  data-value="${ MenuItem.STATISTICS }">Stats</a>
+    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#" " id="${ MenuItem.POINTS }" data-value="${ MenuItem.POINTS }">
+      Table
+    </a>
+    <a class="trip-tabs__btn" href="#"  id="${ MenuItem.STATISTICS }"  data-value="${ MenuItem.STATISTICS }">
+      Stats
+    </a>
   </nav>`
 );
 
@@ -20,11 +24,13 @@ export default class TripTabsTemplate extends AbstractView {
   };
 
   #menuClickHandler = (evt) => {
-    const target = document.querySelector(`#${ evt.target.dataset.value }`);
+    const trgt = document.querySelector(`#${ evt.target.dataset.value }`);
     const btnActive = document.querySelector('.trip-tabs__btn--active');
-    target.classList.add('trip-tabs__btn--active');
-    btnActive.classList.remove('trip-tabs__btn--active');
+    if (trgt !== btnActive) {
+      trgt.classList.add('trip-tabs__btn--active');
+      btnActive.classList.remove('trip-tabs__btn--active');
 
-    this._callback.menuClick(evt.target.dataset.value);
+      this._callback.menuClick(evt.target.dataset.value);
+    }
   };
 }

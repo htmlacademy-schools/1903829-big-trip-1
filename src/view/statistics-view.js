@@ -1,7 +1,7 @@
 import SmartView from './Smart-view.js';
-import { Chart } from 'chart.js';
+import Chart from 'chart';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { MONEY, COUNTTYPE } from '../utils/informations.js';
+import { MONEY, COUNTTYPE, TIME } from '../utils/statistics.js';
 import { sortStatistics } from '../utils/common.js';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
@@ -146,7 +146,75 @@ const changeTypeChart = (typeCtx) => {
   });
 };
 
-const changeTimeChart = () => {};
+const changeTimeChart = (timeCtx) => {
+  const typeForTime = Object.entries(TIME).sort(sortStatistics);
+  const countKeysTime = typeForTime.map((key) => key[0].toUpperCase());
+  const countDataTime = typeForTime.map((data) => data[1]);
+
+  return new Chart(timeCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: countKeysTime,
+      datasets: [{
+        data: countDataTime,
+        backgroundColor: '#ffffff',
+        hoverBackgroundColor: '#ffffff',
+        anchor: 'start',
+        barThickness: 44,
+        minBarLength: 50,
+      }],
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        datalabels: {
+          font: { size: 13, },
+          color: '#000000',
+          anchor: 'end',
+          align: 'start',
+          formatter: (val) => `€ ${val}`,
+        },
+      },
+      title: {
+        display: true,
+        text: 'MONEY',
+        fontColor: '#000000',
+        fontSize: 23,
+        position: 'left',
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#000000',
+            padding: 5,
+            fontSize: 13,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
+};
 
 const createStatisticsTemplate = () =>
   `<section class="statistics">
@@ -182,21 +250,12 @@ export default class StatisticsView extends SmartView {
 
   removeElement = () => {
     super.removeElement();
-
-    if (this.#moneyChart) {
-      this.#moneyChart.destroy();
-      this.#moneyChart = null;
-    }
-
-    if (this.#typeChart) {
-      this.#typeChart.destroy();
-      this.#typeChart = null;
-    }
-
-    if (this.#timeChart) {
-      this.#timeChart.destroy();
-      this.#timeChart = null;
-    }
+    //this.#moneyChart.destroy();
+    this.#moneyChart = null;
+    //this.#typeChart.destroy();
+    this.#typeChart = null;
+    //this.#timeChart.destroy();
+    this.#timeChart = null;
   };
 
   #setCharts = () => {
