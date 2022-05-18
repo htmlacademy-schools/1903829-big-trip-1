@@ -250,18 +250,12 @@ export default class StatisticsView extends SmartView {
 
   removeElement = () => {
     super.removeElement();
-    //this.#moneyChart.destroy();
-    this.#moneyChart = null;
-    //this.#typeChart.destroy();
-    this.#typeChart = null;
-    //this.#timeChart.destroy();
-    this.#timeChart = null;
   };
 
   #setCharts = () => {
-    const moneyCtx = document.querySelector('#money');
-    const typeCtx = document.querySelector('#type');
-    const timeCtx = document.querySelector('#time');
+    const moneyCtx = this.element.querySelector('#money');
+    const typeCtx = this.element.querySelector('#type');
+    const timeCtx = this.element.querySelector('#time');
 
     this.#moneyChart = changeMoneyChart(moneyCtx);
     this.#typeChart = changeTypeChart(typeCtx);

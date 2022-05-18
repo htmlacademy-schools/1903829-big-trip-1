@@ -66,7 +66,7 @@ tripAddButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   evt.target.disabled = true;
   tripEventsElement.classList.add('trip-events');
-  const tableLink = document.querySelector('#POINTS');
+  const tableLink = document.querySelector('#EVENTS');
   const statsLink = document.querySelector('#STATISTICS');
   tableLink.classList.add('trip-tabs__btn--active');
   statsLink.classList.remove('trip-tabs__btn--active');

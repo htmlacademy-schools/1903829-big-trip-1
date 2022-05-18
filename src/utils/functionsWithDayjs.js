@@ -1,19 +1,4 @@
 import dayjs from 'dayjs';
-import { getRandomInteger } from './common';
-
-export const generateBeginEndDates = () => {
-  const maxDaysGag = 7;
-  const daysGap = getRandomInteger(-7, maxDaysGag);
-  const daysAddition = daysGap + getRandomInteger(0, 2);
-  const startHoursAddition = getRandomInteger(1, 6);
-  const endHoursAddition = getRandomInteger(startHoursAddition, startHoursAddition + 10);
-  const startMinutesAddition = getRandomInteger(0, 59);
-  const endMinutesAddition = getRandomInteger(startMinutesAddition, startMinutesAddition + 59);
-  return {
-    start: dayjs().add(daysGap, 'day').add(startHoursAddition, 'hour').add(startMinutesAddition, 'minute').toDate(),
-    end: dayjs().add(daysAddition, 'day').add(endHoursAddition, 'hour').add(endMinutesAddition, 'minute').toDate()
-  };
-};
 
 export const dateRend = (date, format) => dayjs(date).format(format);
 
