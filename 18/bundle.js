@@ -83,7 +83,7 @@ class ApiService {
 
     _defineProperty(this, "deletePoint", async point => {
       const response = await _classPrivateFieldGet(this, _load).call(this, {
-        url: `tasks/${point.id}`,
+        url: `points/${point.id}`,
         method: Method.DELETE
       });
       return response;
@@ -191,9 +191,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TYPEPOINT": () => (/* binding */ TYPEPOINT)
 /* harmony export */ });
 const UserAction = {
-  UPDATE_TASK: 'UPDATE_TASK',
-  ADD_TASK: 'ADD_TASK',
-  DELETE_TASK: 'DELETE_TASK'
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT'
 };
 const UpdateType = {
   PATCH: 'PATCH',
@@ -203,8 +203,8 @@ const UpdateType = {
 };
 const FilterType = {
   EVERYTHING: 'everything',
-  PAST: 'overdue',
-  FUTURE: 'future'
+  FUTURE: 'future',
+  PAST: 'past'
 };
 const MenuItem = {
   ADD_NEW_POINT: 'ADD_NEW_POINT',
@@ -696,7 +696,7 @@ class EventNewPresenter {
     _classPrivateFieldInitSpec(this, _handleFormSubmit, {
       writable: true,
       value: point => {
-        _classPrivateFieldGet(this, _changeData).call(this, _const_js__WEBPACK_IMPORTED_MODULE_1__.UserAction.ADD_TASK, _const_js__WEBPACK_IMPORTED_MODULE_1__.UpdateType.MINOR, {
+        _classPrivateFieldGet(this, _changeData).call(this, _const_js__WEBPACK_IMPORTED_MODULE_1__.UserAction.ADD_POINT, _const_js__WEBPACK_IMPORTED_MODULE_1__.UpdateType.MINOR, {
           id: (0,nanoid__WEBPACK_IMPORTED_MODULE_3__.nanoid)(),
           ...point
         });
@@ -932,7 +932,7 @@ class PointPresenter {
     _classPrivateFieldInitSpec(this, _favoriteClickHandler, {
       writable: true,
       value: () => {
-        _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.UPDATE_EVENT, _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.PATCH, { ..._classPrivateFieldGet(this, _wayPoint),
+        _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.UPDATE_POINT, _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.PATCH, { ..._classPrivateFieldGet(this, _wayPoint),
           isFavorite: !_classPrivateFieldGet(this, _wayPoint).isFavorite
         });
       }
@@ -943,14 +943,14 @@ class PointPresenter {
       value: update => {
         const isMinorUpdate = !(0,_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_4__.chackedDate)(_classPrivateFieldGet(this, _wayPoint).date.start, update.date.start) || !(0,_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_4__.chackedDate)(_classPrivateFieldGet(this, _wayPoint).date.end, update.date.end);
 
-        _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.UPDATE_TASK, isMinorUpdate ? _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.MINOR : _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.PATCH, update);
+        _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.UPDATE_POINT, isMinorUpdate ? _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.MINOR : _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.PATCH, update);
       }
     });
 
     _classPrivateFieldInitSpec(this, _handleDeleteClick, {
       writable: true,
       value: point => {
-        _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.DELETE_TASK, _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.MINOR, point);
+        _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.DELETE_POINT, _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.MINOR, point);
       }
     });
 
@@ -1194,37 +1194,37 @@ class TripPresenter {
       writable: true,
       value: async (actionType, updateType, update) => {
         switch (actionType) {
-          case _const__WEBPACK_IMPORTED_MODULE_5__.UserAction.UPDATE_TASK:
+          case _const__WEBPACK_IMPORTED_MODULE_5__.UserAction.UPDATE_POINT:
             _classPrivateFieldGet(this, _pointsPresenter).get(update.id).setViewState(_point_presenter__WEBPACK_IMPORTED_MODULE_2__.State.SAVING);
 
-            _classPrivateFieldGet(this, _pointsModel).updateEvent(updateType, update);
+            _classPrivateFieldGet(this, _pointsModel).updatePoint(updateType, update);
 
             try {
-              await _classPrivateFieldGet(this, _pointsModel).updateEvent(updateType, update);
+              await _classPrivateFieldGet(this, _pointsModel).updatePoint(updateType, update);
             } catch (err) {
               _classPrivateFieldGet(this, _pointsPresenter).get(update.id).setViewState(_point_presenter__WEBPACK_IMPORTED_MODULE_2__.State.ABORTING);
             }
 
             break;
 
-          case _const__WEBPACK_IMPORTED_MODULE_5__.UserAction.ADD_TASK:
+          case _const__WEBPACK_IMPORTED_MODULE_5__.UserAction.ADD_POINT:
             _classPrivateFieldGet(this, _pointNewPresenter).setSaving();
 
             try {
-              await _classPrivateFieldGet(this, _pointsModel).addEvent(updateType, update);
+              await _classPrivateFieldGet(this, _pointsModel).addPoint(updateType, update);
             } catch (err) {
               _classPrivateFieldGet(this, _pointNewPresenter).setAborting();
             }
 
             break;
 
-          case _const__WEBPACK_IMPORTED_MODULE_5__.UserAction.DELETE_TASK:
+          case _const__WEBPACK_IMPORTED_MODULE_5__.UserAction.DELETE_POINT:
             _classPrivateFieldGet(this, _pointsPresenter).get(update.id).setViewState(_point_presenter__WEBPACK_IMPORTED_MODULE_2__.State.DELETING);
 
-            _classPrivateFieldGet(this, _pointsModel).deleteEvents(updateType, update);
+            _classPrivateFieldGet(this, _pointsModel).deletePoints(updateType, update);
 
             try {
-              await _classPrivateFieldGet(this, _pointsModel).deleteEvents(updateType, update);
+              await _classPrivateFieldGet(this, _pointsModel).deletePoints(updateType, update);
             } catch (err) {
               _classPrivateFieldGet(this, _pointsPresenter).get(update.id).setViewState(_point_presenter__WEBPACK_IMPORTED_MODULE_2__.State.ABORTING);
             }
@@ -2410,9 +2410,9 @@ const createEditPoint = (point = {}) => {
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
-              ${startPrice} &euro;
+               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? startPrice : 0}">
           </div>
     
           <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled ? 'disabled' : ''}>
