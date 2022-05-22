@@ -53,7 +53,7 @@ export default class EventNewPresenter {
 
   #handleFormSubmit = (point) => {
     this.#changeData(
-      UserAction.ADD_TASK,
+      UserAction.ADD_POINT,
       UpdateType.MINOR,
       { id: nanoid(), ...point },
     );

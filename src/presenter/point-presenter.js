@@ -96,7 +96,7 @@ export default class PointPresenter {
 
   #favoriteClickHandler = () => {
     this.#changeData(
-      UserAction.UPDATE_EVENT,
+      UserAction.UPDATE_POINT,
       UpdateType.PATCH,
       { ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite },
     );
@@ -108,7 +108,7 @@ export default class PointPresenter {
       !chackedDate(this.#wayPoint.date.end, update.date.end);
 
     this.#changeData(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
@@ -116,7 +116,7 @@ export default class PointPresenter {
 
   #handleDeleteClick = (point) => {
     this.#changeData(
-      UserAction.DELETE_TASK,
+      UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );

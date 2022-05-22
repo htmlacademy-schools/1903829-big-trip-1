@@ -52,7 +52,7 @@ export default class ApiService {
 
   deletePoint = async (point) => {
     const response = await this.#load({
-      url: `tasks/${ point.id }`,
+      url: `points/${point.id}`,
       method: Method.DELETE,
     });
 
