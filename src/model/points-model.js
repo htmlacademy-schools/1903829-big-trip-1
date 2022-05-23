@@ -34,19 +34,24 @@ export default class PointsModel extends AbstractObservable {
   };
 
   updatePoint = async (updateType, update) => {
-    const index = this.#points.findIndex((point) => point.id === update.id);
+    const index = this.#points.findIndex((event) => event.id === update.id);
 
     if (index === -1) {
-      throw new Error('Can\'t update unexisting point');
+      throw new Error('Can\'t update unexisting event');
     }
-
     try {
       const response = await this.#apiService.updatePoint(update);
-      const updatedPoint = adaptToClient(response);
-      this.#points = [ ...this.#points.slice(0, index), update, ...this.#points.slice(index + 1) ];
-      this._notify(updateType, updatedPoint);
-    } catch(err) {
-      throw new Error('Can\'t update point');
+      const updatedEvent = adaptToClient(response);
+
+      this.#points = [
+        ...this.#points.slice(0, index),
+        update,
+        ...this.#points.slice(index + 1),
+      ];
+
+      this._notify(updateType, updatedEvent);
+    } catch (err) {
+      throw new Error('Can\'t update event');
     }
   };
 

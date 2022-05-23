@@ -68,7 +68,7 @@ export default class ApiService {
     headers.append('Authorization', this.#authorization);
 
     const response = await fetch(
-      `${this.#endPoint}/${ url }`,
+      `${ this.#endPoint }/${ url }`,
       { method, body, headers },
     );
 
