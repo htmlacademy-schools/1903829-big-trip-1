@@ -365,21 +365,21 @@ class PointsModel extends _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE
     });
 
     _defineProperty(this, "updatePoint", async (updateType, update) => {
-      const index = _classPrivateFieldGet(this, _points).findIndex(point => point.id === update.id);
+      const index = _classPrivateFieldGet(this, _points).findIndex(event => event.id === update.id);
 
       if (index === -1) {
-        throw new Error('Can\'t update unexisting point');
+        throw new Error('Can\'t update unexisting event');
       }
 
       try {
         const response = await _classPrivateFieldGet(this, _apiService).updatePoint(update);
-        const updatedPoint = (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_2__.adaptToClient)(response);
+        const updatedEvent = (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_2__.adaptToClient)(response);
 
         _classPrivateFieldSet(this, _points, [..._classPrivateFieldGet(this, _points).slice(0, index), update, ..._classPrivateFieldGet(this, _points).slice(index + 1)]);
 
-        this._notify(updateType, updatedPoint);
+        this._notify(updateType, updatedEvent);
       } catch (err) {
-        throw new Error('Can\'t update point');
+        throw new Error('Can\'t update event');
       }
     });
 
@@ -24126,7 +24126,7 @@ tripAddButton.addEventListener('click', evt => {
   evt.preventDefault();
   evt.target.disabled = true;
   tripEventsElement.classList.add('trip-events');
-  const tableLink = document.querySelector('#EVENTS');
+  const tableLink = document.querySelector('#POINTS');
   const statsLink = document.querySelector('#STATISTICS');
   tableLink.classList.add('trip-tabs__btn--active');
   statsLink.classList.remove('trip-tabs__btn--active');
