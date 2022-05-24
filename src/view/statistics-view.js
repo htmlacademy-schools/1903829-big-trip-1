@@ -1,9 +1,9 @@
 import SmartView from './Smart-view.js';
-import Chart from 'chart';
+import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MONEY, COUNTTYPE, TIME } from '../utils/statistics.js';
 import { sortStatistics } from '../utils/common.js';
-import { getFormatDates } from '../utils/functionsWithDayjs.js';
+import { getDates } from '../utils/functionsWithDayjs.js';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
@@ -174,12 +174,12 @@ const changeTimeChart = (timeCtx) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: (val) => getFormatDates(val),
+          formatter: (val) => getDates(val),
         },
       },
       title: {
         display: true,
-        text: 'MONEY',
+        text: 'TIME',
         fontColor: '#000000',
         fontSize: 23,
         position: 'left',
@@ -227,7 +227,7 @@ const createStatisticsTemplate = () =>
       <canvas class="statistics__chart" id="type" width="900"></canvas>
     </div>
     <div class="statistics__item">
-      <canvas class="statistics__chart" id="time" width="900"></canvas>
+      <canvas class="statistics__chart" id="time" width="900">Time</canvas>
     </div>
   </section>`;
 
@@ -251,6 +251,12 @@ export default class StatisticsView extends SmartView {
 
   removeElement = () => {
     super.removeElement();
+    this.#moneyChart.destroy();
+    this.#moneyChart = null;
+    this.#typeChart.destroy();
+    this.#typeChart = null;
+    this.#timeChart.destroy();
+    this.#timeChart = null;
   };
 
   #setCharts = () => {
