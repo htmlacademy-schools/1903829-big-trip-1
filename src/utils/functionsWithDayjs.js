@@ -63,3 +63,18 @@ export const countDuration = (dateStart, dateEnd) => {
 };
 
 export const chackedDate = (d1, d2) => (d1 === null && d2 === null) || dayjs(d1).isSame(d2, 'D');
+
+export const getFormatDates = (time) => {
+  const days = Math.floor(time / (24 * 60 * 60 * 1000));
+  const hours = Math.floor(time / (60 * 60 * 1000) - (24 * days));
+  const minuts =Math.floor( time / (60 * 1000) - (days * 24 * 60) - (hours * 60));
+  let durationFormat = '';
+  if (days !== 0) {
+    durationFormat += `${(`0${days}`).slice(-2)}D ${(`0${hours}`).slice(-2)}H ${(`0${minuts}`).slice(-2)}M`;
+  } else if (hours !== 0) {
+    durationFormat += `${(`0${hours}`).slice(-2)}H ${(`0${minuts}`).slice(-2)}M`;
+  } else {
+    durationFormat += `${(`0${minuts}`).slice(-2)}M`;
+  }
+  return durationFormat;
+};

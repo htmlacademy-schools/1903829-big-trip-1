@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "chart": "0.1.2",
-    "chart.js": "3.7.1",
+    "chart.js": "^3.7.1",
     "chartjs-plugin-datalabels": "2.0.0",
     "dayjs": "1.11.0",
     "flatpickr": "4.6.11",

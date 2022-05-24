@@ -3,6 +3,7 @@ import Chart from 'chart';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { MONEY, COUNTTYPE, TIME } from '../utils/statistics.js';
 import { sortStatistics } from '../utils/common.js';
+import { getFormatDates } from '../utils/functionsWithDayjs.js';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
@@ -173,7 +174,7 @@ const changeTimeChart = (timeCtx) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: (val) => `€ ${val}`,
+          formatter: (val) => getFormatDates(val),
         },
       },
       title: {
