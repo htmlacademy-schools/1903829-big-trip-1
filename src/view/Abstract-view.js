@@ -1,6 +1,6 @@
 import { createElement } from '../utils/render.js';
 
-export const timeOut = 600;
+export const TIME_OUT = 600;
 
 export default class AbstractView {
   #element = null;
@@ -29,11 +29,12 @@ export default class AbstractView {
   }
 
   shake(callback) {
-    this.element.style.animation = `shake ${ timeOut / 1000 }s`;
+    this.element.style.animation = `shake ${ TIME_OUT / 1000 }s`;
     setTimeout(() => {
       this.element.style.animation = '';
       callback();
     },
-    timeOut);
+    TIME_OUT
+    );
   }
 }

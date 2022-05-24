@@ -2,7 +2,7 @@ import EditNewPoint from '../view/site-edit-point';
 import TripEventsView from '../view/site-trip-events-view';
 import { RenderPosition, render, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../const';
-import { chackedDate } from '../utils/functionsWithDayjs';
+import { checkedDate } from '../utils/functionsWithDayjs';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -104,8 +104,8 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isMinorUpdate =
-      !chackedDate(this.#wayPoint.date.start, update.date.start) ||
-      !chackedDate(this.#wayPoint.date.end, update.date.end);
+      !checkedDate(this.#wayPoint.date.start, update.date.start) ||
+      !checkedDate(this.#wayPoint.date.end, update.date.end);
 
     this.#changeData(
       UserAction.UPDATE_POINT,

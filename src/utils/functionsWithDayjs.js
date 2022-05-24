@@ -2,35 +2,7 @@ import dayjs from 'dayjs';
 
 export const dateRend = (date, format) => dayjs(date).format(format);
 
-const getWeightForNullDate = (dateA, dateB) => {
-  if (dateA === null && dateB === null) {
-    return 0;
-  }
-
-  if (dateA === null) {
-    return 1;
-  }
-
-  if (dateB === null) {
-    return -1;
-  }
-
-  return null;
-};
-
-export const sortPointUp = (pointA, pointB) => {
-  const weight = getWeightForNullDate(pointA.dueDate, pointB.dueDate);
-
-  return weight ?? dayjs(pointA.dueDate).diff(dayjs(pointB.dueDate));
-};
-
-export const sortPointDown = (pointA, pointB) => {
-  const weight = getWeightForNullDate(pointA.dueDate, pointB.dueDate);
-
-  return weight ?? dayjs(pointB.dueDate).diff(dayjs(pointA.dueDate));
-};
-
-export const getDifferentDates = (dayOne, dayTwo) => {
+const getDifferentDates = (dayOne, dayTwo) => {
   const diffDateUnix = Math.abs(dayjs(dayOne).diff(dayjs(dayTwo)));
 
   const days = Math.floor(diffDateUnix / (24 * 60 * 60 * 1000));
@@ -62,7 +34,7 @@ export const countDuration = (dateStart, dateEnd) => {
   };
 };
 
-export const chackedDate = (d1, d2) => (d1 === null && d2 === null) || dayjs(d1).isSame(d2, 'D');
+export const checkedDate = (d1, d2) => (d1 === null && d2 === null) || dayjs(d1).isSame(d2, 'D');
 
 export const getDates = (time) => {
   const days = Math.floor(time / (24 * 60 * 60 * 1000));
@@ -77,4 +49,12 @@ export const getDates = (time) => {
     durationFormat += `${(`0${minuts}`).slice(-2)}M`;
   }
   return durationFormat;
+};
+
+export const sortDate = (a, b) => dayjs(a.date.start).diff(dayjs(b.date.start));
+
+export const sortTime = (a, b) => {
+  const timeOne = dayjs(a.date.end).diff(dayjs(a.date.start));
+  const timeTwo = dayjs(b.date.end).diff(dayjs(b.date.start));
+  return timeOne - timeTwo;
 };
