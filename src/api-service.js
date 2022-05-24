@@ -52,7 +52,7 @@ export default class ApiService {
 
   deletePoint = async (point) => {
     const response = await this.#load({
-      url: `tasks/${ point.id }`,
+      url: `points/${point.id}`,
       method: Method.DELETE,
     });
 
@@ -68,8 +68,8 @@ export default class ApiService {
     headers.append('Authorization', this.#authorization);
 
     const response = await fetch(
-      `${this.#endPoint}/${ url }`,
-      { method, body, headers },
+      `${this.#endPoint}/${url}`,
+      {method, body, headers},
     );
 
     try {
@@ -103,7 +103,7 @@ export default class ApiService {
 
   static checkStatus = (response) => {
     if (!response.ok) {
-      throw new Error(`${ response.status }: ${ response.statusText }`);
+      throw new Error(`${response.status}: ${response.statusText}`);
     }
   };
 

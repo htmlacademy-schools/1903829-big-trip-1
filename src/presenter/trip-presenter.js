@@ -2,7 +2,8 @@ import AddFirstPoint from '../view/site-add-first-point';
 import EventsListTemplate from '../view/site-list-view';
 import PointPresenter from './point-presenter';
 import { render, RenderPosition, remove } from '../utils/render';
-import { SortType, sortDate, sortTime, sortPrice } from '../utils/informations';
+import { sortPrice, SortType } from '../utils/common';
+import { sortDate, sortTime } from '../utils/functionsWithDayjs';
 import { UpdateType } from '../const';
 import { FilterType, UserAction } from '../const';
 import EventNewPresenter from './point-new-presenter';
@@ -69,28 +70,28 @@ export default class TripPresenter {
 
   #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
-      case UserAction.UPDATE_TASK:
+      case UserAction.UPDATE_POINT:
         this.#pointsPresenter.get(update.id).setViewState(State.SAVING);
-        this.#pointsModel.updateEvent(updateType, update);
+        this.#pointsModel.updatePoint(updateType, update);
         try {
-          await this.#pointsModel.updateEvent(updateType, update);
+          await this.#pointsModel.updatePoint(updateType, update);
         } catch(err) {
           this.#pointsPresenter.get(update.id).setViewState(State.ABORTING);
         }
         break;
-      case UserAction.ADD_TASK:
+      case UserAction.ADD_POINT:
         this.#pointNewPresenter.setSaving();
         try {
-          await this.#pointsModel.addEvent(updateType, update);
+          await this.#pointsModel.addPoint(updateType, update);
         } catch(err) {
           this.#pointNewPresenter.setAborting();
         }
         break;
-      case UserAction.DELETE_TASK:
+      case UserAction.DELETE_POINT:
         this.#pointsPresenter.get(update.id).setViewState(State.DELETING);
-        this.#pointsModel.deleteEvents(updateType, update);
+        this.#pointsModel.deletePoints(updateType, update);
         try {
-          await this.#pointsModel.deleteEvents(updateType, update);
+          await this.#pointsModel.deletePoints(updateType, update);
         } catch(err) {
           this.#pointsPresenter.get(update.id).setViewState(State.ABORTING);
         }
@@ -149,7 +150,7 @@ export default class TripPresenter {
     this.#currentSortType = SortType.DAY.text;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     clearStatistics();
-    //newEvent.type.currentType.selectedOffer = [];
+    newEvent.type.currentType.selectedOffers = [];
     this.#pointNewPresenter.init(newEvent);
   };
 

@@ -2,7 +2,7 @@ import EditNewPoint from '../view/site-edit-point';
 import TripEventsView from '../view/site-trip-events-view';
 import { RenderPosition, render, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../const';
-import { chackedDate } from '../utils/functionsWithDayjs';
+import { checkedDate } from '../utils/functionsWithDayjs';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -96,7 +96,7 @@ export default class PointPresenter {
 
   #favoriteClickHandler = () => {
     this.#changeData(
-      UserAction.UPDATE_EVENT,
+      UserAction.UPDATE_POINT,
       UpdateType.PATCH,
       { ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite },
     );
@@ -104,11 +104,11 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isMinorUpdate =
-      !chackedDate(this.#wayPoint.date.start, update.date.start) ||
-      !chackedDate(this.#wayPoint.date.end, update.date.end);
+      !checkedDate(this.#wayPoint.date.start, update.date.start) ||
+      !checkedDate(this.#wayPoint.date.end, update.date.end);
 
     this.#changeData(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
@@ -116,7 +116,7 @@ export default class PointPresenter {
 
   #handleDeleteClick = (point) => {
     this.#changeData(
-      UserAction.DELETE_TASK,
+      UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );

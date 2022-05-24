@@ -1,14 +1,14 @@
-import dayjs from 'dayjs';
 import AbstractView from './Abstract-view';
-import { sortDate } from '../utils/informations.js';
+import { sortDate } from '../utils/functionsWithDayjs';
+import { dateRend } from '../utils/functionsWithDayjs';
 
 const createTripInfo = (points) => {
   points.sort(sortDate);
   const cities = points.map((point)=> point.city.currentCity.titleCity);
   let allPrice = null;
   points.forEach((point) => { allPrice += Number(point.startPrice); });
-  const dateBegin = dayjs(points[0].date.start).format('MMM D');
-  const dateEnd = dayjs(points[points.length-1].date.end).format('MMM DD');
+  const dateBegin = dateRend(points[0].date.start,'MMM D');
+  const dateEnd = dateRend(points[points.length - 1].date.end, 'MMM DD');
 
   let tripTitles = '';
 
@@ -31,7 +31,7 @@ const createTripInfo = (points) => {
               <p class="trip-info__dates">${ dateBegin }&nbsp;&mdash;&nbsp;${ dateEnd }</p>
             </div>
             <p class="trip-info__cost">
-              Total: &euro;&nbsp; ${ allPrice } <span class="trip-info__cost-value"</span>
+              Total: &euro;&nbsp; <span class="trip-info__cost-value">${ allPrice }</span>
             </p>
           </section>`;
 };

@@ -1,51 +1,8 @@
 import dayjs from 'dayjs';
-import { getRandomInteger } from './common';
-
-export const generateBeginEndDates = () => {
-  const maxDaysGag = 7;
-  const daysGap = getRandomInteger(-7, maxDaysGag);
-  const daysAddition = daysGap + getRandomInteger(0, 2);
-  const startHoursAddition = getRandomInteger(1, 6);
-  const endHoursAddition = getRandomInteger(startHoursAddition, startHoursAddition + 10);
-  const startMinutesAddition = getRandomInteger(0, 59);
-  const endMinutesAddition = getRandomInteger(startMinutesAddition, startMinutesAddition + 59);
-  return {
-    start: dayjs().add(daysGap, 'day').add(startHoursAddition, 'hour').add(startMinutesAddition, 'minute').toDate(),
-    end: dayjs().add(daysAddition, 'day').add(endHoursAddition, 'hour').add(endMinutesAddition, 'minute').toDate()
-  };
-};
 
 export const dateRend = (date, format) => dayjs(date).format(format);
 
-const getWeightForNullDate = (dateA, dateB) => {
-  if (dateA === null && dateB === null) {
-    return 0;
-  }
-
-  if (dateA === null) {
-    return 1;
-  }
-
-  if (dateB === null) {
-    return -1;
-  }
-
-  return null;
-};
-
-export const sortPointUp = (pointA, pointB) => {
-  const weight = getWeightForNullDate(pointA.dueDate, pointB.dueDate);
-
-  return weight ?? dayjs(pointA.dueDate).diff(dayjs(pointB.dueDate));
-};
-
-export const sortPointDown = (pointA, pointB) => {
-  const weight = getWeightForNullDate(pointA.dueDate, pointB.dueDate);
-
-  return weight ?? dayjs(pointB.dueDate).diff(dayjs(pointA.dueDate));
-};
-
-export const getDifferentDates = (dayOne, dayTwo) => {
+const getDifferentDates = (dayOne, dayTwo) => {
   const diffDateUnix = Math.abs(dayjs(dayOne).diff(dayjs(dayTwo)));
 
   const days = Math.floor(diffDateUnix / (24 * 60 * 60 * 1000));
@@ -77,4 +34,27 @@ export const countDuration = (dateStart, dateEnd) => {
   };
 };
 
-export const chackedDate = (d1, d2) => (d1 === null && d2 === null) || dayjs(d1).isSame(d2, 'D');
+export const checkedDate = (d1, d2) => (d1 === null && d2 === null) || dayjs(d1).isSame(d2, 'D');
+
+export const getDates = (time) => {
+  const days = Math.floor(time / (24 * 60 * 60 * 1000));
+  const hours = Math.floor(time / (60 * 60 * 1000) - (24 * days));
+  const minuts =Math.floor( time / (60 * 1000) - (days * 24 * 60) - (hours * 60));
+  let durationFormat = '';
+  if (days !== 0) {
+    durationFormat += `${(`0${days}`).slice(-2)}D ${(`0${hours}`).slice(-2)}H ${(`0${minuts}`).slice(-2)}M`;
+  } else if (hours !== 0) {
+    durationFormat += `${(`0${hours}`).slice(-2)}H ${(`0${minuts}`).slice(-2)}M`;
+  } else {
+    durationFormat += `${(`0${minuts}`).slice(-2)}M`;
+  }
+  return durationFormat;
+};
+
+export const sortDate = (a, b) => dayjs(a.date.start).diff(dayjs(b.date.start));
+
+export const sortTime = (a, b) => {
+  const timeOne = dayjs(a.date.end).diff(dayjs(a.date.start));
+  const timeTwo = dayjs(b.date.end).diff(dayjs(b.date.start));
+  return timeOne - timeTwo;
+};

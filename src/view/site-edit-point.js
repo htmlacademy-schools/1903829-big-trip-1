@@ -2,8 +2,7 @@ import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
-import { createOffer } from '../utils/common';
-import { createPhoto, createphotoContainer } from '../utils/common';
+import { createOffer, createPhoto, createphotoContainer } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
@@ -136,9 +135,9 @@ const createEditPoint = (point = {}) => {
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
-              ${ startPrice } &euro;
+               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? startPrice : 0}">
           </div>
     
           <button class="event__save-btn  btn  btn--blue" type="submit"${ isDisabled ? 'disabled' : '' }>
@@ -285,7 +284,7 @@ export default class EditNewPoint extends SmartView {
     this.#datepicker = flatpickr(
       this.element.querySelector('#event-start-time-1'),
       {
-        dateFormat: 'DD/MM/YYYY HH:mm',
+        dateFormat: 'd/m/y H:i',
         defaultDate: currentDate,
         enableTime: true,
         onChange: this.#beginDateChangeHandler,
@@ -298,7 +297,7 @@ export default class EditNewPoint extends SmartView {
     this.#datepicker = flatpickr(
       this.element.querySelector('#event-end-time-1'),
       {
-        dateFormat: 'DD/MM/YYYY HH:mm',
+        dateFormat: 'd/m/y H:i',
         defaultDate: currentDate,
         enableTime: true,
         onChange: this.#endDateChangeHandler,
