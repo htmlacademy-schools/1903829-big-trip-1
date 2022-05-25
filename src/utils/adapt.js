@@ -30,7 +30,7 @@ export const generateOffers = (offers) => {
 };
 
 export const generateCities = (cities) => {
-  arrayCities = cities.map((city) => ({ ...city }));
+  arrayCities = cities.map((city) => ({ ...city, }));
 };
 
 export const adaptToClient = (point) => {
