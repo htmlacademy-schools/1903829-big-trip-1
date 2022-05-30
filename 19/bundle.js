@@ -121,12 +121,12 @@ class ApiService {
           'is_favorite': point.favorite,
           'date_from': point.date.start,
           'date_to': point.date.end,
-          'base_price': Number(point.startPrice),
+          'base_price': Number(point.basePrice),
           'type': point.type.currentType.title,
           'destination': {
-            'titleCity': point.city.currentCity.titleCity,
+            'name': point.city.currentCity.name,
             'description': point.city.currentCity.description,
-            'photos': point.city.currentCity.photos
+            'pictures': point.city.currentCity.pictures
           },
           'offers': point.type.currentType.selectedOffers
         };
@@ -182,13 +182,13 @@ _defineProperty(ApiService, "catchError", err => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "UserAction": () => (/* binding */ UserAction),
-/* harmony export */   "UpdateType": () => (/* binding */ UpdateType),
+/* harmony export */   "COLORS": () => (/* binding */ COLORS),
+/* harmony export */   "Color": () => (/* binding */ Color),
 /* harmony export */   "FilterType": () => (/* binding */ FilterType),
 /* harmony export */   "MenuItem": () => (/* binding */ MenuItem),
-/* harmony export */   "Color": () => (/* binding */ Color),
-/* harmony export */   "COLORS": () => (/* binding */ COLORS),
-/* harmony export */   "TYPEPOINT": () => (/* binding */ TYPEPOINT)
+/* harmony export */   "TYPEPOINT": () => (/* binding */ TYPEPOINT),
+/* harmony export */   "UpdateType": () => (/* binding */ UpdateType),
+/* harmony export */   "UserAction": () => (/* binding */ UserAction)
 /* harmony export */ });
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
@@ -373,11 +373,11 @@ class PointsModel extends _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE
 
       try {
         const response = await _classPrivateFieldGet(this, _apiService).updatePoint(update);
-        const updatedEvent = (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_2__.adaptToClient)(response);
+        const updatedPoint = (0,_utils_adapt_js__WEBPACK_IMPORTED_MODULE_2__.adaptToClient)(response);
 
         _classPrivateFieldSet(this, _points, [..._classPrivateFieldGet(this, _points).slice(0, index), update, ..._classPrivateFieldGet(this, _points).slice(index + 1)]);
 
-        this._notify(updateType, updatedEvent);
+        this._notify(updateType, updatedPoint);
       } catch (err) {
         throw new Error('Can\'t update event');
       }
@@ -396,7 +396,7 @@ class PointsModel extends _utils_abstract_observable_js__WEBPACK_IMPORTED_MODULE
       }
     });
 
-    _defineProperty(this, "deletePoints", async (updateType, update) => {
+    _defineProperty(this, "deletePoint", async (updateType, update) => {
       const index = _classPrivateFieldGet(this, _points).findIndex(event => event.id === update.id);
 
       if (index === -1) {
@@ -933,7 +933,7 @@ class PointPresenter {
       writable: true,
       value: () => {
         _classPrivateFieldGet(this, _changeData).call(this, _const__WEBPACK_IMPORTED_MODULE_3__.UserAction.UPDATE_POINT, _const__WEBPACK_IMPORTED_MODULE_3__.UpdateType.PATCH, { ..._classPrivateFieldGet(this, _wayPoint),
-          isFavorite: !_classPrivateFieldGet(this, _wayPoint).isFavorite
+          favorite: !_classPrivateFieldGet(this, _wayPoint).favorite
         });
       }
     });
@@ -1223,10 +1223,10 @@ class TripPresenter {
           case _const__WEBPACK_IMPORTED_MODULE_6__.UserAction.DELETE_POINT:
             _classPrivateFieldGet(this, _pointsPresenter).get(update.id).setViewState(_point_presenter__WEBPACK_IMPORTED_MODULE_2__.State.DELETING);
 
-            _classPrivateFieldGet(this, _pointsModel).deletePoints(updateType, update);
+            _classPrivateFieldGet(this, _pointsModel).deletePoint(updateType, update);
 
             try {
-              await _classPrivateFieldGet(this, _pointsModel).deletePoints(updateType, update);
+              await _classPrivateFieldGet(this, _pointsModel).deletePoint(updateType, update);
             } catch (err) {
               _classPrivateFieldGet(this, _pointsPresenter).get(update.id).setViewState(_point_presenter__WEBPACK_IMPORTED_MODULE_2__.State.ABORTING);
             }
@@ -1524,11 +1524,11 @@ class AbstractObservable {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "generateOffers": () => (/* binding */ generateOffers),
-/* harmony export */   "generateCities": () => (/* binding */ generateCities),
 /* harmony export */   "adaptToClient": () => (/* binding */ adaptToClient),
-/* harmony export */   "newEvent": () => (/* binding */ newEvent),
-/* harmony export */   "createNewEvent": () => (/* binding */ createNewEvent)
+/* harmony export */   "createNewEvent": () => (/* binding */ createNewEvent),
+/* harmony export */   "generateCities": () => (/* binding */ generateCities),
+/* harmony export */   "generateOffers": () => (/* binding */ generateOffers),
+/* harmony export */   "newEvent": () => (/* binding */ newEvent)
 /* harmony export */ });
 /* harmony import */ var _utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/functionsWithDayjs.js */ "./src/utils/functionsWithDayjs.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
@@ -1598,9 +1598,9 @@ const adaptToClient = point => {
     favorite: point.is_favorite,
     city: {
       currentCity: {
-        titleCity: point.destination.name,
+        name: point.destination.name,
         description: point.destination.description,
-        photos: point.destination.pictures
+        pictures: point.destination.pictures
       },
       arrayCity: arrayCities
     },
@@ -1608,8 +1608,7 @@ const adaptToClient = point => {
       start: point.date_from,
       end: point.date_to
     },
-    startPrice: point.base_price,
-    price: null,
+    basePrice: point.base_price,
     type: {
       currentType: {
         allOffer: typeArray[point.type].allOffer,
@@ -1634,8 +1633,8 @@ const createNewEvent = () => {
     city: {
       currentCity: {
         description: 's',
-        photos: [],
-        titleCity: ''
+        pictures: [],
+        name: ''
       },
       arrayCity: arrayCities
     },
@@ -1643,8 +1642,7 @@ const createNewEvent = () => {
       start: dayjs__WEBPACK_IMPORTED_MODULE_1___default()(),
       end: dayjs__WEBPACK_IMPORTED_MODULE_1___default()().add(1, 'hour')
     },
-    startPrice: 0,
-    price: null,
+    basePrice: 0,
     type: {
       currentType: {
         allOffer: typeArray['taxi'].allOffer,
@@ -1672,13 +1670,13 @@ const createNewEvent = () => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SortType": () => (/* binding */ SortType),
 /* harmony export */   "createOffer": () => (/* binding */ createOffer),
 /* harmony export */   "createOffers": () => (/* binding */ createOffers),
-/* harmony export */   "sortStatistics": () => (/* binding */ sortStatistics),
 /* harmony export */   "createPhoto": () => (/* binding */ createPhoto),
 /* harmony export */   "createPhotoContainer": () => (/* binding */ createPhotoContainer),
-/* harmony export */   "SortType": () => (/* binding */ SortType),
-/* harmony export */   "sortPrice": () => (/* binding */ sortPrice)
+/* harmony export */   "sortPrice": () => (/* binding */ sortPrice),
+/* harmony export */   "sortStatistics": () => (/* binding */ sortStatistics)
 /* harmony export */ });
 const createOffer = (offer, isCheckedOffer) => {
   const {
@@ -1727,7 +1725,7 @@ const SortType = {
     checked: false
   }
 };
-const sortPrice = (a, b) => a.startPrice - b.startPrice;
+const sortPrice = (a, b) => a.basePrice - b.basePrice;
 
 /***/ }),
 
@@ -1764,9 +1762,9 @@ const filter = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "dateRend": () => (/* binding */ dateRend),
-/* harmony export */   "countDuration": () => (/* binding */ countDuration),
 /* harmony export */   "checkedDate": () => (/* binding */ checkedDate),
+/* harmony export */   "countDuration": () => (/* binding */ countDuration),
+/* harmony export */   "dateRend": () => (/* binding */ dateRend),
 /* harmony export */   "getDates": () => (/* binding */ getDates),
 /* harmony export */   "sortDate": () => (/* binding */ sortDate),
 /* harmony export */   "sortTime": () => (/* binding */ sortTime)
@@ -1844,10 +1842,10 @@ const sortTime = (a, b) => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RenderPosition": () => (/* binding */ RenderPosition),
-/* harmony export */   "render": () => (/* binding */ render),
 /* harmony export */   "createElement": () => (/* binding */ createElement),
-/* harmony export */   "replace": () => (/* binding */ replace),
-/* harmony export */   "remove": () => (/* binding */ remove)
+/* harmony export */   "remove": () => (/* binding */ remove),
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "replace": () => (/* binding */ replace)
 /* harmony export */ });
 /* harmony import */ var _view_Abstract_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/Abstract-view */ "./src/view/Abstract-view.js");
 
@@ -1923,9 +1921,9 @@ const remove = component => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TIME": () => (/* binding */ TIME),
-/* harmony export */   "MONEY": () => (/* binding */ MONEY),
 /* harmony export */   "COUNTTYPE": () => (/* binding */ COUNTTYPE),
+/* harmony export */   "MONEY": () => (/* binding */ MONEY),
+/* harmony export */   "TIME": () => (/* binding */ TIME),
 /* harmony export */   "clearStatistics": () => (/* binding */ clearStatistics),
 /* harmony export */   "counting": () => (/* binding */ counting)
 /* harmony export */ });
@@ -1974,7 +1972,7 @@ const clearStatistics = () => {
 };
 const counting = points => {
   points.forEach(point => {
-    MONEY[point.type.currentType.title] += Number(point.startPrice);
+    MONEY[point.type.currentType.title] += Number(point.basePrice);
     TIME[point.type.currentType.title] += point.time.arrayDurationFormat.unix;
     COUNTTYPE[point.type.currentType.title] += 1;
   });
@@ -2221,7 +2219,7 @@ const createEditPoint = point => {
     date,
     type,
     city,
-    startPrice,
+    basePrice,
     isDisabled,
     isDeleting,
     isSaving
@@ -2251,7 +2249,7 @@ const createEditPoint = point => {
   });
   let flag = false;
   city.arrayCity.forEach(cityElement => {
-    if (cityElement.titleCity === city.currentCity.titleCity) {
+    if (cityElement.name === city.currentCity.name) {
       flag = true;
       city.currentCity = cityElement;
     }
@@ -2271,8 +2269,8 @@ const createEditPoint = point => {
   }
 
   let photos = '';
-  city.currentCity.photos.forEach(photo => {
-    const xPhoto = (0,_utils_common__WEBPACK_IMPORTED_MODULE_4__.createPhoto)(photo);
+  city.currentCity.pictures.forEach(picture => {
+    const xPhoto = (0,_utils_common__WEBPACK_IMPORTED_MODULE_4__.createPhoto)(picture);
     photos += xPhoto;
   });
   photos = (0,_utils_common__WEBPACK_IMPORTED_MODULE_4__.createPhotoContainer)(photos);
@@ -2333,7 +2331,7 @@ const createEditPoint = point => {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type.currentType.title}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city.currentCity.titleCity}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city.currentCity.name}" list="destination-list-1">
             <datalist id="destination-list-1">
               ${allCitiesTemplate}
             </datalist>
@@ -2352,7 +2350,7 @@ const createEditPoint = point => {
               <span class="visually-hidden">Price</span>
                &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? startPrice : 0}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? basePrice : 0}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled ? 'disabled' : ''}>
@@ -2467,7 +2465,7 @@ class EditNewPoint extends _Smart_view__WEBPACK_IMPORTED_MODULE_3__["default"] {
         this.updateData({
           city: {
             currentCity: {
-              titleCity: evt.target.value
+              name: evt.target.value
             },
             arrayCity: this._data.city.arrayCity
           }
@@ -2489,7 +2487,7 @@ class EditNewPoint extends _Smart_view__WEBPACK_IMPORTED_MODULE_3__["default"] {
         this._data.isSaving = false;
         this._data.isDeleting = false;
         const priceValue = this.element.querySelector('#event-price-1').value;
-        this._data.startPrice = Number(priceValue);
+        this._data.basePrice = Number(priceValue);
         this._data.isCreateEvent = false;
         const offers = document.querySelectorAll('.event__offer-checkbox');
         const filteredOffersChecked = Array.from(offers).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value.split('-').join(' '));
@@ -2571,7 +2569,7 @@ class EditNewPoint extends _Smart_view__WEBPACK_IMPORTED_MODULE_3__["default"] {
         this.updateData({
           date: {
             start: userDate,
-            end: this._data.date.dataEndEvent
+            end: this._data.date.end
           }
         });
         this._data.time = (0,_utils_functionsWithDayjs_js__WEBPACK_IMPORTED_MODULE_2__.countDuration)({
@@ -2680,7 +2678,7 @@ const createTripEventsView = point => {
     date,
     type,
     city,
-    startPrice,
+    basePrice,
     time,
     favorite
   } = point;
@@ -2708,7 +2706,7 @@ const createTripEventsView = point => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="${type.currentType.img}" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type.currentType.title} ${city.currentCity.titleCity}</h3>
+                <h3 class="event__title">${type.currentType.title} ${city.currentCity.name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="">${startDayMonth}</time>
@@ -2718,7 +2716,7 @@ const createTripEventsView = point => {
                   <p class="event__duration">${time.duration} </p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${startPrice}</span>
+                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
                 </p>
                   <h4 class="visually-hidden">Offers:</h4>
                   <ul class="event__selected-offers">
@@ -2908,10 +2906,10 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 const createTripInfo = points => {
   points.sort(_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_1__.sortDate);
-  const cities = points.map(point => point.city.currentCity.titleCity);
+  const cities = points.map(point => point.city.currentCity.name);
   let allPrice = null;
   points.forEach(point => {
-    allPrice += Number(point.startPrice);
+    allPrice += Number(point.basePrice);
   });
   const dateBegin = (0,_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_1__.dateRend)(points[0].date.start, 'MMM D');
   const dateEnd = (0,_utils_functionsWithDayjs__WEBPACK_IMPORTED_MODULE_1__.dateRend)(points[points.length - 1].date.end, 'MMM DD');
@@ -23300,8 +23298,8 @@ if (typeof window !== "undefined") {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "english": () => (/* binding */ english),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "english": () => (/* binding */ english)
 /* harmony export */ });
 var english = {
     weekdays: {
@@ -23487,15 +23485,15 @@ var defaults = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createDateFormatter": () => (/* binding */ createDateFormatter),
-/* harmony export */   "createDateParser": () => (/* binding */ createDateParser),
+/* harmony export */   "calculateSecondsSinceMidnight": () => (/* binding */ calculateSecondsSinceMidnight),
 /* harmony export */   "compareDates": () => (/* binding */ compareDates),
 /* harmony export */   "compareTimes": () => (/* binding */ compareTimes),
-/* harmony export */   "isBetween": () => (/* binding */ isBetween),
-/* harmony export */   "calculateSecondsSinceMidnight": () => (/* binding */ calculateSecondsSinceMidnight),
-/* harmony export */   "parseSeconds": () => (/* binding */ parseSeconds),
+/* harmony export */   "createDateFormatter": () => (/* binding */ createDateFormatter),
+/* harmony export */   "createDateParser": () => (/* binding */ createDateParser),
 /* harmony export */   "duration": () => (/* binding */ duration),
-/* harmony export */   "getDefaultHours": () => (/* binding */ getDefaultHours)
+/* harmony export */   "getDefaultHours": () => (/* binding */ getDefaultHours),
+/* harmony export */   "isBetween": () => (/* binding */ isBetween),
+/* harmony export */   "parseSeconds": () => (/* binding */ parseSeconds)
 /* harmony export */ });
 /* harmony import */ var _formatting__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./formatting */ "./node_modules/flatpickr/dist/esm/utils/formatting.js");
 /* harmony import */ var _types_options__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types/options */ "./node_modules/flatpickr/dist/esm/types/options.js");
@@ -23656,12 +23654,12 @@ function getDefaultHours(config) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "toggleClass": () => (/* binding */ toggleClass),
-/* harmony export */   "createElement": () => (/* binding */ createElement),
 /* harmony export */   "clearNode": () => (/* binding */ clearNode),
-/* harmony export */   "findParent": () => (/* binding */ findParent),
+/* harmony export */   "createElement": () => (/* binding */ createElement),
 /* harmony export */   "createNumberInput": () => (/* binding */ createNumberInput),
-/* harmony export */   "getEventTarget": () => (/* binding */ getEventTarget)
+/* harmony export */   "findParent": () => (/* binding */ findParent),
+/* harmony export */   "getEventTarget": () => (/* binding */ getEventTarget),
+/* harmony export */   "toggleClass": () => (/* binding */ toggleClass)
 /* harmony export */ });
 function toggleClass(elem, className, bool) {
     if (bool === true)
@@ -23730,10 +23728,10 @@ function getEventTarget(event) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formats": () => (/* binding */ formats),
 /* harmony export */   "monthToStr": () => (/* binding */ monthToStr),
 /* harmony export */   "revFormat": () => (/* binding */ revFormat),
-/* harmony export */   "tokenRegex": () => (/* binding */ tokenRegex),
-/* harmony export */   "formats": () => (/* binding */ formats)
+/* harmony export */   "tokenRegex": () => (/* binding */ tokenRegex)
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./node_modules/flatpickr/dist/esm/utils/index.js");
 
@@ -23883,10 +23881,10 @@ var formats = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "pad": () => (/* binding */ pad),
-/* harmony export */   "int": () => (/* binding */ int),
+/* harmony export */   "arrayify": () => (/* binding */ arrayify),
 /* harmony export */   "debounce": () => (/* binding */ debounce),
-/* harmony export */   "arrayify": () => (/* binding */ arrayify)
+/* harmony export */   "int": () => (/* binding */ int),
+/* harmony export */   "pad": () => (/* binding */ pad)
 /* harmony export */ });
 var pad = function (number, length) {
     if (length === void 0) { length = 2; }
@@ -45908,11 +45906,11 @@ module.exports = styleTagTransform;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "nanoid": () => (/* binding */ nanoid),
 /* harmony export */   "customAlphabet": () => (/* binding */ customAlphabet),
 /* harmony export */   "customRandom": () => (/* binding */ customRandom),
-/* harmony export */   "urlAlphabet": () => (/* reexport safe */ _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__.urlAlphabet),
-/* harmony export */   "random": () => (/* binding */ random)
+/* harmony export */   "nanoid": () => (/* binding */ nanoid),
+/* harmony export */   "random": () => (/* binding */ random),
+/* harmony export */   "urlAlphabet": () => (/* reexport safe */ _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__.urlAlphabet)
 /* harmony export */ });
 /* harmony import */ var _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./url-alphabet/index.js */ "./node_modules/nanoid/url-alphabet/index.js");
 
@@ -46053,6 +46051,11 @@ let urlAlphabet =
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -46083,7 +46086,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const AUTHORIZATION = 'Basic ffg7e433kkd9fOps';
-const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip/';
 const siteMenuComponent = new _view_site_trip_tabs_js__WEBPACK_IMPORTED_MODULE_5__["default"]();
 const tripEventsElement = document.querySelector('.trip-events');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
