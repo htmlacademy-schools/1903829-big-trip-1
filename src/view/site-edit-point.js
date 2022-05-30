@@ -309,7 +309,7 @@ export default class EditNewPoint extends SmartView {
 
   #beginDateChangeHandler = ([userDate]) => {
     this.updateData({
-      date: { start: userDate, end: this._data.date.dataEndEvent },
+      date: { start: userDate, end: this._data.date.end },
     });
     this._data.time =  countDuration({ start: userDate, end: this._data.date.end });
   };

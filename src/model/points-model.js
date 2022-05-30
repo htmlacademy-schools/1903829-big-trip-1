@@ -66,7 +66,7 @@ export default class PointsModel extends AbstractObservable {
     }
   };
 
-  deletePoints = async (updateType, update) => {
+  deletePoint = async (updateType, update) => {
     const index = this.#points.findIndex((event) => event.id === update.id);
 
     if (index === -1) {
