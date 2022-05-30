@@ -41,7 +41,7 @@ export default class PointsModel extends AbstractObservable {
     }
     try {
       const response = await this.#apiService.updatePoint(update);
-      const updatedEvent = adaptToClient(response);
+      const updatedPoint = adaptToClient(response);
 
       this.#points = [
         ...this.#points.slice(0, index),
@@ -49,7 +49,7 @@ export default class PointsModel extends AbstractObservable {
         ...this.#points.slice(index + 1),
       ];
 
-      this._notify(updateType, updatedEvent);
+      this._notify(updateType, updatedPoint);
     } catch (err) {
       throw new Error('Can\'t update event');
     }

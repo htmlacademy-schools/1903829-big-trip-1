@@ -86,16 +86,15 @@ export default class ApiService {
       'is_favorite': point.favorite,
       'date_from': point.date.start,
       'date_to': point.date.end,
-      'base_price': Number(point.startPrice),
+      'base_price': Number(point.basePrice),
       'type': point.type.currentType.title,
       'destination': {
-        'titleCity': point.city.currentCity.titleCity,
+        'name': point.city.currentCity.name,
         'description': point.city.currentCity.description,
-        'photos': point.city.currentCity.photos,
+        'pictures': point.city.currentCity.pictures,
       },
       'offers': point.type.currentType.selectedOffers,
     };
-
     return adaptedPoint;
   };
 
@@ -103,7 +102,7 @@ export default class ApiService {
 
   static checkStatus = (response) => {
     if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
+      throw new Error(`${ response.status }: ${ response.statusText }`);
     }
   };
 

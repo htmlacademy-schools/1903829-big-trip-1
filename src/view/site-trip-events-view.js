@@ -3,7 +3,7 @@ import AbstractView from './Abstract-view';
 import { createOffers } from '../utils/common.js';
 
 const createTripEventsView = (point) => {
-  const { date, type, city, startPrice, time, favorite } = point;
+  const { date, type, city, basePrice, time, favorite } = point;
 
   const startDate = dateRend(date.start, 'DD MMM');
   const startDayMonth = dateRend(date.start, 'HH:mm');
@@ -28,7 +28,7 @@ const createTripEventsView = (point) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="${ type.currentType.img }" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${ type.currentType.title } ${ city.currentCity.titleCity }</h3>
+                <h3 class="event__title">${ type.currentType.title } ${ city.currentCity.name }</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="">${ startDayMonth }</time>
@@ -38,7 +38,7 @@ const createTripEventsView = (point) => {
                   <p class="event__duration">${ time.duration } </p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${ startPrice }</span>
+                  &euro;&nbsp;<span class="event__price-value">${ basePrice }</span>
                 </p>
                   <h4 class="visually-hidden">Offers:</h4>
                   <ul class="event__selected-offers">

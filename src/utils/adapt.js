@@ -40,9 +40,9 @@ export const adaptToClient = (point) => {
     favorite: point.is_favorite,
     city: {
       currentCity: {
-        titleCity: point.destination.name,
+        name: point.destination.name,
         description: point.destination.description,
-        photos: point.destination.pictures
+        pictures: point.destination.pictures,
       },
       arrayCity: arrayCities
     },
@@ -50,8 +50,7 @@ export const adaptToClient = (point) => {
       start: point.date_from,
       end: point.date_to
     },
-    startPrice: point.base_price,
-    price: null,
+    basePrice: point.base_price,
     type: {
       currentType: {
         allOffer: typeArray[point.type].allOffer,
@@ -77,8 +76,8 @@ export const createNewEvent = () => {
     city: {
       currentCity: {
         description: 's',
-        photos: [],
-        titleCity: ''
+        pictures: [],
+        name: ''
       },
       arrayCity: arrayCities
     },
@@ -86,8 +85,7 @@ export const createNewEvent = () => {
       start: dayjs(),
       end: dayjs().add(1, 'hour')
     },
-    startPrice: 0,
-    price: null,
+    basePrice: 0,
     type: {
       currentType: {
         allOffer: typeArray['taxi'].allOffer,

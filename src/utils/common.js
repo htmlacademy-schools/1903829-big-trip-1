@@ -38,4 +38,4 @@ export const SortType = {
   PRICE: {text: 'price', checked: false},
 };
 
-export const sortPrice = (a, b) => a.startPrice - b.startPrice;
+export const sortPrice = (a, b) => a.basePrice - b.basePrice;

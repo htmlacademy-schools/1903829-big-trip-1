@@ -47,7 +47,7 @@ export const clearStatistics = () => {
 
 export const counting = (points) => {
   points.forEach((point) => {
-    MONEY[point.type.currentType.title] += Number(point.startPrice);
+    MONEY[point.type.currentType.title] += Number(point.basePrice);
     TIME[point.type.currentType.title] += point.time.arrayDurationFormat.unix;
     COUNTTYPE[point.type.currentType.title] += 1;
   });

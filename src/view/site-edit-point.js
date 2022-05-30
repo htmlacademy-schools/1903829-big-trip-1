@@ -7,7 +7,7 @@ import { createOffer, createPhoto, createPhotoContainer } from '../utils/common'
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
 const createEditPoint = (point) => {
-  const  { date, type, city, startPrice, isDisabled,  isDeleting, isSaving, } = point;
+  const  { date, type, city, basePrice, isDisabled,  isDeleting, isSaving, } = point;
 
   let startDateRend = '';
   let endDateRend = '';
@@ -36,7 +36,7 @@ const createEditPoint = (point) => {
 
   let flag = false;
   city.arrayCity.forEach((cityElement) => {
-    if (cityElement.titleCity === city.currentCity.titleCity) {
+    if (cityElement.name === city.currentCity.name) {
       flag = true;
       city.currentCity = cityElement;
     }
@@ -52,13 +52,13 @@ const createEditPoint = (point) => {
 
   if (city.arrayCity) {
     city.arrayCity.forEach((cityName) => {
-      allCitiesTemplate += `<option value="${cityName.name}"></option>`;
+      allCitiesTemplate += `<option value="${ cityName.name }"></option>`;
     });
   }
 
   let photos = '';
-  city.currentCity.photos.forEach((photo) => {
-    const xPhoto = createPhoto(photo);
+  city.currentCity.pictures.forEach((picture) => {
+    const xPhoto = createPhoto(picture);
     photos += xPhoto;
   });
   photos = createPhotoContainer(photos);
@@ -121,7 +121,7 @@ const createEditPoint = (point) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${ type.currentType.title }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ city.currentCity.titleCity }" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ city.currentCity.name }" list="destination-list-1">
             <datalist id="destination-list-1">
               ${ allCitiesTemplate }
             </datalist>
@@ -140,7 +140,7 @@ const createEditPoint = (point) => {
               <span class="visually-hidden">Price</span>
                &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? startPrice : 0}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? basePrice : 0}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit"${ isDisabled ? 'disabled' : '' }>
@@ -224,7 +224,7 @@ export default class EditNewPoint extends SmartView {
   #citiesToggleHandler = (evt) => {
     this.updateData({
       city: {
-        currentCity: { titleCity: evt.target.value },
+        currentCity: { name: evt.target.value },
         arrayCity: this._data.city.arrayCity }
     });
   };
@@ -241,7 +241,7 @@ export default class EditNewPoint extends SmartView {
     this._data.isSaving = false;
     this._data.isDeleting = false;
     const priceValue = this.element.querySelector('#event-price-1').value;
-    this._data.startPrice = Number(priceValue);
+    this._data.basePrice = Number(priceValue);
     this._data.isCreateEvent = false;
     const offers = document.querySelectorAll('.event__offer-checkbox');
     const filteredOffersChecked = Array.from(offers).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value.split('-').join(' '));

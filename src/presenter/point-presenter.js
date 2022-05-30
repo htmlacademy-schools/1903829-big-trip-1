@@ -98,7 +98,7 @@ export default class PointPresenter {
     this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.PATCH,
-      { ...this.#wayPoint, isFavorite: !this.#wayPoint.isFavorite },
+      { ...this.#wayPoint, favorite: !this.#wayPoint.favorite },
     );
   };
 
