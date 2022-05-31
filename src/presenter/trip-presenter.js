@@ -89,9 +89,9 @@ export default class TripPresenter {
         break;
       case UserAction.DELETE_POINT:
         this.#pointsPresenter.get(update.id).setViewState(State.DELETING);
-        this.#pointsModel.deletePoints(updateType, update);
+        this.#pointsModel.deletePoint(updateType, update);
         try {
-          await this.#pointsModel.deletePoints(updateType, update);
+          await this.#pointsModel.deletePoint(updateType, update);
         } catch(err) {
           this.#pointsPresenter.get(update.id).setViewState(State.ABORTING);
         }

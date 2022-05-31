@@ -1,11 +1,12 @@
-export const createOffer = (offer) => {
-  const { title, type, price } = offer;
+export const createOffer = (offer, isCheckedOffer) => {
+  const { title, price } = offer;
+  const id = title.split(' ').join('-').toLowerCase();
   return `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" value="${type}">
-  <label class="event__offer-label" for="event-offer-${type}-1">
-    <span class="event__offer-title">${title}</span>
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ id }-1" type="checkbox" name="event-offer-${ id }" value="${ id }" ${ isCheckedOffer ? 'checked' : '' }>
+  <label class="event__offer-label" for="event-offer-${id}-1">
+    <span class="event__offer-title">${ title }</span>
     &plus;&euro;&nbsp;
-    <span class="event__offer-price">${price}</span>
+    <span class="event__offer-price">${ price }</span>
   </label>
 </div>`;
 };
@@ -23,7 +24,7 @@ export const sortStatistics = (a, b) => b[1] - a[1];
 
 export const createPhoto = (photo) => `<img class="event__photo" src="${ photo.src }" alt="Event photo">`;
 
-export const createphotoContainer = (photo) => (
+export const createPhotoContainer = (photo) => (
   `<div class="event__photos-container">
     <div class="event__photos-tape">
       ${ photo }
@@ -37,4 +38,4 @@ export const SortType = {
   PRICE: {text: 'price', checked: false},
 };
 
-export const sortPrice = (a, b) => a.startPrice - b.startPrice;
+export const sortPrice = (a, b) => a.basePrice - b.basePrice;

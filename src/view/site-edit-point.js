@@ -2,14 +2,18 @@ import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
-import { createOffer, createPhoto, createphotoContainer } from '../utils/common';
+import { createOffer, createPhoto, createPhotoContainer } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
-const createEditPoint = (point = {}) => {
-  const  { date, type, city, startPrice, isDisabled, isDeleting, isSaving } = point;
-  const startDateRend  = dateRend(date.start, 'DD/MM/YY HH:mm');
-  const endDateRend  = dateRend(date.end, 'DD/MM/YY HH:mm');
+const createEditPoint = (point) => {
+  const  { date, type, city, basePrice, isDisabled,  isDeleting, isSaving, } = point;
+
+  let startDateRend = '';
+  let endDateRend = '';
+  startDateRend = dateRend(date.start, 'DD/MM/YY HH:mm');
+  endDateRend = dateRend(date.end, 'DD/MM/YY HH:mm');
+
   let offers = '';
   let allCitiesTemplate = '';
 
@@ -32,7 +36,7 @@ const createEditPoint = (point = {}) => {
 
   let flag = false;
   city.arrayCity.forEach((cityElement) => {
-    if (cityElement.titleCity === city.currentCity.titleCity) {
+    if (cityElement.name === city.currentCity.name) {
       flag = true;
       city.currentCity = cityElement;
     }
@@ -47,17 +51,17 @@ const createEditPoint = (point = {}) => {
   }
 
   if (city.arrayCity) {
-    city.arrayCity.forEach((ct) => {
-      allCitiesTemplate += `<option value="${ ct.titleCity }"></option>`;
+    city.arrayCity.forEach((cityName) => {
+      allCitiesTemplate += `<option value="${ cityName.name }"></option>`;
     });
   }
 
   let photos = '';
-  city.currentCity.photos.forEach((photo) => {
-    const xPhoto = createPhoto(photo);
+  city.currentCity.pictures.forEach((picture) => {
+    const xPhoto = createPhoto(picture);
     photos += xPhoto;
   });
-  photos = createphotoContainer(photos);
+  photos = createPhotoContainer(photos);
 
   const buttonDeleteText = (isDeleting ? 'Deleting...' : 'Delete');
 
@@ -70,7 +74,6 @@ const createEditPoint = (point = {}) => {
                 <img class="event__type-icon" width="17" height="17" src="${ type.currentType.img }" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
-    
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
@@ -82,7 +85,7 @@ const createEditPoint = (point = {}) => {
                   <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" ${type.currentType.title === 'bus' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
                 </div>
-                <div class="event__type-item">                 
+                <div class="event__type-item">
                   <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train" ${type.currentType.title === 'train' ? 'checked' : ''}>
                   <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
                 </div>
@@ -113,17 +116,17 @@ const createEditPoint = (point = {}) => {
               </fieldset>
             </div>
           </div>
-    
+
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
               ${ type.currentType.title }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city.currentCity.titleCity}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ city.currentCity.name }" list="destination-list-1">
             <datalist id="destination-list-1">
               ${ allCitiesTemplate }
             </datalist>
           </div>
-    
+
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
             <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${ startDateRend }">
@@ -131,15 +134,15 @@ const createEditPoint = (point = {}) => {
             <label class="visually-hidden" for="event-end-time-1">To</label>
             <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${ endDateRend }">
           </div>
-    
+
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
                &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? startPrice : 0}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${!point.isCreateEvent ? basePrice : 0}">
           </div>
-    
+
           <button class="event__save-btn  btn  btn--blue" type="submit"${ isDisabled ? 'disabled' : '' }>
             ${ isSaving ? 'Saving...' : 'Save' }
           </button>
@@ -154,6 +157,7 @@ const createEditPoint = (point = {}) => {
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
             <div class="event__available-offers">
               ${ offers }
             </div>
@@ -219,8 +223,9 @@ export default class EditNewPoint extends SmartView {
 
   #citiesToggleHandler = (evt) => {
     this.updateData({
-      currentCity: { titleCity: evt.target.value },
-      arrayCity: this._data.city.arrayCity
+      city: {
+        currentCity: { name: evt.target.value },
+        arrayCity: this._data.city.arrayCity }
     });
   };
 
@@ -236,23 +241,20 @@ export default class EditNewPoint extends SmartView {
     this._data.isSaving = false;
     this._data.isDeleting = false;
     const priceValue = this.element.querySelector('#event-price-1').value;
-    this._data.startPrice = Number(priceValue);
+    this._data.basePrice = Number(priceValue);
     this._data.isCreateEvent = false;
     const offers = document.querySelectorAll('.event__offer-checkbox');
     const filteredOffersChecked = Array.from(offers).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value.split('-').join(' '));
     const filteredOffersData = Array.from(this._data.type.currentType.allOffer)
       .filter((offer) =>
         filteredOffersChecked
-          .some((filteredOfferChecked) => filteredOfferChecked === offer.title.id));
-    this._data.type.currentType.selectedOffer = filteredOffersData;
+          .some((filteredOfferChecked) => filteredOfferChecked === offer.title.toLowerCase()));
+    this._data.type.currentType.selectedOffers = filteredOffersData;
     this._callback.formSubmit(this._data);
   };
 
   setClickRollupHandler = (callback) => {
     this._callback.click = callback;
-    if(!this._data.isCreateEvent) {
-      this._data.city.currentCity.isShowPhoto = false;
-    }
     const rollupButtonTemplate = this.element.querySelector('.event__rollup-btn');
     if (rollupButtonTemplate) {
       rollupButtonTemplate.addEventListener('click', this.#eventRollupBtnClickHandler);
@@ -314,7 +316,7 @@ export default class EditNewPoint extends SmartView {
 
   #endDateChangeHandler = ([userDate]) => {
     this.updateData({
-      date: { begin: this._data.date.begin, endt: userDate },
+      date: { start: this._data.date.start, end: userDate },
     });
     this._data.time = countDuration({ start: this._data.date.start, end: userDate });
   };

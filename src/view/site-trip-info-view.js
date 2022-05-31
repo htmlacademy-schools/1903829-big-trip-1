@@ -4,9 +4,9 @@ import { dateRend } from '../utils/functionsWithDayjs';
 
 const createTripInfo = (points) => {
   points.sort(sortDate);
-  const cities = points.map((point)=> point.city.currentCity.titleCity);
+  const cities = points.map((point)=> point.city.currentCity.name);
   let allPrice = null;
-  points.forEach((point) => { allPrice += Number(point.startPrice); });
+  points.forEach((point) => { allPrice += Number(point.basePrice); });
   const dateBegin = dateRend(points[0].date.start,'MMM D');
   const dateEnd = dateRend(points[points.length - 1].date.end, 'MMM DD');
 
