@@ -44,3 +44,15 @@ export const TYPEPOINT = {
   TRAIN: 'train',
   SHIP: 'ship',
 };
+
+export const listTypes = {
+  'taxi': 'Taxi',
+  'bus': 'Bus',
+  'train': 'Train',
+  'ship': 'Ship',
+  'drive': 'Drive',
+  'flight': 'Flight',
+  'check-in': 'Check-in',
+  'sightseeing': 'Sightseeing',
+  'restaurant': 'Restaurant'
+};
