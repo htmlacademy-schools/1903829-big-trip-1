@@ -42,10 +42,7 @@ export const adaptToClient = (point) => {
       currentCity: {
         name: point.destination.name,
         description: point.destination.description,
-        pictures: {
-          src: point.destination.pictures.src,
-          description: point.destination.pictures.description
-        }
+        pictures: point.destination.pictures,
       },
       arrayCity: arrayCities
     },

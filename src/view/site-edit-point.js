@@ -18,6 +18,11 @@ const createEditPoint = (point) => {
   let offers = '';
   let allCitiesTemplate = '';
 
+  // let allTypesTemplate = '';
+  // ['Taxi', 'Bus', 'Train', 'Flight', 'Ship', 'Drive', 'Check-in', 'Sightseeing', 'Restaurant'].forEach((typeName) => {
+  //   allTypesTemplate += `<option value="${ typeName }"></option>`;
+  // });
+
   type.arrayType.forEach((element) => {
     if (element.title === type.currentType.title) {
       type.currentType = { ...element, selectedOffers: type.currentType.selectedOffers ? type.currentType.selectedOffers : [] };

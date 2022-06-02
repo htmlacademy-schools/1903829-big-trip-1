@@ -91,12 +91,7 @@ export default class ApiService {
       'destination': {
         'name': point.city.currentCity.name,
         'description': point.city.currentCity.description,
-        'pictures': [
-          {
-            'src': point.city.currentCity.pictures.src,
-            'description': point.city.currentCity.pictures.description
-          }
-        ]
+        'pictures': point.city.currentCity.pictures,
       },
       'offers': point.type.currentType.selectedOffers,
     };
