@@ -24,7 +24,7 @@ export const createOffers = (offer) => {
 
 export const sortStatistics = (a, b) => b[1] - a[1];
 
-export const createPhoto = (photo) => `<img class="event__photo" src="${ photo.src }" alt="Event photo">`;
+export const createPhoto = (picture) => `<img class="event__photo" src="${ picture.src }" alt="${ picture.description }">`;
 
 export const createPhotoContainer = (photo) => (
   `<div class="event__photos-container">

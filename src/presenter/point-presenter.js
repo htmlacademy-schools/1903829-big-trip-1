@@ -1,19 +1,8 @@
 import EditNewPoint from '../view/site-edit-point';
 import TripEventsView from '../view/site-trip-events-view';
 import { RenderPosition, render, replace, remove } from '../utils/render';
-import { UpdateType, UserAction } from '../const';
+import { UpdateType, UserAction, State, Mode } from '../const';
 import { checkedDate } from '../utils/functionsWithDayjs';
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
-
-export const State = {
-  SAVING: 'SAVING',
-  DELETING: 'DELETING',
-  ABORTING: 'ABORTING',
-};
 
 export default class PointPresenter {
   #pointCointainer = null;

@@ -4,14 +4,12 @@ import PointPresenter from './point-presenter';
 import { render, RenderPosition, remove } from '../utils/render';
 import { sortPrice, SortType } from '../utils/common';
 import { sortDate, sortTime } from '../utils/functionsWithDayjs';
-import { UpdateType } from '../const';
-import { FilterType, UserAction } from '../const';
+import { UpdateType, FilterType, UserAction, State } from '../const';
 import EventNewPresenter from './point-new-presenter';
 import TripSortTemplate from '../view/site-trip-sort';
 import { filter } from '../utils/filter';
 import { clearStatistics } from '../utils/statistics.js';
 import LoadingView from '../view/loading-view';
-import { State } from './point-presenter';
 import PointsInfoView from '../view/site-trip-info-view';
 import { newEvent } from '../utils/adapt';
 
