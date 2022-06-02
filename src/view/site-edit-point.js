@@ -3,12 +3,20 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
 import { createOffer, createPhoto, createPhotoContainer } from '../utils/common';
-import { createType } from '../utils/common';
+import { createType, validatePrice, validateDate, validateCity } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
 const createEditPoint = (point) => {
-  const  { date, type, city, basePrice, isDisabled,  isDeleting, isSaving, } = point;
+  const {
+    date,
+    type,
+    city,
+    basePrice,
+    isDisabled,
+    isDeleting,
+    isSaving,
+  } = point;
 
   let startDateRend = '';
   let endDateRend = '';
@@ -17,8 +25,9 @@ const createEditPoint = (point) => {
 
   let offers = '';
   let allCitiesTemplate = '';
-
+  let allCities = [];
   // let allTypesTemplate = '';
+
   // ['Taxi', 'Bus', 'Train', 'Flight', 'Ship', 'Drive', 'Check-in', 'Sightseeing', 'Restaurant'].forEach((typeName) => {
   //   allTypesTemplate += `<option value="${ typeName }"></option>`;
   // });
@@ -59,6 +68,7 @@ const createEditPoint = (point) => {
   if (city.arrayCity) {
     city.arrayCity.forEach((cityName) => {
       allCitiesTemplate += `<option value="${ cityName.name }"></option>`;
+      allCities += cityName.name;
     });
   }
 
@@ -72,6 +82,10 @@ const createEditPoint = (point) => {
   const buttonDeleteText = (isDeleting ? 'Deleting...' : 'Delete');
 
   const finType = createType(type.currentType.title);
+
+  if (!validatePrice(basePrice) || !validateDate(date.start, date.end) || !validateCity(city.currentCity.name, allCities)) {
+    throw new Error('Invalid value');
+  }
 
   return `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">

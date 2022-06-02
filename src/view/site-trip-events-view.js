@@ -3,7 +3,14 @@ import AbstractView from './Abstract-view';
 import { createOffers } from '../utils/common.js';
 
 const createTripEventsView = (point) => {
-  const { date, type, city, basePrice, time, favorite } = point;
+  const {
+    date,
+    type,
+    city,
+    basePrice,
+    time,
+    favorite
+  } = point;
 
   const startDate = dateRend(date.start, 'DD MMM');
   const startDayMonth = dateRend(date.start, 'HH:mm');

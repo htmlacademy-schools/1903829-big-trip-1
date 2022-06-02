@@ -43,9 +43,15 @@ export const SortType = {
 export const sortPrice = (a, b) => b.basePrice - a.basePrice;
 
 export const createType = (typePoint) => {
-  const t = listTypes.typePoint;
+  const typeOne = listTypes.typePoint;
   return `<div class="event__type-item">
     <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typePoint}" ${ 'checked' }>
-    <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">${ t }</label>
+    <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">${ typeOne }</label>
    </div>`;
 };
+
+export const validatePrice = (price) => Math.sign(price) === 1;
+
+export const validateDate = (dateStart, dateEnd) => dateEnd > dateStart;
+
+export const validateCity = (city, listCities) => listCities.includes(city);
