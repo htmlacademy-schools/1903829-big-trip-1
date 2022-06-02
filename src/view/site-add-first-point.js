@@ -3,8 +3,8 @@ import { FilterType } from '../const.js';
 
 const PointsType = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.FUTURE]: 'There are no events future',
-  [FilterType.PAST]: 'There are no events past'
+  [FilterType.FUTURE]: 'There are no events now',
+  [FilterType.PAST]: 'There are no events now'
 };
 
 const createFirstPoint = (filterType) => {

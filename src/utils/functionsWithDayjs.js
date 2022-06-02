@@ -4,12 +4,10 @@ export const dateRend = (date, format) => dayjs(date).format(format);
 
 const getDifferentDates = (dayOne, dayTwo) => {
   const diffDateUnix = Math.abs(dayjs(dayOne).diff(dayjs(dayTwo)));
-
   const days = Math.floor(diffDateUnix / (24 * 60 * 60 * 1000));
-
   const hours = Math.floor(diffDateUnix / (60 * 60 * 1000) - (24 * days));
+  const minuts = Math.floor(diffDateUnix / (60 * 1000) - (days * 24 * 60) - (hours * 60));
 
-  const minuts = diffDateUnix / (60 * 1000) - (days * 24 * 60) - (hours * 60);
   return { 'days': days, 'hours': hours, 'minuts': minuts, 'unix': diffDateUnix };
 };
 
@@ -56,5 +54,5 @@ export const sortDate = (a, b) => dayjs(a.date.start).diff(dayjs(b.date.start));
 export const sortTime = (a, b) => {
   const timeOne = dayjs(a.date.end).diff(dayjs(a.date.start));
   const timeTwo = dayjs(b.date.end).diff(dayjs(b.date.start));
-  return timeOne - timeTwo;
+  return timeTwo - timeOne;
 };

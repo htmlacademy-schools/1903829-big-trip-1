@@ -4,6 +4,17 @@ export const UserAction = {
   DELETE_POINT: 'DELETE_POINT',
 };
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+  ABORTING: 'ABORTING',
+};
+
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
@@ -43,4 +54,16 @@ export const TYPEPOINT = {
   SIGHTSEEING: 'sightseeing',
   TRAIN: 'train',
   SHIP: 'ship',
+};
+
+export const listTypes = {
+  'taxi': 'Taxi',
+  'bus': 'Bus',
+  'train': 'Train',
+  'ship': 'Ship',
+  'drive': 'Drive',
+  'flight': 'Flight',
+  'check-in': 'Check-in',
+  'sightseeing': 'Sightseeing',
+  'restaurant': 'Restaurant'
 };

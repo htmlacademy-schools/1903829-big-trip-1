@@ -1,3 +1,5 @@
+import { listTypes } from '../const';
+
 export const createOffer = (offer, isCheckedOffer) => {
   const { title, price } = offer;
   const id = title.split(' ').join('-').toLowerCase();
@@ -22,7 +24,7 @@ export const createOffers = (offer) => {
 
 export const sortStatistics = (a, b) => b[1] - a[1];
 
-export const createPhoto = (photo) => `<img class="event__photo" src="${ photo.src }" alt="Event photo">`;
+export const createPhoto = (picture) => `<img class="event__photo" src="${ picture.src }" alt="${ picture.description }">`;
 
 export const createPhotoContainer = (photo) => (
   `<div class="event__photos-container">
@@ -38,4 +40,18 @@ export const SortType = {
   PRICE: {text: 'price', checked: false},
 };
 
-export const sortPrice = (a, b) => a.basePrice - b.basePrice;
+export const sortPrice = (a, b) => b.basePrice - a.basePrice;
+
+export const createType = (typePoint) => {
+  const typeOne = listTypes.typePoint;
+  return `<div class="event__type-item">
+    <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typePoint}" ${ 'checked' }>
+    <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">${ typeOne }</label>
+   </div>`;
+};
+
+export const validatePrice = (price) => Math.sign(price) === 1;
+
+export const validateDate = (dateStart, dateEnd) => dateEnd > dateStart;
+
+export const validateCity = (city, listCities) => listCities.includes(city);
