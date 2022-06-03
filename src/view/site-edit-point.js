@@ -83,7 +83,8 @@ const createEditPoint = (point) => {
 
   const finType = createType(type.currentType.title);
 
-  if (!validatePrice(basePrice) || !validateDate(date.start, date.end) || !validateCity(city.currentCity.name, allCities)) {
+  const validate = !validatePrice(basePrice) || !validateDate(date.start, date.end) || !validateCity(city.currentCity.name, allCities);
+  if (validate && (basePrice !== 0)) {
     throw new Error('Invalid value');
   }
 
