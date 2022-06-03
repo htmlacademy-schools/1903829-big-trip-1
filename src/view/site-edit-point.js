@@ -1,9 +1,8 @@
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
-import { createOffer, createPhoto, createPhotoContainer } from '../utils/common';
-import { createType, validatePrice, validateDate, validateCity } from '../utils/common';
+import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
+import { createOffer, createPhoto, createPhotoContainer,createType, validatePrice, validateDate, validateCity } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
