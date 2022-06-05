@@ -1,9 +1,8 @@
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
 import SmartView from './Smart-view';
-import { createOffer, createPhoto, createPhotoContainer } from '../utils/common';
-import { createType, validatePrice, validateDate, validateCity } from '../utils/common';
+import { dateRend, countDuration } from '../utils/functionsWithDayjs.js';
+import { createOffer, createPhoto, createPhotoContainer,createType, validatePrice, validateCity } from '../utils/common';
 
 const buttonAddPoint = document.querySelector('.trip-main__event-add-btn');
 
@@ -83,7 +82,7 @@ const createEditPoint = (point) => {
 
   const finType = createType(type.currentType.title);
 
-  if (!validatePrice(basePrice) || !validateDate(date.start, date.end) || !validateCity(city.currentCity.name, allCities)) {
+  if ((!validatePrice(basePrice) || !validateCity(city.currentCity.name, allCities)) && (basePrice !== 0)) {
     throw new Error('Invalid value');
   }
 
